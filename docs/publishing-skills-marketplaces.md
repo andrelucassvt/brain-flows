@@ -127,7 +127,7 @@ Crie `.claude-plugin/marketplace.json` na raiz do repositório:
 
 ```json
 {
-  "name": "anl-skills",
+  "name": "brain-flows",
   "owner": {
     "name": "André Salvador"
   },
@@ -143,7 +143,7 @@ Crie `.claude-plugin/marketplace.json` na raiz do repositório:
 }
 ```
 
-O nome `anl-skills` é público e aparece no comando de instalação. Não use nomes reservados ou que façam o marketplace parecer oficial da Anthropic.
+O nome `brain-flows` é público e aparece no comando de instalação. Não use nomes reservados ou que façam o marketplace parecer oficial da Anthropic.
 
 ## 5. Validar e instalar no Claude Code
 
@@ -158,7 +158,7 @@ Para testar uma cópia local:
 
 ```text
 /plugin marketplace add ./caminho/para/brain-flows
-/plugin install brain-flows@anl-skills
+/plugin install brain-flows@brain-flows
 /reload-plugins
 ```
 
@@ -176,7 +176,7 @@ Depois de publicar o repositório no GitHub, o usuário poderá instalar com:
 
 ```text
 /plugin marketplace add andrelucassvt/brain-flows
-/plugin install brain-flows@anl-skills
+/plugin install brain-flows@brain-flows
 ```
 
 ## 6. Enviar ao marketplace público do Claude Code
@@ -254,9 +254,9 @@ Crie `.agents/plugins/marketplace.json` na raiz do repositório:
 
 ```json
 {
-  "name": "anl-skills",
+  "name": "brain-flows",
   "interface": {
-    "displayName": "ANL Skills"
+    "displayName": "Brain Flows"
   },
   "plugins": [
     {
@@ -295,10 +295,10 @@ Para inspecionar ou atualizar:
 
 ```bash
 codex plugin marketplace list
-codex plugin marketplace upgrade anl-skills
+codex plugin marketplace upgrade brain-flows
 ```
 
-No aplicativo desktop do ChatGPT, abra o diretório de Plugins, selecione `ANL Skills`, instale `Brain Flows` e inicie uma nova tarefa. No Codex CLI ou IDE, digite `$` para localizar e mencionar uma skill explicitamente. O Codex também pode ativar a skill implicitamente quando o pedido corresponder à sua `description`.
+No aplicativo desktop do ChatGPT, abra o diretório de Plugins, selecione o marketplace `Brain Flows`, instale o plugin `Brain Flows` e inicie uma nova tarefa. No Codex CLI ou IDE, digite `$` para localizar e mencionar uma skill explicitamente. O Codex também pode ativar a skill implicitamente quando o pedido corresponder à sua `description`.
 
 ## 10. Enviar ao diretório público do Codex/OpenAI
 

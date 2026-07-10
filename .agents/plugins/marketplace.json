@@ -1,7 +1,7 @@
 {
-  "name": "anl-skills",
+  "name": "brain-flows",
   "interface": {
-    "displayName": "ANL Skills"
+    "displayName": "Brain Flows"
   },
   "plugins": [
     {

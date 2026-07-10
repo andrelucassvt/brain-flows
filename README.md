@@ -123,7 +123,7 @@ You do not need to run every skill for every task. A small mechanical fix can be
 
 ```text
 /plugin marketplace add andrelucassvt/brain-flows
-/plugin install brain-flows@anl-skills
+/plugin install brain-flows@brain-flows
 /reload-plugins
 ```
 
@@ -135,7 +135,7 @@ Invoke the skills with `/brain-flows:brainstorming`, `/brain-flows:flow`, `/brai
 codex plugin marketplace add andrelucassvt/brain-flows
 ```
 
-In the Codex CLI or IDE, type `$` to select a skill or explicitly mention its name in the prompt. In the app, open the Plugins directory, select **ANL Skills**, and install **Brain Flows**.
+In the Codex CLI or IDE, type `$` to select a skill or explicitly mention its name in the prompt. In the app, open the Plugins directory, select the **Brain Flows** marketplace, and install the **Brain Flows** plugin.
 
 ## Development and packaging
 
