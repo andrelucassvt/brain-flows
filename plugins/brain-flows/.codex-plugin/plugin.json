@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Brainstorming, documentação de flows, planejamento e execução estruturada de mudanças.",
   "author": {
-    "name": "ANL Software",
-    "url": "https://github.com/ANL-Software"
+    "name": "André Salvador"
   },
   "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
   "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
@@ -20,7 +19,7 @@
     "displayName": "Brain Flows",
     "shortDescription": "Planeje, documente e execute mudanças com rastreabilidade.",
     "longDescription": "Workflow integrado para explorar mudanças, documentar features, criar planos e executar a implementação com progresso rastreável.",
-    "developerName": "ANL Software",
+    "developerName": "André Salvador",
     "category": "Developer Tools",
     "capabilities": [
       "Read",

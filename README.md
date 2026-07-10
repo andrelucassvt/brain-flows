@@ -1,6 +1,6 @@
 # Brain Flows Marketplace
 
-Plugin da ANL Software para transformar mudanças de software em um processo rastreável de descoberta, documentação, planejamento e execução. O mesmo pacote funciona no Claude Code e no Codex.
+Plugin de André Salvador para transformar mudanças de software em um processo rastreável de descoberta, documentação, planejamento e execução. O mesmo pacote funciona no Claude Code e no Codex.
 
 ## Skills incluídas
 
