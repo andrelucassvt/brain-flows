@@ -22,7 +22,7 @@ Publique as cinco skills juntas em um plugin chamado `brain-flows`. Elas formam 
 4. `flow` documenta uma feature de ponta a ponta.
 5. `flow-init` inicializa a documentação estrutural e o inventário de flows.
 
-Use um repositório público de distribuição separado, por exemplo `ANL-Software/brain-flows-marketplace`. Isso evita expor partes desnecessárias do hub privado e permite controlar versões, licença, documentação e releases do plugin.
+Use um repositório público de distribuição, como `andrelucassvt/brain-flows`. Isso evita expor partes desnecessárias do hub privado e permite controlar versões, licença, documentação e releases do plugin.
 
 O mesmo diretório `skills/` pode ser consumido pelo Claude Code e pelo Codex. Cada plataforma terá apenas seu próprio manifest e arquivo de marketplace.
 
@@ -64,7 +64,7 @@ Documente a sintaxe específica no `README.md`:
 Use esta estrutura:
 
 ```text
-brain-flows-marketplace/
+brain-flows/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── .agents/
@@ -113,8 +113,8 @@ Crie `plugins/brain-flows/.claude-plugin/plugin.json`:
   "author": {
     "name": "André Salvador"
   },
-  "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
-  "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
+  "homepage": "https://github.com/andrelucassvt/brain-flows",
+  "repository": "https://github.com/andrelucassvt/brain-flows",
   "license": "MIT"
 }
 ```
@@ -157,7 +157,7 @@ claude plugin validate ./plugins/brain-flows
 Para testar uma cópia local:
 
 ```text
-/plugin marketplace add ./caminho/para/brain-flows-marketplace
+/plugin marketplace add ./caminho/para/brain-flows
 /plugin install brain-flows@anl-skills
 /reload-plugins
 ```
@@ -175,7 +175,7 @@ Teste pelo menos estas invocações:
 Depois de publicar o repositório no GitHub, o usuário poderá instalar com:
 
 ```text
-/plugin marketplace add ANL-Software/brain-flows-marketplace
+/plugin marketplace add andrelucassvt/brain-flows
 /plugin install brain-flows@anl-skills
 ```
 
@@ -217,8 +217,8 @@ Crie `plugins/brain-flows/.codex-plugin/plugin.json`:
   "author": {
     "name": "André Salvador"
   },
-  "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
-  "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
+  "homepage": "https://github.com/andrelucassvt/brain-flows",
+  "repository": "https://github.com/andrelucassvt/brain-flows",
   "license": "MIT",
   "keywords": [
     "brainstorming",
@@ -282,13 +282,13 @@ O caminho é resolvido a partir da raiz do marketplace, deve começar com `./` e
 Para adicionar um marketplace local:
 
 ```bash
-codex plugin marketplace add ./caminho/para/brain-flows-marketplace
+codex plugin marketplace add ./caminho/para/brain-flows
 ```
 
 Para adicionar pelo GitHub:
 
 ```bash
-codex plugin marketplace add ANL-Software/brain-flows-marketplace
+codex plugin marketplace add andrelucassvt/brain-flows
 ```
 
 Para inspecionar ou atualizar:

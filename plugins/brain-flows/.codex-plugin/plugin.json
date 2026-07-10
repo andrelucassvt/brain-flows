@@ -5,8 +5,8 @@
   "author": {
     "name": "André Salvador"
   },
-  "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
-  "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
+  "homepage": "https://github.com/andrelucassvt/brain-flows",
+  "repository": "https://github.com/andrelucassvt/brain-flows",
   "license": "MIT",
   "keywords": [
     "brainstorming",
@@ -25,9 +25,9 @@
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/ANL-Software/brain-flows-marketplace",
-    "privacyPolicyURL": "https://github.com/ANL-Software/brain-flows-marketplace/blob/main/PRIVACY.md",
-    "termsOfServiceURL": "https://github.com/ANL-Software/brain-flows-marketplace/blob/main/TERMS.md",
+    "websiteURL": "https://github.com/andrelucassvt/brain-flows",
+    "privacyPolicyURL": "https://github.com/andrelucassvt/brain-flows/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/andrelucassvt/brain-flows/blob/main/TERMS.md",
     "defaultPrompt": [
       "Use brainstorming para explorar o design desta feature.",
       "Mapeie o fluxo desta funcionalidade de ponta a ponta.",
