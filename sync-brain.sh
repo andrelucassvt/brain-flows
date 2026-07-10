@@ -9,6 +9,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SOURCE_REPO="${SOURCE_REPO:-https://github.com/andrelucassvt/brain-flows.git}"
 SOURCE_BRANCH="${SOURCE_BRANCH:-master}"
 SOURCE_SKILLS_PATH="${SOURCE_SKILLS_PATH:-plugins/brain-flows/skills}"
@@ -30,6 +31,19 @@ trap cleanup EXIT
 
 echo "⬇️  Buscando skills de $SOURCE_REPO ($SOURCE_BRANCH:$SOURCE_SKILLS_PATH)..."
 git clone --depth 1 --branch "$SOURCE_BRANCH" "$SOURCE_REPO" "$SOURCE_DIR" --quiet
+
+# ── Auto-atualização do script ─────────────────────────────
+SCRIPT_SRC="$SOURCE_DIR/$SCRIPT_NAME"
+if [ -f "$SCRIPT_SRC" ]; then
+  if ! diff -q "$SCRIPT_SRC" "$SCRIPT_DIR/$SCRIPT_NAME" > /dev/null 2>&1; then
+    echo "🔄 Nova versão do script encontrada. Atualizando e reiniciando..."
+    cp "$SCRIPT_SRC" "$SCRIPT_DIR/$SCRIPT_NAME"
+    chmod +x "$SCRIPT_DIR/$SCRIPT_NAME"
+    cleanup
+    trap - EXIT
+    exec "$SCRIPT_DIR/$SCRIPT_NAME" "$@"
+  fi
+fi
 
 echo "📁 Preparando as skills do Brain Flows..."
 for skill in "${BRAIN_SKILLS[@]}"; do
