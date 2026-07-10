@@ -1,0 +1,15 @@
+{
+  "name": "anl-skills",
+  "owner": {
+    "name": "ANL Software"
+  },
+  "description": "Skills da ANL Software para desenvolvimento orientado por documentação.",
+  "plugins": [
+    {
+      "name": "brain-flows",
+      "source": "./plugins/brain-flows",
+      "description": "Workflow de brainstorming, flows, planejamento e execução.",
+      "category": "Development"
+    }
+  ]
+}

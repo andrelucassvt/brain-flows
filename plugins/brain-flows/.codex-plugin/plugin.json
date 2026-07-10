@@ -1,0 +1,38 @@
+{
+  "name": "brain-flows",
+  "version": "1.0.0",
+  "description": "Brainstorming, documentação de flows, planejamento e execução estruturada de mudanças.",
+  "author": {
+    "name": "ANL Software",
+    "url": "https://github.com/ANL-Software"
+  },
+  "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
+  "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "brainstorming",
+    "planning",
+    "documentation",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Brain Flows",
+    "shortDescription": "Planeje, documente e execute mudanças com rastreabilidade.",
+    "longDescription": "Workflow integrado para explorar mudanças, documentar features, criar planos e executar a implementação com progresso rastreável.",
+    "developerName": "ANL Software",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/ANL-Software/brain-flows-marketplace",
+    "privacyPolicyURL": "https://github.com/ANL-Software/brain-flows-marketplace/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/ANL-Software/brain-flows-marketplace/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Use brainstorming para explorar o design desta feature.",
+      "Mapeie o fluxo desta funcionalidade de ponta a ponta.",
+      "Crie um plano de implementação para esta mudança."
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "skill_name": "brainstorming",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quero implementar autenticação biométrica (Face ID / Touch ID) na tela de login do app. O usuário deve poder ativar nas configurações e, quando ativo, ver o botão biométrico na tela de login.",
+      "expected_output": "Briefing baseado no flow de login, duas ou três alternativas somente se houver decisão real, recomendação justificada, design proporcional cobrindo componentes, interação, erros e verificação, e pedido de aprovação antes do planejamento.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "loads_relevant_flow",
+          "description": "Carrega o flow de login e usa arquivos e regras reais no contexto"
+        },
+        {
+          "id": "compares_real_alternatives",
+          "description": "Compara alternativas somente quando elas produzem trade-offs concretos"
+        },
+        {
+          "id": "recommends_and_designs",
+          "description": "Recomenda uma abordagem e apresenta design proporcional à mudança"
+        },
+        {
+          "id": "waits_for_approval",
+          "description": "Solicita aprovação explícita antes de gerar plano ou implementar"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quero criar uma tela de configurações no app onde o usuário pode alterar notificações, tema e idioma.",
+      "expected_output": "Briefing com contexto geral do projeto, alternativas de organização quando houver trade-offs reais, recomendação, design da tela e seu estado, pontos de erro/verificação e gate de aprovação antes do plano.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_project_context",
+          "description": "Usa project-structure.md e o código para não inventar arquitetura"
+        },
+        {
+          "id": "design_is_proportional",
+          "description": "Cobre somente componentes, fluxo, erros e verificações relevantes ao pedido"
+        },
+        {
+          "id": "identifies_flow_impact",
+          "description": "Registra o impacto documental sem atualizar flows durante o brainstorming"
+        },
+        {
+          "id": "hands_off_after_approval",
+          "description": "Encaminha para writing-plan somente depois da aprovação quando a mudança exigir múltiplas etapas"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Muda a cor do botão de login para azul (#2196F3).",
+      "expected_output": "Uma frase classificando a troca de cor determinada pelo usuário como mudança mecânica sem decisão de design, liberando execução direta sem briefing completo, alternativas artificiais ou gate de aprovação.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "classifies_mechanical_change",
+          "description": "Reconhece que o valor e o local da mudança já estão definidos e não há decisão de design"
+        },
+        {
+          "id": "skips_full_brainstorming",
+          "description": "Não produz briefing completo, alternativas ou cerimônia de aprovação para a mudança mecânica"
+        },
+        {
+          "id": "allows_direct_execution",
+          "description": "Libera a execução direta dentro do escopo solicitado"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "skill_name": "executing-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute o plano docs/plan/login-biometrico.md e mantenha o arquivo atualizado para eu conseguir retomar depois se a sessão cair.",
+      "expected_output": "O agente lê o plano completo, revisa o estado atual, começa no primeiro checkbox pendente, executa e verifica uma tarefa por vez e só então marca cada item concluído.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "reads_plan_before_editing",
+          "description": "Lê o plano completo e identifica objetivo, progresso e verificações antes de editar código"
+        },
+        {
+          "id": "resumes_first_pending_item",
+          "description": "Retoma pelo primeiro checkbox pendente sem repetir tarefas concluídas"
+        },
+        {
+          "id": "checks_after_evidence",
+          "description": "Marca um checkbox somente depois de obter a evidência de verificação definida"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Continue a execução do plano de checkout. O terceiro passo aponta para um arquivo que foi removido e a alternativa mudaria a arquitetura aprovada.",
+      "expected_output": "O agente detecta o conflito na revisão inicial, mantém o passo pendente e pede decisão ao usuário em vez de improvisar outra arquitetura.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "detects_material_drift",
+          "description": "Identifica que o estado atual tornou uma instrução do plano inexequível"
+        },
+        {
+          "id": "does_not_improvise_design",
+          "description": "Não troca arquitetura, comportamento ou escopo sem autorização do usuário"
+        },
+        {
+          "id": "keeps_blocked_item_pending",
+          "description": "Mantém desmarcado o item cuja execução não foi comprovada"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Implemente o plano docs/plan/session-refresh.md até o fim. Ele altera a ordem do fluxo de autenticação documentado.",
+      "expected_output": "Após implementar e verificar as tarefas, o agente atualiza o flow de autenticação, revisa os critérios de sucesso e relata evidências e pendências com precisão.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "updates_affected_flow",
+          "description": "Atualiza o flow existente quando ordem, responsabilidades ou regras documentadas mudam"
+        },
+        {
+          "id": "reviews_success_criteria",
+          "description": "Confronta todos os critérios de sucesso com evidência atual antes da conclusão"
+        },
+        {
+          "id": "reports_unverified_items",
+          "description": "Não declara como concluído nenhum item obrigatório sem evidência"
+        }
+      ]
+    }
+  ]
+}

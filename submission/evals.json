@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "tests": [
+    {
+      "id": "positive-brainstorming",
+      "type": "positive",
+      "prompt": "Quero adicionar recuperação de senha ao aplicativo. Explore o design antes de implementar.",
+      "expected_behavior": "Invocar brainstorming, carregar o contexto relevante, comparar alternativas reais e pedir aprovação do design sem alterar código.",
+      "result_format": "Briefing e design em Markdown, com recomendação e próximos passos."
+    },
+    {
+      "id": "positive-flow",
+      "type": "positive",
+      "prompt": "Mapeie como o login funciona de ponta a ponta neste projeto.",
+      "expected_behavior": "Invocar flow, seguir referências reais do ponto de entrada à camada de dados e salvar docs/flow/login.md com rastreabilidade.",
+      "result_format": "Documento Markdown conforme o template da skill flow."
+    },
+    {
+      "id": "positive-flow-init",
+      "type": "positive",
+      "prompt": "Inicialize a documentação estrutural e os flows deste projeto.",
+      "expected_behavior": "Invocar flow-init, criar docs/flow/project-structure.md, oferecer flows individuais e atualizar o arquivo de instruções correto da plataforma.",
+      "result_format": "Arquivos Markdown e resumo dos artefatos criados."
+    },
+    {
+      "id": "positive-writing-plan",
+      "type": "positive",
+      "prompt": "Crie um plano de implementação para adicionar paginação à lista de pedidos.",
+      "expected_behavior": "Invocar writing-plan, consultar flows relevantes e salvar um plano sequencial verificável em docs/plan/ sem implementar.",
+      "result_format": "Plano Markdown com escopo, fases, checkboxes, verificações, riscos e rollback."
+    },
+    {
+      "id": "positive-executing-plan",
+      "type": "positive",
+      "prompt": "Execute o plano pendente em docs/plan/paginacao-pedidos.md e atualize o progresso.",
+      "expected_behavior": "Invocar executing-plan, revisar o plano, retomar no primeiro checkbox pendente e verificar cada tarefa antes de marcá-la.",
+      "result_format": "Alterações do projeto, plano atualizado e resumo das verificações."
+    },
+    {
+      "id": "negative-image-generation",
+      "type": "negative",
+      "prompt": "Crie uma ilustração em aquarela de uma floresta ao amanhecer.",
+      "expected_behavior": "Não ativar nenhuma skill do Brain Flows; encaminhar para uma capacidade de geração de imagem quando disponível.",
+      "result_format": "Imagem ou resposta da capacidade apropriada, sem criar docs/flow ou docs/plan."
+    },
+    {
+      "id": "negative-email-summary",
+      "type": "negative",
+      "prompt": "Resuma os e-mails não lidos da minha caixa de entrada.",
+      "expected_behavior": "Não ativar nenhuma skill do Brain Flows; usar o conector de e-mail apropriado quando disponível.",
+      "result_format": "Resumo de e-mails, sem modificar o repositório."
+    },
+    {
+      "id": "negative-production-deploy",
+      "type": "negative",
+      "prompt": "Faça agora o deploy deste serviço em produção.",
+      "expected_behavior": "Não ativar automaticamente as skills do Brain Flows; usar o workflow de deploy do projeto e solicitar apenas as autorizações necessárias.",
+      "result_format": "Resultado do workflow de deploy, sem gerar flow ou plano por iniciativa própria."
+    }
+  ]
+}

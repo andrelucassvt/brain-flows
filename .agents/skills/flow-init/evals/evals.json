@@ -1,0 +1,53 @@
+{
+  "skill_name": "flow-init",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Inicialize os flows deste projeto e gere primeiro o mapa geral da estrutura. O repositório tem alterações locais ainda não commitadas.",
+      "expected_output": "docs/flow/project-structure.md baseado somente em arquivos reais, com frontmatter registrando commit, source_state dirty, datas e status coerente com a autorrevisão.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "creates_project_structure",
+          "description": "Cria docs/flow/project-structure.md com a estrutura real do projeto"
+        },
+        {
+          "id": "records_dirty_source_state",
+          "description": "Registra source_state dirty quando há alterações locais"
+        },
+        {
+          "id": "has_traceability_dates_and_status",
+          "description": "Registra generated_at, verified_at e status no frontmatter"
+        },
+        {
+          "id": "self_reviews_before_current",
+          "description": "Usa status current somente após confrontar referências com o repositório"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Atualize a documentação geral em docs/flow sem perder as observações que nossa equipe adicionou manualmente.",
+      "expected_output": "Atualização que preserva generated_at e seções customizadas, renova os metadados de verificação e usa possibly-stale caso alguma referência não possa ser confirmada.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "preserves_original_generation_date",
+          "description": "Mantém o generated_at original na atualização"
+        },
+        {
+          "id": "preserves_custom_sections",
+          "description": "Preserva observações e seções customizadas existentes"
+        },
+        {
+          "id": "refreshes_verification_metadata",
+          "description": "Atualiza verified_at, source_commit, source_state e status"
+        },
+        {
+          "id": "marks_unverified_content_stale",
+          "description": "Usa possibly-stale e explica a limitação quando não consegue confirmar uma referência"
+        }
+      ]
+    }
+  ]
+}

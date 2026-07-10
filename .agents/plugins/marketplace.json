@@ -1,0 +1,20 @@
+{
+  "name": "anl-skills",
+  "interface": {
+    "displayName": "ANL Skills"
+  },
+  "plugins": [
+    {
+      "name": "brain-flows",
+      "source": {
+        "source": "local",
+        "path": "./plugins/brain-flows"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
