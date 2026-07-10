@@ -30,13 +30,19 @@ No Codex CLI ou IDE, digite `$` para selecionar uma skill ou mencione seu nome e
 
 ## Desenvolvimento e empacotamento
 
-Edite somente `.claude/skills/<skill>/`. Os diretórios `.github/skills/`, `.agents/skills/` e `plugins/brain-flows/skills/` são artefatos gerados.
+O repositório-fonte padrão é `https://github.com/andrelucassvt/brain-flows`, branch `main`. O sync lê as skills em `plugins/brain-flows/skills/` dentro desse repositório e copia somente as cinco skills do Brain Flows para `.claude/skills/`, `.agents/skills/` e `.github/skills/`.
 
 ```bash
 ./sync-brain.sh
 ```
 
-O comando atualiza os dois espelhos e empacota somente as cinco skills declaradas em `BRAIN_SKILLS`. Para atualizar apenas o plugin distribuível, execute `./package-brain.sh`.
+Para usar outra origem ou branch sem editar o script:
+
+```bash
+SOURCE_REPO=https://github.com/organizacao/repositorio.git SOURCE_BRANCH=develop SOURCE_SKILLS_PATH=plugins/brain-flows/skills ./sync-brain.sh
+```
+
+Para recriar `plugins/brain-flows/skills/` a partir de `.claude/skills/`, execute `./package-brain.sh`.
 
 Antes de uma release, mantenha a mesma versão nos dois `plugin.json`, execute os validadores das plataformas e registre a mudança no `CHANGELOG.md`.
 

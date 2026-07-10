@@ -64,19 +64,17 @@ De cada flow lido, aproveite: arquivos envolvidos, ordem de execução, regras d
 
 ## Fase 2.5 — Detectar skill de especialista da linguagem
 
-Procure skills `*-expert` nos diretórios disponíveis, respeitando esta ordem:
+Use uma única fonte de skills por execução:
 
-```bash
-for skills_dir in .claude/skills .agents/skills; do
-  [ -d "$skills_dir" ] && find "$skills_dir" -mindepth 1 -maxdepth 1 -type d -name '*-expert' -print
-done
-```
+- Se a plataforma expuser um catálogo de skills, procure `*-expert` somente nele e não varra diretórios locais.
+- Sem catálogo, use somente a raiz nativa: `.agents/skills` no Codex ou `.claude/skills` no Claude Code.
+- Consulte a raiz da outra plataforma apenas como fallback quando a raiz nativa não existir. Nunca agregue resultados das duas raízes nem leia duas cópias da mesma skill.
 
-Se a plataforma expuser um catálogo de skills, considere também as skills `*-expert` listadas nele. Não suponha que um diretório exista.
+Depois de selecionar a fonte, liste apenas os candidatos `*-expert`. Não suponha que um diretório exista.
 
 **Se encontrar** (ex: `flutter-expert`, `spring-expert`): leia apenas o `SKILL.md` de cada uma — **não** leia os arquivos em `references/`, isso é responsabilidade da fase de implementação. Extraia a stack, a arquitetura proposta e a tabela de "quando ler cada referência" (se houver). A brainstorming **identifica e referencia** a skill expert — não invoca, não copia código, não duplica regras.
 
-**Se não encontrar:** omita a seção **Boas Práticas Disponíveis** do briefing e siga com os arquivos de instruções do projeto disponíveis (`CLAUDE.md`, `AGENTS.md` ou equivalente) e os flows.
+**Se não encontrar:** omita a seção **Boas Práticas Disponíveis** do briefing e siga com os flows e somente o arquivo de instruções nativo da plataforma (`AGENTS.md` no Codex ou `CLAUDE.md` no Claude Code). Use um equivalente apenas como fallback quando o arquivo nativo não existir; não leia os dois.
 
 ---
 

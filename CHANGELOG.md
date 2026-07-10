@@ -8,3 +8,4 @@ Todas as mudanças relevantes deste projeto serão registradas aqui.
 - Suporte conjunto a Claude Code e Codex.
 - Marketplaces e manifestos de plugin para as duas plataformas.
 - Instruções internas neutralizadas para seleção de skills e arquivos de projeto.
+- Sincronização remota de `plugins/brain-flows/skills/` para `.claude/skills/`, `.agents/skills/` e `.github/skills/`.
