@@ -3,6 +3,8 @@
 #   .claude/skills/
 #   .agents/skills/
 #   .github/skills/
+#   chmod +x sync-brain.sh
+#   ./sync-brain.sh
 
 set -euo pipefail
 
@@ -57,3 +59,20 @@ for target_skills_dir in "${TARGET_SKILLS_DIRS[@]}"; do
 done
 
 echo "✅ Brain Flows sincronizado em .claude/skills/, .agents/skills/ e .github/skills/."
+
+migrate_root_dir_to_docs() {
+  local name="$1"
+  local old_dir="$SCRIPT_DIR/$name"
+  local new_dir="$SCRIPT_DIR/docs/$name"
+
+  if [ -d "$old_dir" ]; then
+    mkdir -p "$new_dir"
+    rsync -a "$old_dir/" "$new_dir/"
+    rm -rf "$old_dir"
+    echo "  ✅ $name/ → docs/$name/"
+  fi
+}
+
+echo "🗂️  Verificando estrutura antiga (plan/ e flow/ na raiz)..."
+migrate_root_dir_to_docs "plan"
+migrate_root_dir_to_docs "flow"
