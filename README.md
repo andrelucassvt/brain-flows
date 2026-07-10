@@ -1,102 +1,102 @@
 # Brain Flows
 
-Um fluxo de trabalho para transformar mudanças de software em um processo claro, documentado e fácil de retomar.
+A workflow for turning software changes into a clear, documented process that is easy to resume.
 
-O Brain Flows ajuda o agente a entender o projeto antes de alterar código, registrar como cada funcionalidade funciona, validar a solução com você, criar um plano e executar uma etapa por vez.
+Brain Flows helps the agent understand the project before changing code, document how each feature works, validate the solution with you, create a plan, and execute it one step at a time.
 
-![Jornada do Brain Flows: mapear, entender, aprovar, planejar e executar](docs/assets/brain-flows-workflow-minimal.png)
+![Brain Flows journey: map, understand, approve, plan, and execute](docs/assets/brain-flows-workflow-minimal.png)
 
-## Por que usar?
+## Why use it?
 
-Em mudanças maiores, é comum começar a implementar cedo demais e descobrir depois que uma regra, dependência ou arquivo importante foi ignorado. O Brain Flows reduz esse risco ao manter contexto e progresso em documentos versionados junto com o código.
+For larger changes, it is common to start implementing too early and later discover that an important rule, dependency, or file was overlooked. Brain Flows reduces this risk by keeping context and progress in documents versioned alongside the code.
 
-Na prática, ele ajuda a:
+In practice, it helps you:
 
-- entender um projeto sem reler todo o código a cada tarefa;
-- documentar o caminho completo de uma funcionalidade;
-- discutir e aprovar a solução antes da implementação;
-- dividir a mudança em passos pequenos e verificáveis;
-- retomar um trabalho pelo último passo concluído;
-- manter a documentação alinhada ao código.
+- understand a project without rereading the entire codebase for every task;
+- document the complete path of a feature;
+- discuss and approve the solution before implementation;
+- break the change into small, verifiable steps;
+- resume work from the last completed step;
+- keep documentation aligned with the code.
 
-## Como o fluxo funciona
+## How the workflow works
 
-O processo possui uma preparação inicial e um ciclo usado em cada mudança.
+The process consists of an initial setup and a cycle used for each change.
 
-### 1. Conhecer o projeto com `flow-init`
+### 1. Understand the project with `flow-init`
 
-Use uma vez ao começar a trabalhar em um projeto que ainda não possui flows.
+Use it once when you begin working on a project that does not yet have any flows.
 
-O `flow-init` analisa a estrutura real do repositório e cria `docs/flow/project-structure.md` com a stack, arquitetura, módulos, features e configurações encontradas. Ele também pode gerar flows individuais ou uma lista de sugestões para documentar depois.
-
-```text
-Use flow-init para mapear este projeto.
-```
-
-### 2. Mapear funcionalidades com `flow`
-
-Um flow é uma fotografia de como uma funcionalidade funciona de ponta a ponta.
-
-A skill `flow` segue o caminho real no código — por exemplo, da tela para o estado, domínio, repositório, API ou banco — e registra em `docs/flow/<nome>.md`:
-
-- a ordem de execução;
-- os arquivos e responsabilidades envolvidos;
-- as regras de negócio;
-- os caminhos alternativos e erros existentes;
-- as dependências externas relevantes.
+`flow-init` analyzes the repository's actual structure and creates `docs/flow/project-structure.md` with the stack, architecture, modules, features, and configurations it finds. It can also generate individual flows or a list of suggestions to document later.
 
 ```text
-Mapeie o flow de login deste projeto.
+Use flow-init to map this project.
 ```
 
-### 3. Entender a mudança com `brainstorming`
+### 2. Map features with `flow`
 
-Antes de implementar uma mudança criativa ou estrutural, o `brainstorming` esclarece o objetivo, lê os flows relacionados e compara as soluções possíveis.
+A flow is a snapshot of how a feature works from end to end.
 
-O resultado é uma proposta de design explicada de forma objetiva. A implementação só avança depois da sua aprovação.
+The `flow` skill follows the actual path through the code—for example, from the UI to state, domain, repository, API, or database—and records it in `docs/flow/<name>.md`:
+
+- the execution order;
+- the files and responsibilities involved;
+- the business rules;
+- existing alternative paths and errors;
+- relevant external dependencies.
 
 ```text
-Use brainstorming para explorar a criação do login social.
+Map the login flow for this project.
 ```
 
-### 4. Criar o plano com `writing-plan`
+### 3. Understand the change with `brainstorming`
 
-Depois que o design é aprovado, o `writing-plan` transforma a proposta em um arquivo executável dentro de `docs/plan/`.
+Before implementing a creative or structural change, `brainstorming` clarifies the goal, reads the related flows, and compares possible solutions.
 
-O plano registra:
-
-- objetivo e contexto;
-- arquivos que serão alterados;
-- fases e checkboxes;
-- verificações e critérios de sucesso;
-- riscos e estratégia de rollback;
-- flows que precisarão ser atualizados.
+The result is a clearly explained design proposal. Implementation only moves forward after your approval.
 
 ```text
-Crie um plano para implementar o design aprovado.
+Use brainstorming to explore adding social login.
 ```
 
-### 5. Executar com `executing-plan`
+### 4. Create the plan with `writing-plan`
 
-O `executing-plan` revisa o plano contra o estado atual do repositório e executa uma tarefa por vez.
+After the design is approved, `writing-plan` turns the proposal into an actionable file inside `docs/plan/`.
 
-Cada checkbox só é marcado depois da verificação correspondente. Se o trabalho for interrompido, a execução pode continuar pelo primeiro item pendente. Ao final, os flows afetados são atualizados quando a estrutura ou o comportamento documentado mudou.
+The plan records:
+
+- the goal and context;
+- files that will be changed;
+- phases and checkboxes;
+- verification steps and success criteria;
+- risks and rollback strategy;
+- flows that will need to be updated.
 
 ```text
-Execute o plano de login social.
+Create a plan to implement the approved design.
 ```
 
-## Visão resumida
+### 5. Execute with `executing-plan`
+
+`executing-plan` reviews the plan against the current state of the repository and executes one task at a time.
+
+Each checkbox is marked only after the corresponding verification. If the work is interrupted, execution can resume from the first pending item. At the end, affected flows are updated whenever the documented structure or behavior has changed.
 
 ```text
-Preparação do projeto
-flow-init ──> project-structure.md ──> flows das funcionalidades
-
-Ciclo de uma mudança
-brainstorming ──> aprovação ──> writing-plan ──> executing-plan ──> flow atualizado
+Execute the social login plan.
 ```
 
-Os arquivos Markdown são a memória compartilhada do processo:
+## Overview
+
+```text
+Project setup
+flow-init ──> project-structure.md ──> feature flows
+
+Change cycle
+brainstorming ──> approval ──> writing-plan ──> executing-plan ──> updated flow
+```
+
+The Markdown files serve as the process's shared memory:
 
 ```text
 docs/
@@ -107,19 +107,19 @@ docs/
     └── login-social.md
 ```
 
-## Qual skill devo usar?
+## Which skill should I use?
 
-| Quando você precisa... | Use |
+| When you need to... | Use |
 |---|---|
-| Mapear o projeto inteiro pela primeira vez | `flow-init` |
-| Entender ou documentar uma funcionalidade existente | `flow` |
-| Explorar uma mudança e decidir como implementá-la | `brainstorming` |
-| Transformar um design aprovado em passos executáveis | `writing-plan` |
-| Implementar ou retomar um plano existente | `executing-plan` |
+| Map the entire project for the first time | `flow-init` |
+| Understand or document an existing feature | `flow` |
+| Explore a change and decide how to implement it | `brainstorming` |
+| Turn an approved design into actionable steps | `writing-plan` |
+| Implement or resume an existing plan | `executing-plan` |
 
-Você não precisa executar todas as skills em toda tarefa. Uma correção mecânica pequena pode ser feita diretamente; uma feature maior se beneficia do ciclo completo.
+You do not need to run every skill for every task. A small mechanical fix can be made directly, while a larger feature benefits from the full cycle.
 
-## Instalação no Claude Code
+## Installation in Claude Code
 
 ```text
 /plugin marketplace add andrelucassvt/brain-flows
@@ -127,39 +127,39 @@ Você não precisa executar todas as skills em toda tarefa. Uma correção mecâ
 /reload-plugins
 ```
 
-Invoque as skills com `/brain-flows:brainstorming`, `/brain-flows:flow`, `/brain-flows:flow-init`, `/brain-flows:writing-plan` ou `/brain-flows:executing-plan`.
+Invoke the skills with `/brain-flows:brainstorming`, `/brain-flows:flow`, `/brain-flows:flow-init`, `/brain-flows:writing-plan`, or `/brain-flows:executing-plan`.
 
-## Instalação no Codex
+## Installation in Codex
 
 ```bash
 codex plugin marketplace add andrelucassvt/brain-flows
 ```
 
-No Codex CLI ou IDE, digite `$` para selecionar uma skill ou mencione seu nome explicitamente no prompt. No aplicativo, abra o diretório de Plugins, selecione **ANL Skills** e instale **Brain Flows**.
+In the Codex CLI or IDE, type `$` to select a skill or explicitly mention its name in the prompt. In the app, open the Plugins directory, select **ANL Skills**, and install **Brain Flows**.
 
-## Desenvolvimento e empacotamento
+## Development and packaging
 
-O repositório-fonte padrão é `https://github.com/andrelucassvt/brain-flows`, na branch `main`. A sincronização lê as skills em `plugins/brain-flows/skills/` e copia somente as cinco skills do Brain Flows para `.claude/skills/`, `.agents/skills/` e `.github/skills/`.
+The default source repository is `https://github.com/andrelucassvt/brain-flows`, on the `main` branch. Synchronization reads the skills from `plugins/brain-flows/skills/` and copies only the five Brain Flows skills to `.claude/skills/`, `.agents/skills/`, and `.github/skills/`.
 
 ```bash
 ./sync-brain.sh
 ```
 
-Para usar outra origem ou branch sem editar o script:
+To use a different source or branch without editing the script:
 
 ```bash
-SOURCE_REPO=https://github.com/organizacao/repositorio.git SOURCE_BRANCH=develop SOURCE_SKILLS_PATH=plugins/brain-flows/skills ./sync-brain.sh
+SOURCE_REPO=https://github.com/organization/repository.git SOURCE_BRANCH=develop SOURCE_SKILLS_PATH=plugins/brain-flows/skills ./sync-brain.sh
 ```
 
-Para recriar `plugins/brain-flows/skills/` a partir de `.claude/skills/`, execute:
+To recreate `plugins/brain-flows/skills/` from `.claude/skills/`, run:
 
 ```bash
 ./package-brain.sh
 ```
 
-Antes de uma release, mantenha a mesma versão nos dois arquivos `plugin.json`, execute os validadores das plataformas e registre a mudança no `CHANGELOG.md`.
+Before a release, keep the same version in both `plugin.json` files, run the platform validators, and record the change in `CHANGELOG.md`.
 
-### Validação local
+### Local validation
 
 Claude Code:
 
@@ -175,9 +175,9 @@ codex plugin marketplace add "$PWD"
 codex plugin marketplace list
 ```
 
-## Suporte e políticas
+## Support and policies
 
-- [Suporte](SUPPORT.md)
-- [Política de privacidade](PRIVACY.md)
-- [Termos de uso](TERMS.md)
-- [Licença MIT](LICENSE)
+- [Support](SUPPORT.md)
+- [Privacy Policy](PRIVACY.md)
+- [Terms of Use](TERMS.md)
+- [MIT License](LICENSE)
