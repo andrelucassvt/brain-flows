@@ -111,7 +111,7 @@ Crie `plugins/brain-flows/.claude-plugin/plugin.json`:
   "description": "Brainstorming, documentação de flows, planejamento e execução estruturada de mudanças.",
   "version": "1.0.0",
   "author": {
-    "name": "ANL Software"
+    "name": "André Salvador"
   },
   "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
   "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
@@ -129,9 +129,9 @@ Crie `.claude-plugin/marketplace.json` na raiz do repositório:
 {
   "name": "anl-skills",
   "owner": {
-    "name": "ANL Software"
+    "name": "André Salvador"
   },
-  "description": "Skills da ANL Software para desenvolvimento orientado por documentação.",
+  "description": "Skills de André Salvador para desenvolvimento orientado por documentação.",
   "plugins": [
     {
       "name": "brain-flows",
@@ -215,7 +215,7 @@ Crie `plugins/brain-flows/.codex-plugin/plugin.json`:
   "version": "1.0.0",
   "description": "Brainstorming, documentação de flows, planejamento e execução estruturada de mudanças.",
   "author": {
-    "name": "ANL Software"
+    "name": "André Salvador"
   },
   "homepage": "https://github.com/ANL-Software/brain-flows-marketplace",
   "repository": "https://github.com/ANL-Software/brain-flows-marketplace",
@@ -231,7 +231,7 @@ Crie `plugins/brain-flows/.codex-plugin/plugin.json`:
     "displayName": "Brain Flows",
     "shortDescription": "Planeje, documente e execute mudanças com rastreabilidade.",
     "longDescription": "Workflow integrado para explorar mudanças, documentar features, criar planos e executar a implementação com progresso rastreável.",
-    "developerName": "ANL Software",
+    "developerName": "André Salvador",
     "category": "Developer Tools",
     "capabilities": [
       "Read",

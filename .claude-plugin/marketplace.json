@@ -1,9 +1,9 @@
 {
   "name": "anl-skills",
   "owner": {
-    "name": "ANL Software"
+    "name": "André Salvador"
   },
-  "description": "Skills da ANL Software para desenvolvimento orientado por documentação.",
+  "description": "Skills de André Salvador para desenvolvimento orientado por documentação.",
   "plugins": [
     {
       "name": "brain-flows",
