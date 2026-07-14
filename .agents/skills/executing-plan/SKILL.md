@@ -11,6 +11,14 @@ Executa um plano existente sem misturar planejamento com implementação. O arqu
 
 Esta skill não cria um plano novo. Se ainda não houver plano e a mudança exigir várias etapas, encaminhe para `writing-plan`.
 
+### Entrada esperada
+
+Um arquivo de plano em `./docs/plan/`, idealmente com a seção **Design de Origem** (produzida pelo `writing-plan`). Essa seção é a memória da decisão aprovada — é o que permite executar sem depender do histórico de conversa e defender a intenção original diante de drift.
+
+### Saída (Handoff)
+
+Código implementado e verificado, plano com progresso marcado, e os flows estruturalmente afetados atualizados e relinkados ao plano. Fecha a cadeia `brainstorm → plan → execução → flow`.
+
 ---
 
 ## Fluxo de execução
@@ -22,10 +30,11 @@ Use o caminho informado pelo usuário. Se ele disser apenas "o plano", liste `./
 Leia o arquivo inteiro antes de alterar código. Identifique:
 
 - Objetivo e critérios de sucesso
+- **Design de Origem** — a decisão aprovada e as alternativas descartadas; é o limite que separa uma correção de drift legítima de uma mudança de rumo que exige o usuário
 - Arquivos que serão criados ou modificados
 - Ordem e dependências entre tarefas/fases
 - Comandos e evidências de verificação
-- Riscos, rollback e flows afetados
+- Riscos, rollback e flows afetados (cabeçalho **Flows relacionados**)
 - Checkboxes já concluídos e primeiro checkbox pendente
 
 ### 2. Revisar criticamente antes de executar
@@ -34,7 +43,7 @@ Confronte o plano com o estado atual do repositório. Procure arquivos movidos, 
 
 - Se o plano estiver executável, informe em uma frase por onde começará e prossiga.
 - Se houver ajuste pequeno e inequívoco causado por drift do código, atualize o passo no plano e registre o motivo.
-- Se a correção mudar escopo, arquitetura, comportamento ou critérios de sucesso, pare e apresente o conflito ao usuário; não improvise uma solução diferente.
+- Se a correção mudar escopo, arquitetura, comportamento ou critérios de sucesso — ou contrariar a **Decisão aprovada** no Design de Origem — pare e apresente o conflito ao usuário; não improvise uma solução diferente. O Design de Origem é o parâmetro: uma correção que reintroduz uma alternativa explicitamente descartada não é drift mecânico, é uma nova decisão.
 
 ### 3. Retomar pelo progresso real
 
@@ -78,7 +87,7 @@ Depois de concluir as tarefas de implementação e antes da revisão final, atua
 - Regra de negócio, caminho de erro ou fallback
 - Rota, injeção de dependência, persistência ou integração externa
 
-Use a skill `flow` como fonte de verdade, preserve seções customizadas e renove seus metadados de verificação. Mudanças internas que preservam a estrutura e o comportamento documentado não exigem atualização.
+Use a skill `flow` como fonte de verdade, preserve seções customizadas e renove seus metadados de verificação. Ao atualizar um flow, inclua o caminho deste plano no campo `related_plans` do frontmatter dele, fechando a rastreabilidade `plano → flow`. Mudanças internas que preservam a estrutura e o comportamento documentado não exigem atualização.
 
 Se não existir flow relacionado, não crie um automaticamente: registre a ausência e sugira invocar a skill `flow` para documentá-lo na entrega.
 
