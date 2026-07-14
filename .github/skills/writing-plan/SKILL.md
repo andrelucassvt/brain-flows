@@ -7,19 +7,37 @@ description: Generates a structured Markdown implementation plan and saves it to
 
 ## O que esta skill faz
 
-Gera um plano estruturado em Markdown e salva em `./docs/plan/<nome-do-plano>.md` (cria a pasta se não existir): objetivo claro, fases com checkboxes, passos acionáveis, verificações e critérios de sucesso.
+Gera um plano estruturado em Markdown e salva em `./docs/plan/<nome-do-plano>.md` (cria a pasta se não existir): objetivo claro, o design de origem, fases com checkboxes, passos acionáveis, verificações e critérios de sucesso.
+
+### Entrada esperada
+
+O ideal é o **Handoff para o Plano** produzido pelo `brainstorming` (decisão aprovada, alternativas descartadas, tipo de mudança, arquivos-chave, skill expert, flows a revisitar). O plano também pode nascer direto de um pedido do usuário, sem brainstorming prévio — nesse caso esta skill reconstrói o mínimo necessário.
+
+### Saída (Handoff)
+
+Um arquivo de plano auto-contido — inclui a seção **Design de Origem**, para que o `executing-plan` execute e defenda a intenção original sem depender do histórico de conversa.
 
 ---
 
 ## Fluxo de Execução
 
+### 0. Absorver o Handoff do brainstorming
+
+**Se o `brainstorming` rodou e entregou o bloco Handoff:** use-o como fonte. Copie decisão, alternativas descartadas, tipo de mudança, arquivos-chave e flows para o plano — não reabra decisões já aprovadas nem reclassifique o tipo de mudança.
+
+**Se não houver handoff** (plano pedido direto, ou brainstorming perdido na compactação de contexto): reconstrua uma decisão de design em uma ou duas frases a partir do pedido e do código. Se a mudança tiver decisão de design real e ambígua, prefira sugerir o `brainstorming` antes de planejar, em vez de inventar a decisão silenciosamente.
+
 ### 1. Entender o contexto
 
 Responda mentalmente: **o que** precisa ser feito, **por quê**, **quais arquivos/sistemas** estão envolvidos e **qual o critério de conclusão**.
 
-Se o prompt for vago, faça **uma única pergunta de clarificação** — a mais importante.
+Se o prompt for vago e não houver handoff, faça **uma única pergunta de clarificação** — a mais importante.
 
 ### 1.5. Classificar o tipo de mudança
+
+**Se o Handoff já trouxe o `Tipo de mudança`, use-o** — não reclassifique. Só reavalie se o código contradisser claramente a classificação recebida (ex.: o handoff diz UI-only mas o design exige um novo Repository); nesse caso, ajuste e registre o motivo em uma frase.
+
+Sem handoff, classifique agora:
 
 **UI-only** — apenas estrutura visual de Views (layout, componentes, estilos, animações), extração de componentes de UI, ajustes de rota sem lógica nova, textos/traduções/assets.
 → **Não inclua fases de teste no plano.**
@@ -33,7 +51,7 @@ Se o prompt for vago, faça **uma única pergunta de clarificação** — a mais
 ls ./docs/flow/ 2>/dev/null
 ```
 
-**Se o brainstorming já rodou nesta conversa e leu os flows relevantes**, reutilize esse conteúdo do contexto — não releia os arquivos.
+**Se o brainstorming já rodou nesta conversa e leu os flows relevantes** (o Handoff lista os "flows a revisitar"), reutilize esse conteúdo do contexto — não releia os arquivos. Registre esses flows no cabeçalho **Flows relacionados** do plano.
 
 **Se existir flow relacionado ainda não lido:** leia-o e use arquivos envolvidos, ordem de execução e regras de negócio para preencher o plano com caminhos reais. Se o plano envolver mudanças **estruturais** (novos arquivos, camadas renomeadas, responsabilidade movida), adicione uma fase final **"Atualizar Flow"** com os passos concretos do que atualizar em `./docs/flow/<nome>.md`. Mudança interna sem impacto estrutural não precisa dessa fase.
 
@@ -69,10 +87,25 @@ Derive um nome `kebab-case` conciso do objetivo (ex: "plano para tela de login" 
 # [Título do Plano]
 
 > **Objetivo:** Uma frase descrevendo o que será entregue ao final.
+> **Design de origem:** brainstorming desta conversa | reconstruído a partir do pedido
+> **Flows relacionados:** `docs/flow/<nome>.md`, ... (ou "nenhum")
 
 ## Contexto
 
 [2–4 frases explicando o estado atual, o problema ou a motivação.]
+
+## Design de Origem
+
+<!--
+  Copie aqui o Handoff do brainstorming (decisão + alternativas descartadas).
+  Sem handoff, escreva a decisão de design em 1–2 frases.
+  Esta seção é o que o executing-plan consulta para defender a intenção original
+  ao lidar com drift — não a omita.
+-->
+
+- **Decisão aprovada:** [opção escolhida em uma frase]
+- **Alternativas descartadas:** [opção + motivo, ou "nenhuma — caminho direto"]
+- **Tipo de mudança:** UI-only | Logic
 
 ## Arquitetura / Escopo
 

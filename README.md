@@ -53,7 +53,7 @@ Map the login flow for this project.
 
 Before implementing a creative or structural change, `brainstorming` clarifies the goal, reads the related flows, and compares possible solutions.
 
-The result is a clearly explained design proposal. Implementation only moves forward after your approval.
+The result is a clearly explained design proposal. Implementation only moves forward after your approval. On approval it emits a compact **handoff block**—the approved decision, discarded alternatives, change type, key files, and affected flows—so the design survives into the next step even if the conversation context is compacted.
 
 ```text
 Use brainstorming to explore adding social login.
@@ -66,11 +66,12 @@ After the design is approved, `writing-plan` turns the proposal into an actionab
 The plan records:
 
 - the goal and context;
+- the **design of origin** (the approved decision and discarded alternatives, absorbed from the brainstorming handoff), so the plan is self-contained;
 - files that will be changed;
 - phases and checkboxes;
 - verification steps and success criteria;
 - risks and rollback strategy;
-- flows that will need to be updated.
+- related flows that will need to be updated.
 
 ```text
 Create a plan to implement the approved design.
@@ -80,7 +81,7 @@ Create a plan to implement the approved design.
 
 `executing-plan` reviews the plan against the current state of the repository and executes one task at a time.
 
-Each checkbox is marked only after the corresponding verification. If the work is interrupted, execution can resume from the first pending item. At the end, affected flows are updated whenever the documented structure or behavior has changed.
+It uses the plan's **design of origin** as the boundary for handling code drift: a fix that reintroduces a discarded alternative is treated as a new decision that needs your approval, not a mechanical correction. Each checkbox is marked only after the corresponding verification. If the work is interrupted, execution can resume from the first pending item. At the end, affected flows are updated—and linked back to the plan—whenever the documented structure or behavior has changed.
 
 ```text
 Execute the social login plan.
@@ -94,7 +95,11 @@ flow-init ──> project-structure.md ──> feature flows
 
 Change cycle
 brainstorming ──> approval ──> writing-plan ──> executing-plan ──> updated flow
+             (handoff)      (design of origin)   (defends design,
+                                                   links flow back)
 ```
+
+Each arrow is an explicit handoff: the approved design travels forward as a handoff block, gets recorded inside the plan as its "design of origin", and is defended during execution—so no step depends on conversation history that may have been compacted.
 
 The Markdown files serve as the process's shared memory:
 

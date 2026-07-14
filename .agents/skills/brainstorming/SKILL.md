@@ -16,7 +16,15 @@ Camada de inteligência de contexto antes de qualquer implementação:
 5. **Compara alternativas reais**, recomenda uma abordagem e apresenta o design
 6. **Obtém aprovação** antes de encaminhar a mudança para o planejamento
 
-Esta skill não escreve código nem gera o arquivo de plano. Ela encerra a descoberta com um design aprovado; depois disso, o próximo passo é `writing-plan`.
+Esta skill não escreve código nem gera o arquivo de plano. Ela encerra a descoberta com um design aprovado e um **bloco de Handoff** que o `writing-plan` consome; depois disso, o próximo passo é `writing-plan`.
+
+### Entrada esperada
+
+O pedido do usuário. Não depende de nenhum artefato anterior — é o primeiro elo da cadeia de mudança. Se existirem flows em `./docs/flow/`, são carregados como contexto (Fase 2).
+
+### Saída (Handoff)
+
+Um design aprovado + o bloco **Handoff para o Plano** (Fase 5). Esse bloco é a interface com o `writing-plan`: ele carrega a classificação, os flows afetados, a skill expert e a decisão resolvida, para que o design não se perca se o contexto compactar entre as skills.
 
 ---
 
@@ -171,9 +179,29 @@ Peça aprovação explícita do design antes de criar um plano ou iniciar a impl
 
 Depois da aprovação:
 
-- Para uma mudança com múltiplas etapas, recomende ou use `writing-plan` para gerar o plano executável.
-- Se a mudança aprovada for pequena e direta, informe que pode seguir para implementação sem criar um plano, caso o usuário prefira.
+- Para uma mudança com múltiplas etapas, recomende ou use `writing-plan` para gerar o plano executável — e entregue o **Handoff para o Plano** abaixo.
+- Se a mudança aprovada for pequena e direta, informe que pode seguir para implementação sem criar um plano, caso o usuário prefira. Nesse caso o handoff é dispensável.
 - Não implemente automaticamente: a aprovação do design não presume autorização para alterar código.
+
+### Handoff para o Plano
+
+Quando a mudança seguir para `writing-plan`, encerre com este bloco. Ele é a interface entre as duas skills: o `writing-plan` copia esse conteúdo para a seção **Design de Origem** do plano, tornando-o auto-contido e sobrevivente à compactação de contexto. Preencha só o que se aplica:
+
+```markdown
+## Handoff para o Plano
+
+- **Decisão aprovada:** [opção escolhida em uma frase]
+- **Alternativas descartadas:** [opção + motivo curto, ou "nenhuma — caminho direto"]
+- **Tipo de mudança:** UI-only | Logic
+  <!-- UI-only: só View/layout/estilo/rota sem lógica nova, textos, assets.
+       Logic: toca estado/domínio/serviço/repositório/datasource/HTTP/banco.
+       Você acabou de desenhar a solução — decida este eixo aqui, não deixe o writing-plan re-derivar. -->
+- **Arquivos-chave:** [caminhos reais citados no design]
+- **Skill expert:** `<nome-expert>` + referências relevantes, ou "nenhuma encontrada"
+- **Flows a revisitar após implementação:** `docs/flow/<nome>.md` — [seções], ou "nenhum"
+```
+
+O campo **Tipo de mudança** é a única classificação de TDD da cadeia: o `writing-plan` a reutiliza em vez de reclassificar.
 
 ---
 
