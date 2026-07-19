@@ -14,7 +14,7 @@ Varre o repositório e inicializa a pasta `./docs/flow/` com:
 
 Se o usuário optar por não gerar os flows completos agora, cria **`docs/flow/flow-suggestions.md`** com a lista das features detectadas e o que cada flow cobriria.
 
-Por fim, atualiza o arquivo de instruções da plataforma para registrar a existência da pasta `./docs/flow/`.
+Por fim, atualiza `AGENTS.md` como arquivo canônico de instruções compartilhadas e garante que o Claude Code o carregue por meio de um `CLAUDE.md` com o import `@AGENTS.md`.
 
 ---
 
@@ -168,19 +168,18 @@ Resumos concisos (1–2 frases) — é uma lista rápida de consulta, não docum
 
 ---
 
-### Passo 5 — Atualizar o arquivo de instruções da plataforma
+### Passo 5 — Atualizar as instruções compartilhadas
 
-Após criar os arquivos de flow, determine o arquivo-alvo sem presumir uma plataforma:
+Após criar os arquivos de flow, use esta estrutura independentemente da plataforma ativa:
 
-- **Claude Code:** reescreva `CLAUDE.md`.
-- **Codex:** reescreva `AGENTS.md`.
-- **Plataforma não identificada:** atualize somente o arquivo que já existir. Se ambos existirem, preserve os dois e aplique em cada um apenas instruções compatíveis com a respectiva plataforma. Se nenhum existir, pergunte qual plataforma deve receber as instruções.
+- **`AGENTS.md` é o arquivo canônico:** concentra as instruções completas e compartilhadas do projeto.
+- **`CLAUDE.md` é a ponte para o Claude Code:** importa o arquivo canônico com `@AGENTS.md`.
 
-Antes de substituir qualquer arquivo, leia seu conteúdo e preserve instruções válidas, específicas e compatíveis. Não copie comandos ou convenções exclusivas de uma plataforma para a outra.
+Antes de substituir qualquer arquivo, leia `AGENTS.md` e `CLAUDE.md` quando existirem e preserve instruções válidas e específicas. Como o Claude Code também receberá o conteúdo de `AGENTS.md`, escreva nele apenas convenções compatíveis com ambas as plataformas. Prefira formulações neutras como “invoque a skill `flow`”; não use sintaxes exclusivas como `/brain-flows:flow` ou `$flow` nas instruções compartilhadas.
 
 **5a — Ler o guia de boas práticas** em `references/guide-project-instructions.md`, resolvido a partir do diretório desta skill. Internalize: menos é mais, instruções específicas e acionáveis, sem redundância com o que o código já comunica.
 
-**5b — Gerar o arquivo-alvo do zero** usando o template enxuto do guia (seção 4), preenchido com o que você descobriu no Passo 1. Aplique o checklist (seção 7) antes de salvar: cabeçalho de 1 frase, stack com decisões não inferíveis do código, estrutura de diretórios, comandos reais, convenções específicas, gotchas com workarounds e "não fazer" concretos.
+**5b — Gerar `AGENTS.md` do zero** usando o template enxuto do guia (seção 4), preenchido com o que você descobriu no Passo 1. Aplique o checklist (seção 7) antes de salvar: cabeçalho de 1 frase, stack com decisões não inferíveis do código, estrutura de diretórios, comandos reais, convenções específicas, gotchas com workarounds e "não fazer" concretos.
 
 Não invente seções — inclua apenas o que sabe de fato. Migre instruções anteriores válidas e específicas; descarte as genéricas.
 
@@ -200,6 +199,20 @@ Após implementar, não execute o projeto para validar o resultado (rodar o app,
 - Não pergunte se deve executar o projeto — só faça isso se o usuário pedir explicitamente
 ```
 
+**5c — Criar ou validar a ponte `CLAUDE.md`:**
+
+- Se `CLAUDE.md` não existir, crie-o com exatamente:
+
+  ```markdown
+  @AGENTS.md
+  ```
+
+- Se a primeira linha já for exatamente `@AGENTS.md`, mantenha o arquivo. Preserve abaixo do import qualquer instrução realmente exclusiva do Claude Code.
+- Se `CLAUDE.md` for um symlink válido para `AGENTS.md`, considere a ponte funcional e preserve-o.
+- Se `CLAUDE.md` for um arquivo regular sem o import, ou um symlink para outro destino, não o substitua silenciosamente. Separe as instruções compartilháveis das exclusivas do Claude, proponha migrar as compartilháveis para `AGENTS.md` e manter as exclusivas abaixo de `@AGENTS.md`, e peça confirmação antes de reescrever o arquivo.
+- Nunca use apenas o texto `AGENTS.md`: sem o prefixo `@`, o Claude Code não o trata como import.
+- Não duplique em `CLAUDE.md` as instruções já presentes em `AGENTS.md`.
+
 ---
 
 ### Passo 6 — Autorrevisar a documentação
@@ -214,6 +227,8 @@ Antes de finalizar, confronte cada documento criado ou atualizado com o reposit�
 - `verified_at` registra a data desta revisão?
 - Em arquivos atualizados, `generated_at` original e seções customizadas foram preservados?
 - `related_plans` contém somente caminhos existentes e relacionados, ou `[]`?
+- `AGENTS.md` concentra as instruções compartilhadas sem sintaxe exclusiva de plataforma?
+- `CLAUDE.md` começa com `@AGENTS.md` ou é um symlink válido para `AGENTS.md`, sem duplicar as instruções canônicas?
 
 Use `status: current` somente nos documentos que passaram por essa revisão. Se uma referência não puder ser confirmada, explique a limitação em **Observações** e marque o documento como `possibly-stale`. Use `draft` para documento incompleto e `archived` apenas por decisão explícita do usuário.
 
@@ -231,7 +246,7 @@ Os flows individuais criados no Passo 4a também devem passar pela autorrevisão
 
 **Rastreabilidade honesta** — preserve a data original de criação em atualizações e sinalize alterações locais com `source_state: dirty`; não apresente um documento parcialmente verificado como atual.
 
-**Não modifique código** — skill puramente documental; não altere nada além dos arquivos de flow e do arquivo de instruções da plataforma selecionado no Passo 5.
+**Não modifique código** — skill puramente documental; não altere nada além dos arquivos de flow, de `AGENTS.md` e da ponte `CLAUDE.md` descrita no Passo 5.
 
 **Idioma** — o mesmo da conversa com o usuário.
 
@@ -239,4 +254,4 @@ Os flows individuais criados no Passo 4a também devem passar pela autorrevisão
 
 ## Ao finalizar
 
-Informe: quais arquivos foram criados em `./docs/flow/`, o status de verificação de cada um, qual arquivo de instruções foi reescrito com base no guia, e como invocar a skill `flow` para criar ou atualizar flows individuais no futuro.
+Informe: quais arquivos foram criados em `./docs/flow/`, o status de verificação de cada um, que `AGENTS.md` foi reescrito com base no guia, o estado da ponte `CLAUDE.md`, e como invocar a skill `flow` para criar ou atualizar flows individuais no futuro.

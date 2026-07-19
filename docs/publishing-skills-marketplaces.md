@@ -40,13 +40,14 @@ Antes de empacotar, ajuste os arquivos originais em `.claude/skills/` e execute 
 
 ### 1.2 Tratar o arquivo de instruções da plataforma
 
-`flow-init/SKILL.md` atualmente atualiza `CLAUDE.md`. Defina o comportamento por plataforma:
+`flow-init/SKILL.md` usa uma fonte canônica compartilhada pelas duas plataformas:
 
-- Claude Code: atualizar `CLAUDE.md`.
-- Codex: atualizar `AGENTS.md`.
-- Plataforma não identificada: atualizar apenas o arquivo que já existir; se ambos existirem, preservar os dois e aplicar somente instruções compatíveis.
+- Gerar ou atualizar as instruções completas em `AGENTS.md`.
+- Criar `CLAUDE.md` com o import `@AGENTS.md`.
+- Preservar abaixo do import apenas instruções realmente exclusivas do Claude Code.
+- Nunca sobrescrever silenciosamente um `CLAUDE.md` existente sem o import.
 
-O guia `flow-init/references/guide-claude-md.md` também deve ganhar orientação equivalente para `AGENTS.md` ou ser substituído por uma referência neutra sobre arquivos de instruções do projeto.
+O guia `flow-init/references/guide-project-instructions.md` documenta essa estrutura e exige linguagem neutra no `AGENTS.md`, pois seu conteúdo também será carregado pelo Claude Code.
 
 ### 1.3 Usar nomes neutros nas instruções internas
 

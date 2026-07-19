@@ -1,11 +1,11 @@
-# Guia: arquivos de instruções de projeto
+# Guia: instruções compartilhadas de projeto
 
-> Use este guia para gerar instruções concisas e acionáveis em `CLAUDE.md` (Claude Code) ou `AGENTS.md` (Codex), sem misturar convenções exclusivas das plataformas.
+> Use este guia para gerar instruções concisas e acionáveis em `AGENTS.md` e disponibilizá-las ao Claude Code por meio de um `CLAUDE.md` com o import `@AGENTS.md`.
 
 ## Sumário
 
 1. Princípios fundamentais
-2. Seleção do arquivo-alvo
+2. Estrutura canônica e ponte do Claude Code
 3. Estrutura recomendada
 4. Template enxuto
 5. Hierarquia e disclosure progressivo
@@ -26,15 +26,16 @@
 
 **Disclosure progressivo.** Mantenha no arquivo raiz somente regras universais. Regras específicas de módulos devem ficar próximas desses módulos ou em skills carregadas sob demanda.
 
-## 2. Seleção do arquivo-alvo
+## 2. Estrutura canônica e ponte do Claude Code
 
-- No Claude Code, use `CLAUDE.md`.
-- No Codex, use `AGENTS.md`.
-- Se a plataforma não estiver identificada, atualize somente o arquivo existente.
-- Se ambos existirem, preserve ambos. Compartilhe apenas conteúdo neutro e mantenha comandos, sintaxe de skills e regras exclusivas em seu arquivo correspondente.
-- Se nenhum existir e a plataforma for desconhecida, confirme o alvo antes de criar um arquivo.
+- Use `AGENTS.md` como arquivo canônico das instruções completas e compartilhadas do projeto.
+- Crie `CLAUDE.md` com `@AGENTS.md` para que o Claude Code importe o arquivo canônico.
+- O prefixo `@` é obrigatório: `AGENTS.md` sozinho é apenas texto, não um import.
+- Se `CLAUDE.md` já começar com `@AGENTS.md`, preserve abaixo do import apenas instruções realmente exclusivas do Claude Code.
+- Um symlink existente de `CLAUDE.md` para `AGENTS.md` também é válido e não precisa ser substituído.
+- Se `CLAUDE.md` existir sem o import, não o sobrescreva silenciosamente. Migre regras compartilháveis para `AGENTS.md`, preserve regras exclusivas abaixo do import e peça confirmação antes da reescrita.
 
-Leia o arquivo existente antes de reescrevê-lo. Migre instruções específicas e ainda válidas; descarte duplicações e regras desatualizadas.
+Leia os arquivos existentes antes de reescrevê-los. Migre instruções específicas e ainda válidas; descarte duplicações e regras desatualizadas. Como `AGENTS.md` será lido pelas duas plataformas, mantenha nele somente linguagem e convenções compatíveis com ambas.
 
 ## 3. Estrutura recomendada
 
@@ -43,7 +44,7 @@ Adapte esta estrutura ao que foi confirmado no repositório:
 ```markdown
 # [Nome do Projeto]
 
-[Uma frase descrevendo o projeto, stack principal e plataforma alvo]
+[Uma frase descrevendo o projeto, stack principal e ambientes atendidos]
 
 ## Stack e arquitetura
 ## Estrutura do projeto
@@ -141,7 +142,7 @@ Inclua proibições concretas que previnam erros recorrentes:
 ```markdown
 # [Projeto]
 
-[Uma linha: finalidade, stack principal e plataforma alvo]
+[Uma linha: finalidade, stack principal e ambientes atendidos]
 
 ## Stack
 
@@ -177,11 +178,7 @@ O arquivo na raiz contém stack, comandos, convenções universais e riscos crí
 
 Skills guardam workflows especializados ativados apenas quando relevantes. Não duplique o corpo de uma skill no arquivo raiz; indique quando invocá-la.
 
-A sintaxe de invocação é específica da plataforma:
-
-- Claude Code: documente o comando namespaced do plugin, por exemplo `/brain-flows:flow`.
-- Codex: oriente o usuário a selecionar a skill com `$` ou mencioná-la explicitamente.
-- Em texto compartilhado: use “invoque a skill `flow`”.
+A sintaxe de invocação varia entre plataformas. Como `AGENTS.md` também é importado pelo Claude Code, use nele uma formulação neutra como “invoque a skill `flow`”. Se uma instrução exclusiva do Claude Code for indispensável, coloque-a em `CLAUDE.md` abaixo de `@AGENTS.md`.
 
 ## 6. Anti-padrões
 
@@ -193,18 +190,22 @@ A sintaxe de invocação é específica da plataforma:
 
 **Instruções contraditórias.** Audite arquivos raiz, subdiretórios e skills para não impor padrões incompatíveis.
 
-**Misturar plataformas.** Não coloque comandos `/plugin` do Claude em `AGENTS.md` nem instruções de seleção com `$` do Codex em `CLAUDE.md`.
+**Misturar plataformas.** Não coloque comandos `/plugin` do Claude nem sintaxes `$skill` do Codex no `AGENTS.md` compartilhado. Prefira linguagem neutra; mantenha instruções exclusivas do Claude Code abaixo do import em `CLAUDE.md`.
+
+**Duplicar instruções na ponte.** Não copie para `CLAUDE.md` o conteúdo já mantido em `AGENTS.md`; o import resolve o compartilhamento.
 
 **Esquecer de versionar.** O arquivo de instruções faz parte do projeto e deve ser revisável como o código.
 
 ## 7. Checklist final
 
-- O arquivo-alvo corresponde à plataforma ativa?
+- `AGENTS.md` é o arquivo canônico das instruções compartilhadas?
+- `CLAUDE.md` começa com `@AGENTS.md` ou é um symlink válido para `AGENTS.md`?
 - O arquivo tem menos de 200 linhas?
 - O cabeçalho descreve o projeto em uma frase?
 - Todos os caminhos e comandos foram encontrados no repositório?
 - As convenções são específicas e acionáveis?
 - Instruções existentes válidas foram preservadas?
-- Regras de plataforma foram mantidas no arquivo correto?
+- O conteúdo compartilhado evita sintaxes exclusivas de plataforma?
+- Instruções exclusivas do Claude Code, se existirem, estão abaixo do import e sem duplicação?
 - Não há contradições com arquivos em subdiretórios ou skills?
 - A seção de flows orienta a invocar a skill `flow` sem assumir sintaxe universal?
