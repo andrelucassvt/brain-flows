@@ -87,6 +87,16 @@ It uses the plan's **design of origin** as the boundary for handling code drift:
 Execute the social login plan.
 ```
 
+### Optional: run the whole cycle unattended with `agent-loop`
+
+`agent-loop` orchestrates the same chain without editing any of the three skills above. It only activates when you explicitly ask for full autonomy through the whole cycle — otherwise the normal pauses apply.
+
+Once you approve the design, it skips `writing-plan`'s "want to adjust before executing?" pause and invokes `executing-plan` right away. The design approval stays the one mandatory human checkpoint, and `executing-plan`'s own safety stops (drift against the design of origin, missing authority or external dependency) are never suppressed.
+
+```text
+Explore, plan, and implement social login end to end, agent-loop style — don't pause again after I approve the design.
+```
+
 ## Overview
 
 ```text
@@ -121,6 +131,7 @@ docs/
 | Explore a change and decide how to implement it | `brainstorming` |
 | Turn an approved design into actionable steps | `writing-plan` |
 | Implement or resume an existing plan | `executing-plan` |
+| Run the whole cycle unattended after design approval | `agent-loop` |
 
 You do not need to run every skill for every task. A small mechanical fix can be made directly, while a larger feature benefits from the full cycle.
 
@@ -132,7 +143,7 @@ You do not need to run every skill for every task. A small mechanical fix can be
 /reload-plugins
 ```
 
-Invoke the skills with `/brain-flows:brainstorming`, `/brain-flows:flow`, `/brain-flows:flow-init`, `/brain-flows:writing-plan`, or `/brain-flows:executing-plan`.
+Invoke the skills with `/brain-flows:brainstorming`, `/brain-flows:flow`, `/brain-flows:flow-init`, `/brain-flows:writing-plan`, `/brain-flows:executing-plan`, or `/brain-flows:agent-loop`.
 
 ## Installation in Codex
 

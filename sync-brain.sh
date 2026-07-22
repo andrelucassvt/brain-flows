@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Busca as cinco skills do Brain Flows no repositório-fonte e as instala em:
+# Busca as seis skills do Brain Flows no repositório-fonte e as instala em:
 #   .claude/skills/
 #   .agents/skills/
 #   .github/skills/
@@ -13,7 +13,7 @@ SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SOURCE_REPO="${SOURCE_REPO:-https://github.com/andrelucassvt/brain-flows.git}"
 SOURCE_BRANCH="${SOURCE_BRANCH:-main}"
 SOURCE_SKILLS_PATH="${SOURCE_SKILLS_PATH:-plugins/brain-flows/skills}"
-BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
+BRAIN_SKILLS=(agent-loop brainstorming flow flow-init writing-plan executing-plan)
 TARGET_SKILLS_DIRS=(
   "$SCRIPT_DIR/.claude/skills"
   "$SCRIPT_DIR/.agents/skills"

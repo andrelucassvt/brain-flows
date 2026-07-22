@@ -37,6 +37,20 @@
       "result_format": "Alterações do projeto, plano atualizado e resumo das verificações."
     },
     {
+      "id": "positive-agent-loop",
+      "type": "positive",
+      "prompt": "Quero adicionar exportação de relatórios em PDF na tela de pedidos. Explore o design, planeje e implemente tudo sozinho, em modo agente autônomo — não pare para me perguntar de novo depois que eu aprovar o design.",
+      "expected_behavior": "Invocar agent-loop, que por sua vez invoca brainstorming normalmente, para no gate de aprovação do design, e após a aprovação encadeia writing-plan e executing-plan sem pausar na pergunta de 'quer ajustar antes de executar'.",
+      "result_format": "Briefing e design do brainstorming, plano salvo em docs/plan/, código implementado e verificado, sem pausa de confirmação entre o plano e a execução."
+    },
+    {
+      "id": "negative-agent-loop-not-requested",
+      "type": "negative",
+      "prompt": "Quero implementar login social no app. Explore o design antes de implementar.",
+      "expected_behavior": "Não ativar agent-loop; usar brainstorming normalmente, com o gate de aprovação de sempre, sem encadear automaticamente writing-plan e executing-plan sem os pontos de pausa usuais.",
+      "result_format": "Briefing e design em Markdown pelo brainstorming, com pedido de aprovação explícita antes de qualquer plano ou implementação."
+    },
+    {
       "id": "negative-image-generation",
       "type": "negative",
       "prompt": "Crie uma ilustração em aquarela de uma floresta ao amanhecer.",

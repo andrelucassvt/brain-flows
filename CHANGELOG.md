@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.2.0 — 2026-07-22
+
+- Nova skill `agent-loop`: orquestrador opcional que encadeia `brainstorming → writing-plan → executing-plan` sem pausar entre `writing-plan` e `executing-plan`, mantendo a aprovação do design (Fase 5 do `brainstorming`) como único checkpoint humano. Acionada somente por pedido explícito de modo autônomo pelo ciclo inteiro; as três skills existentes não foram alteradas.
+- `BRAIN_SKILLS` em `sync-brain.sh` e `package-brain.sh` passa a incluir `agent-loop`, totalizando seis skills sincronizadas/empacotadas.
+
 ## 1.1.0 — 2026-07-14
 
 - Contrato de handoff explícito entre `brainstorming`, `writing-plan` e `executing-plan`: cada skill ganhou seções **Entrada esperada** e **Saída (Handoff)**, tornando a cadeia legível ponta a ponta.
