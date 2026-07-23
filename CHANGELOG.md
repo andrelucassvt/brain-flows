@@ -2,6 +2,12 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.3.0 — 2026-07-23
+
+- `brainstorming` Fase 1: a seleção de flows deixa de partir do nome do arquivo e passa a ler o resumo de **todos** os flows de uma vez (`grep '**Resumo:**' docs/flow/*.md`), escolhendo por relevância semântica quais abrir por completo. Corrige o falso negativo silencioso em que um flow relevante nunca era aberto porque o nome do arquivo não batia com as palavras-chave do pedido — problema que se agrava em projetos com muitos flows (15+).
+- Mantido o fallback para `ls ./docs/flow/` quando não há linha de resumo, e a postura de não bloquear na ausência de flows.
+- Sem novos artefatos, scripts ou índices: a fonte de verdade continua sendo apenas os arquivos de flow, sem duplicação a manter sincronizada.
+
 ## 1.2.0 — 2026-07-22
 
 - Simplificação da skill `brainstorming`: reescrita de 223 para 120 linhas, mantendo comportamento e contrato de handoff.

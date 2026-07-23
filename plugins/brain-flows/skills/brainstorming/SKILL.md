@@ -25,7 +25,7 @@ Primeiro fixe **o quê** o usuário quer, **por quê**, **onde** (features, tela
 
 Depois reúna o contexto já existente:
 
-- **Flows** (`ls ./docs/flow/`): selecione candidatos pelo nome cruzando com as palavras-chave do pedido (use `project-structure.md` para o geral), leia o `> **Resumo:**` nas ~5 primeiras linhas e só então leia por completo os relevantes — aproveitando arquivos envolvidos, ordem de execução, regras de negócio, pontos frágeis e dependências. Sem pasta ou flows: siga sem contexto documental e sugira `flow-init` no briefing, sem bloquear.
+- **Flows**: rode `grep -n '\*\*Resumo:\*\*' docs/flow/*.md` para ver nome + resumo de **todos** os flows de uma vez e escolher por **relevância semântica** — não só por correspondência de nome — quais abrir por completo (use `project-structure.md` para o geral). Leia integralmente só os relevantes, aproveitando arquivos envolvidos, ordem de execução, regras de negócio, pontos frágeis e dependências. Se o `grep` não retornar nada (flows sem a linha de resumo), caia para `ls ./docs/flow/` e selecione pelo nome. Sem pasta ou flows: siga sem contexto documental e sugira `flow-init` no briefing, sem bloquear.
 - **Skill `*-expert`** da stack: procure candidatos `*-expert` em **uma única fonte** — o catálogo de skills da plataforma, ou a raiz nativa (`.claude/skills` no Claude Code, `.agents/skills` no Codex), usando a outra raiz apenas como fallback; nunca agregue as duas. Se achar, leia só o `SKILL.md` (nunca os `references/`) e extraia stack, arquitetura proposta e a tabela de "quando ler cada referência". A brainstorming **referencia** a expert — não invoca, não copia código. Se não achar, use só o arquivo nativo de instruções (`CLAUDE.md` no Claude Code, `AGENTS.md` no Codex).
 
 ---
