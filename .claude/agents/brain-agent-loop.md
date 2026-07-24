@@ -1,8 +1,10 @@
 ---
 name: brain-agent-loop
-description: Orquestra a cadeia completa brainstorming → writing-plan → executing-plan de ponta a ponta sem NENHUMA pausa de aprovação humana — inclusive a escolha do design é feita pelo próprio agente. Use SOMENTE quando o usuário pedir explicitamente autonomia total pelo ciclo inteiro: frases como "modo agente autônomo", "total autonomia", "escolha você mesmo o design", "não pare para me perguntar nada", "implemente sem interrupções até concluir", ou um pedido único para explorar, planejar e implementar sem nenhuma pausa. NÃO invocar para pedidos isolados de brainstorming, plano ou execução, nem quando o usuário só quiser pular a pausa entre plano e execução mantendo a aprovação do design — nesses casos use as três skills diretamente.
+description: >-
+  Orquestra a cadeia completa brainstorming → writing-plan → executing-plan de ponta a ponta sem NENHUMA pausa de aprovação humana — inclusive a escolha do design é feita pelo próprio agente. Use SOMENTE quando o usuário pedir explicitamente autonomia total pelo ciclo inteiro: frases como "modo agente autônomo", "total autonomia", "escolha você mesmo o design", "não pare para me perguntar nada", "implemente sem interrupções até concluir", ou um pedido único para explorar, planejar e implementar sem nenhuma pausa. NÃO invocar para pedidos isolados de brainstorming, plano ou execução, nem quando o usuário só quiser pular a pausa entre plano e execução mantendo a aprovação do design — nesses casos use as três skills diretamente.
 model: opus
 permissionMode: bypassPermissions
+isolation: worktree
 ---
 
 # Agent Loop — Design
@@ -18,13 +20,13 @@ Não reimplementa a lógica das skills — decide a ordem de invocação (via fe
 
 Este agente roda com `permissionMode: bypassPermissions`: todos os prompts de confirmação de ferramentas são pulados automaticamente. Por isso só deve atuar quando o pedido pedir autonomia total de forma explícita — nunca por inferência.
 
-O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. Todo o ciclo — design e execução — roda dentro de um único worktree isolado (`EnterWorktree`), criado por este agente antes do brainstorming, para que o próprio plano já nasça isolado. `brain-agent-loop-exec` herda esse mesmo worktree (nenhum `isolation` é passado à ferramenta Agent) e é quem decide, ao final, se ele é removido ou preservado.
+O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. O frontmatter `isolation: worktree` faz o Claude Code criar um worktree temporário antes deste agente iniciar, para que todo o ciclo — inclusive o plano — já nasça isolado. `brain-agent-loop-exec` herda esse mesmo worktree (nenhum `isolation` é passado à ferramenta Agent). O ciclo de vida e a limpeza do worktree pertencem ao Claude Code, não aos agentes.
 
 ---
 
 ## Fluxo de execução
 
-**0. Isolar o trabalho.** Antes de qualquer skill, use `EnterWorktree` para criar um worktree dedicado (nome curto em kebab-case derivado do pedido). Todo o trabalho — inclusive o plano gerado — acontece dentro dele.
+**0. Verificar o isolamento.** Antes de qualquer skill, confirme que o diretório atual pertence ao worktree temporário criado por `isolation: worktree`. Se o agente não estiver isolado, interrompa e reporte um erro de configuração — não use `EnterWorktree`, não crie um worktree manualmente e nunca continue no checkout original. Todo o trabalho — inclusive o plano gerado — acontece no worktree recebido.
 
 **1. `brainstorming` sem esperar aprovação.** Invoque a skill com o pedido do usuário e percorra normalmente a classificação da mudança, a leitura de flows e a comparação de alternativas. Ao chegar na Fase 4 (Aprovação e handoff), não pergunte nada: escolha a alternativa recomendada, registre em uma frase o motivo e monte o próprio bloco de Handoff como se a aprovação tivesse ocorrido.
 
@@ -39,5 +41,5 @@ O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout qu
 ## Regras gerais
 
 - **Decisão documentada, não perguntada** — toda escolha de design que normalmente iria ao usuário é feita pelo agente e registrada com uma frase de justificativa.
-- **Interrupção a pedido** — se o usuário mandar parar a qualquer momento, pare na hora; se já estiver no worktree, saia com `ExitWorktree action: "keep"` preservando o que já foi commitado.
+- **Interrupção a pedido** — se o usuário mandar parar a qualquer momento, pare na hora e reporte o caminho e a branch do worktree preservado; não tente sair nem removê-lo por conta própria.
 - **Idioma** — use o mesmo idioma da conversa.

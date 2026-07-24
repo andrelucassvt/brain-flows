@@ -1,7 +1,7 @@
 ---
 generated_at: 2026-07-22
-source_commit: ee719d4
-source_state: clean
+source_commit: 1fcb0f6
+source_state: dirty
 verified_at: 2026-07-24
 status: current
 related_plans: [docs/plan/agent-loop-skill.md]
@@ -24,7 +24,7 @@ related_plans: [docs/plan/agent-loop-skill.md]
 
 ## Arquitetura
 
-O projeto tem uma única fonte canônica de skills em `plugins/brain-flows/skills/` e três diretórios espelhados por plataforma (`.claude/skills/`, `.agents/skills/`, `.github/skills/`). O `package-brain.sh` reconstrói a pasta canônica do plugin a partir de `.claude/skills/`; o `sync-brain.sh` faz o caminho inverso, baixando as skills do repositório-fonte remoto e distribuindo-as para os três destinos locais. As cinco skills principais formam um workflow encadeado por *handoffs* explícitos, e cada uma produz documentos Markdown em `docs/` como memória compartilhada do processo. Um agente local, `brain-agent-loop`, é um orquestrador opcional sobre essa mesma cadeia: acionado só por pedido explícito de autonomia total, ele invoca as três skills de mudança na ordem normal, mas sem nenhuma pausa de aprovação humana — inclusive a escolha do design fica a cargo do próprio agente, que decide a alternativa recomendada e segue direto até concluir.
+O projeto tem uma única fonte canônica de skills em `plugins/brain-flows/skills/` e três diretórios espelhados por plataforma (`.claude/skills/`, `.agents/skills/`, `.github/skills/`). O `package-brain.sh` reconstrói a pasta canônica do plugin a partir de `.claude/skills/`; o `sync-brain.sh` faz o caminho inverso, baixando as skills do repositório-fonte remoto e distribuindo-as para os três destinos locais. As cinco skills principais formam um workflow encadeado por *handoffs* explícitos, e cada uma produz documentos Markdown em `docs/` como memória compartilhada do processo. Dois agentes locais formam um orquestrador opcional sobre essa cadeia: `brain-agent-loop` roda o design em Opus (`brainstorming` + `writing-plan`) dentro de um worktree criado declarativamente pelo Claude Code, e delega a execução no mesmo worktree a `brain-agent-loop-exec`, em Sonnet. O ciclo só é acionado por pedido explícito de autonomia total e não pausa para aprovação humana.
 
 ```
 Cadeia de skills (workflow):
@@ -32,9 +32,11 @@ flow-init ─> flow ─> brainstorming ─> writing-plan ─> executing-plan
               │                            (handoff / design de origem)
               └─> docs/flow/*.md          docs/plan/*.md
 
-brain-agent-loop (opcional, sob pedido explícito de autonomia total):
-  orquestra brainstorming ─> writing-plan ─> executing-plan
-  sem nenhuma pausa de aprovação — o agente escolhe o design sozinho
+brain-agent-loop (Opus, isolation: worktree):
+  brainstorming ─> writing-plan ──Agent foreground──> brain-agent-loop-exec (Sonnet)
+                                                       └─> executing-plan ─> commit/push/PR
+  sem nenhuma pausa de aprovação — o primeiro agente escolhe o design sozinho
+  e ambos operam no mesmo worktree gerenciado pelo Claude Code
 
 Distribuição das skills:
 .claude/skills/ ──package-brain.sh──> plugins/brain-flows/skills/ (canônico)
@@ -44,7 +46,7 @@ repositório-fonte ──sync-brain.sh──> .claude/skills/ + .agents/skills/ 
 ### Regras de dependência
 
 - A fonte canônica para empacotamento é `.claude/skills/` (`package-brain.sh:8`); os três diretórios de destino devem ser mantidos idênticos entre si.
-- Cinco skills fixas são sincronizadas/empacotadas pelo plugin: `brainstorming`, `flow`, `flow-init`, `writing-plan`, `executing-plan` (`sync-brain.sh:20`, `package-brain.sh:9`). O agente local `brain-agent-loop` é sincronizado à parte, direto para `.claude/agents/`, sem passar pelo plugin (`sync-brain.sh:21`).
+- Cinco skills fixas são sincronizadas/empacotadas pelo plugin: `brainstorming`, `flow`, `flow-init`, `writing-plan`, `executing-plan` (`sync-brain.sh:20`, `package-brain.sh:9`). Os agentes locais `brain-agent-loop` e `brain-agent-loop-exec` são sincronizados à parte, direto para `.claude/agents/`, sem passar pelo plugin (`sync-brain.sh:21`).
 
 ## Features
 
@@ -57,7 +59,8 @@ Neste projeto, cada "feature" é uma skill do workflow ou um script de distribui
 | Skill `brainstorming` | `plugins/brain-flows/skills/brainstorming/` | Explora o design antes de implementar e emite bloco de handoff após aprovação |
 | Skill `writing-plan` | `plugins/brain-flows/skills/writing-plan/` | Converte o design aprovado em plano acionável em `docs/plan/` |
 | Skill `executing-plan` | `plugins/brain-flows/skills/executing-plan/` | Executa o plano uma tarefa por vez e atualiza os flows afetados |
-| Agente local `brain-agent-loop` | `.claude/agents/brain-agent-loop.md` | Orquestra `brainstorming → writing-plan → executing-plan` sem nenhuma pausa de aprovação humana, inclusive escolhendo o design sozinho; só ativa por pedido explícito de autonomia total; fora do plugin |
+| Agente local `brain-agent-loop` | `.claude/agents/brain-agent-loop.md` | Executa `brainstorming → writing-plan` em Opus, escolhe o design sem pausa e recebe do Claude Code um worktree por `isolation: worktree`; delega a execução no mesmo worktree |
+| Agente local `brain-agent-loop-exec` | `.claude/agents/brain-agent-loop-exec.md` | Executa `executing-plan` em Sonnet, commita, publica a branch e abre a PR; não cria nem encerra o worktree herdado |
 | Sincronização | `sync-brain.sh` | Baixa as skills do repositório-fonte e distribui para os três destinos locais (ver `docs/flow/sync-brain.md`) |
 | Empacotamento | `package-brain.sh` | Reconstrói `plugins/brain-flows/skills/` a partir de `.claude/skills/` |
 

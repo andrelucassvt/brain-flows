@@ -5,8 +5,8 @@ Todas as mudanças relevantes deste projeto serão registradas aqui.
 ## 1.6.0 — 2026-07-24
 
 - `brain-agent-loop` é dividido em dois agentes locais para permitir modelos diferentes por metade do ciclo: `brain-agent-loop` (`model: opus`) passa a cobrir só `brainstorming` + `writing-plan`, e um novo `brain-agent-loop-exec` (`model: sonnet`) cobre `executing-plan` + commit/push/PR. Um único agente não pode trocar de modelo no meio da própria execução — a troca só é possível delegando a um segundo agente via ferramenta Agent.
-- `brain-agent-loop` cria o worktree isolado (`EnterWorktree`) antes do brainstorming — para que o plano já nasça isolado — e, ao salvar o plano, delega a `brain-agent-loop-exec` em foreground, sem `isolation` na chamada, para que o segundo agente herde o mesmo worktree/branch em vez de criar outro.
-- `brain-agent-loop-exec` fica responsável pelo commit, `git push`, `gh pr create` e pelo `ExitWorktree` (remove com PR aberta, keep sem PR) — responsabilidade que antes estava toda em `brain-agent-loop`.
+- `brain-agent-loop` passa a declarar `isolation: worktree` no frontmatter, deixando o Claude Code criar o worktree antes do agente iniciar; o agente apenas verifica o isolamento e interrompe diante de erro de configuração, sem recorrer a `EnterWorktree` nem à criação manual. Ao salvar o plano, delega a `brain-agent-loop-exec` em foreground, sem novo `isolation`, para que o segundo agente herde o mesmo worktree/branch.
+- `brain-agent-loop-exec` fica responsável pelo commit, `git push` e `gh pr create`, mas nenhum dos dois agentes chama `ExitWorktree`: a limpeza fica sob responsabilidade do ciclo de vida do Claude Code, enquanto falhas e interrupções preservam e reportam o caminho e a branch do worktree.
 - `sync-brain.sh` ganha `brain-agent-loop-exec` em `BRAIN_AGENTS`. Ambos os agentes continuam fora do plugin e só sincronizados para `.claude/agents/`, pelos mesmos motivos de sempre: subagents de plugin ignoram `permissionMode` e `model`, e o Codex não tem equivalente com modo de permissão ou modelo por subagent.
 
 ## 1.5.0 — 2026-07-24
