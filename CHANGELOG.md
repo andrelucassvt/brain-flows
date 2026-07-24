@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.3.0 — 2026-07-24
+
+- `agent-loop` deixa de exigir aprovação humana em qualquer ponto do ciclo: a própria skill escolhe a alternativa de design recomendada na Fase 5 do `brainstorming` (registrando o motivo da escolha) e segue direto por `writing-plan` e `executing-plan` sem nenhuma pausa de confirmação. Continua sendo acionada somente por pedido explícito de autonomia total; pedidos que só querem pular a pausa entre plano e execução, mantendo a aprovação do design, não acionam mais este modo.
+- Limites reais de capacidade (credencial ausente, dependência externa impossível) deixam de interromper o fluxo pedindo permissão — a skill escolhe o caminho mais razoável e relata a limitação no resumo final.
+
 ## 1.2.0 — 2026-07-22
 
 - Nova skill `agent-loop`: orquestrador opcional que encadeia `brainstorming → writing-plan → executing-plan` sem pausar entre `writing-plan` e `executing-plan`, mantendo a aprovação do design (Fase 5 do `brainstorming`) como único checkpoint humano. Acionada somente por pedido explícito de modo autônomo pelo ciclo inteiro; as três skills existentes não foram alteradas.

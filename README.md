@@ -89,12 +89,12 @@ Execute the social login plan.
 
 ### Optional: run the whole cycle unattended with `agent-loop`
 
-`agent-loop` orchestrates the same chain without editing any of the three skills above. It only activates when you explicitly ask for full autonomy through the whole cycle — otherwise the normal pauses apply.
+`agent-loop` orchestrates the same chain without editing any of the three skills above. It only activates when you explicitly ask for full autonomy through the whole cycle, with no approval at any point — otherwise the normal pauses apply.
 
-Once you approve the design, it skips `writing-plan`'s "want to adjust before executing?" pause and invokes `executing-plan` right away. The design approval stays the one mandatory human checkpoint, and `executing-plan`'s own safety stops (drift against the design of origin, missing authority or external dependency) are never suppressed.
+It skips every confirmation, including design approval: when there's more than one plausible option, the agent picks the recommended one itself, records why, and moves straight through `writing-plan` and `executing-plan` to a finished result. Real capability limits (a missing credential, an external dependency that can't be created) still exist, but instead of stopping to ask permission, the skill picks the most reasonable path and reports the limitation in the final summary.
 
 ```text
-Explore, plan, and implement social login end to end, agent-loop style — don't pause again after I approve the design.
+I don't want any human approval in this — pick the best design yourself and keep implementing without interruptions until it's done.
 ```
 
 ## Overview

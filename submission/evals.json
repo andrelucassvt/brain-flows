@@ -39,9 +39,9 @@
     {
       "id": "positive-agent-loop",
       "type": "positive",
-      "prompt": "Quero adicionar exportação de relatórios em PDF na tela de pedidos. Explore o design, planeje e implemente tudo sozinho, em modo agente autônomo — não pare para me perguntar de novo depois que eu aprovar o design.",
-      "expected_behavior": "Invocar agent-loop, que por sua vez invoca brainstorming normalmente, para no gate de aprovação do design, e após a aprovação encadeia writing-plan e executing-plan sem pausar na pergunta de 'quer ajustar antes de executar'.",
-      "result_format": "Briefing e design do brainstorming, plano salvo em docs/plan/, código implementado e verificado, sem pausa de confirmação entre o plano e a execução."
+      "prompt": "Quero adicionar exportação de relatórios em PDF na tela de pedidos. Não quero aceitação humana em nada — escolha você mesmo o melhor design e siga implementando sem interrupções até concluir.",
+      "expected_behavior": "Invocar agent-loop, que por sua vez invoca brainstorming, escolhe a alternativa recomendada sem pedir aprovação, registra o motivo da escolha, e encadeia writing-plan e executing-plan sem nenhuma pausa de confirmação em nenhum ponto do ciclo.",
+      "result_format": "Briefing e design do brainstorming com decisão já tomada, plano salvo em docs/plan/, código implementado e verificado, entregues numa única resposta final sem checkpoints intermediários."
     },
     {
       "id": "negative-agent-loop-not-requested",

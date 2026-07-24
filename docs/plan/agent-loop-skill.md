@@ -93,3 +93,16 @@ Hoje a cadeia tem dois pontos de pausa: a aprovação do design no `brainstormin
 ## Rollback
 
 Reverter o commit que adiciona a skill: remover `.claude/skills/agent-loop/`, `.agents/skills/agent-loop/`, `.github/skills/agent-loop/`, `plugins/brain-flows/skills/agent-loop/`, remover `agent-loop` de `BRAIN_SKILLS` em ambos os scripts, reverter a versão dos `plugin.json` para `1.1.0`, remover a entrada do `CHANGELOG.md` e os testes adicionados em `submission/evals.json`.
+
+## Adendo — 2026-07-24: remoção total das pausas de aprovação
+
+Pedido de seguimento do usuário: `agent-loop` não deveria manter nenhuma pausa de aprovação humana, nem mesmo a aprovação do design da Fase 5 do `brainstorming` — o próprio agente deve escolher a melhor alternativa e seguir implementando até concluir, sem parar em nenhum ponto (a exceção sendo prompts de permissão de ferramenta impostos pelo ambiente do usuário, que estão fora do alcance de qualquer skill em Markdown).
+
+Mudanças aplicadas sobre o que este plano já havia entregue, mantendo o mesmo escopo (só `agent-loop` e seus artefatos de distribuição/documentação; `brainstorming`, `writing-plan` e `executing-plan` seguem intocados):
+
+- `SKILL.md` da `agent-loop` reescrito: a Fase 5 do `brainstorming` deixa de pedir aprovação — o agente escolhe a alternativa recomendada, documenta o motivo, e segue direto por `writing-plan` e `executing-plan` sem nenhuma pausa. Limites reais de capacidade (credencial ausente, dependência externa impossível) passam a ser contornados com a decisão mais razoável e relatados no resumo final, em vez de interromper o fluxo.
+- `evals/evals.json` da skill reescrito: eval positivo agora cobre autonomia total sem aprovação alguma; novo eval negativo cobre o caso de o usuário querer manter a aprovação do design e só pular a pausa entre plano e execução (isso não aciona mais `agent-loop`).
+- `submission/evals.json`: prompt/expected_behavior do teste `positive-agent-loop` atualizados para o novo comportamento.
+- Versão dos dois `plugin.json` bump para `1.3.0`; nova entrada no `CHANGELOG.md`.
+- `docs/flow/project-structure.md` e `README.md` atualizados para descrever o orquestrador sem nenhum gate humano.
+- Verificações repetidas: `package-brain.sh` rodado novamente, `diff -rq` confirmando os 4 diretórios idênticos, `claude plugin validate .` e `claude plugin validate ./plugins/brain-flows` passando, `python3 -m json.tool` em todos os JSONs tocados, e `git diff --stat` confirmando que `brainstorming`/`writing-plan`/`executing-plan` seguem sem alteração nos 4 diretórios.
