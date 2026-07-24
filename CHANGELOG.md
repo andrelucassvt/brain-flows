@@ -2,6 +2,14 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.4.0 — 2026-07-24
+
+- `agent-loop` deixa de ser skill distribuída pelo plugin e passa a ser um agente local em `.claude/agents/agent-loop.md`, com `permissionMode: bypassPermissions` — pula os prompts de confirmação de ferramentas (Bash, Edit, Write etc.) para quem invocá-lo, sem depender de configuração externa de sessão.
+- Motivo da mudança de local: subagents dentro de um plugin ignoram o campo `permissionMode` (a permissão pedida nunca teria efeito real se `agent-loop` continuasse empacotado), e o Codex não tem equivalente a subagent com modo de permissão próprio — mantê-lo como skill quebraria a paridade entre plataformas.
+- Removido de `BRAIN_SKILLS` em `sync-brain.sh` e `package-brain.sh`, dos quatro espelhos de skills (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`) e dos testes de acionamento em `submission/evals.json`. O pacote do plugin volta a ter cinco skills.
+- `sync-brain.sh` ganha uma segunda lista, `BRAIN_AGENTS`, para sincronizar agentes locais: busca `.claude/agents/<agente>.md` direto do repositório-fonte (fora do plugin) e copia para `.claude/agents/` local, sem `package-brain.sh` equivalente — `.claude/agents/` é a própria fonte de verdade.
+- `agent-loop` passa a isolar todo o ciclo num worktree (`EnterWorktree`) antes de começar e a fechar com commit + `git push` + `gh pr create` em vez de deixar as mudanças soltas na branch atual — o contrapeso necessário para rodar com `bypassPermissions` sem tocar no trabalho que o usuário já tinha em andamento. Sem remoto configurado ou `gh` autenticado, trata a ausência de PR como limite real de capacidade e mantém o worktree com as mudanças commitadas.
+
 ## 1.3.1 — 2026-07-24
 
 - `agent-loop` deixa de exigir aprovação humana em qualquer ponto do ciclo: a própria skill escolhe a alternativa de design recomendada na Fase 5 do `brainstorming` (registrando o motivo da escolha) e segue direto por `writing-plan` e `executing-plan` sem nenhuma pausa de confirmação. Continua sendo acionada somente por pedido explícito de autonomia total; pedidos que só querem pular a pausa entre plano e execução, mantendo a aprovação do design, não acionam mais este modo.

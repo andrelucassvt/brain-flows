@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Empacota somente as seis skills locais no diretório distribuível do plugin.
+# Empacota somente as cinco skills locais no diretório distribuível do plugin.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_SKILLS_DIR="$SCRIPT_DIR/.claude/skills"
 PLUGIN_SKILLS_DIR="$SCRIPT_DIR/plugins/brain-flows/skills"
-BRAIN_SKILLS=(agent-loop brainstorming flow flow-init writing-plan executing-plan)
+BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
 STAGING_DIR="$(mktemp -d)"
 
 cleanup() {

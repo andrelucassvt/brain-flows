@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Busca as seis skills do Brain Flows no repositório-fonte e as instala em:
+# Busca as cinco skills do Brain Flows no repositório-fonte e as instala em:
 #   .claude/skills/
 #   .agents/skills/
 #   .github/skills/
+# Também busca os agentes locais (ex.: agent-loop) direto de .claude/agents/
+# no repositório-fonte e os instala em .claude/agents/ — não passam pelo
+# plugin, porque subagents de plugin ignoram o campo permissionMode.
 #   chmod +x sync-brain.sh
 #   ./sync-brain.sh
 
@@ -13,16 +16,20 @@ SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 SOURCE_REPO="${SOURCE_REPO:-https://github.com/andrelucassvt/brain-flows.git}"
 SOURCE_BRANCH="${SOURCE_BRANCH:-main}"
 SOURCE_SKILLS_PATH="${SOURCE_SKILLS_PATH:-plugins/brain-flows/skills}"
-BRAIN_SKILLS=(agent-loop brainstorming flow flow-init writing-plan executing-plan)
+SOURCE_AGENTS_PATH="${SOURCE_AGENTS_PATH:-.claude/agents}"
+BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
+BRAIN_AGENTS=(agent-loop)
 TARGET_SKILLS_DIRS=(
   "$SCRIPT_DIR/.claude/skills"
   "$SCRIPT_DIR/.agents/skills"
   "$SCRIPT_DIR/.github/skills"
 )
+TARGET_AGENTS_DIR="$SCRIPT_DIR/.claude/agents"
 
 TMP_DIR="$(mktemp -d)"
 SOURCE_DIR="$TMP_DIR/source"
 STAGING_DIR="$TMP_DIR/skills"
+STAGING_AGENTS_DIR="$TMP_DIR/agents"
 
 cleanup() {
   rm -rf "$TMP_DIR"
@@ -73,6 +80,27 @@ for target_skills_dir in "${TARGET_SKILLS_DIRS[@]}"; do
 done
 
 echo "✅ Brain Flows sincronizado em .claude/skills/, .agents/skills/ e .github/skills/."
+
+echo "🤖 Preparando os agentes locais do Brain Flows..."
+mkdir -p "$STAGING_AGENTS_DIR"
+for agent in "${BRAIN_AGENTS[@]}"; do
+  source_agent_file="$SOURCE_DIR/$SOURCE_AGENTS_PATH/$agent.md"
+
+  if [ ! -f "$source_agent_file" ]; then
+    echo "  ❌ Agente ausente no repositório-fonte: $SOURCE_AGENTS_PATH/$agent.md" >&2
+    exit 1
+  fi
+
+  cp "$source_agent_file" "$STAGING_AGENTS_DIR/$agent.md"
+  echo "  ✅ $agent"
+done
+
+mkdir -p "$TARGET_AGENTS_DIR"
+for agent in "${BRAIN_AGENTS[@]}"; do
+  cp "$STAGING_AGENTS_DIR/$agent.md" "$TARGET_AGENTS_DIR/$agent.md"
+done
+
+echo "✅ Agentes locais sincronizados em .claude/agents/ (não fazem parte do plugin)."
 
 migrate_root_dir_to_docs() {
   local name="$1"

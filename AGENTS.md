@@ -18,9 +18,17 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 - `docs/flow/` — estrutura do projeto e flows individuais
 - `submission/evals.json` — testes de acionamento das skills
 
+## Agentes locais
+
+- `.claude/agents/` guarda subagentes locais do Claude Code que não pertencem ao plugin distribuído — não são empacotados em `plugins/brain-flows/` nem instalados via marketplace.
+- `agent-loop` é um agente local (não skill): orquestra `brainstorming → writing-plan → executing-plan` sem nenhuma pausa de aprovação humana e roda com `permissionMode: bypassPermissions`. Fica fora do plugin porque subagents de plugin ignoram o campo `permissionMode`, e o Codex não tem equivalente a subagent com modo de permissão próprio.
+- Mesmo fora do plugin, `agent-loop` é sincronizado por `sync-brain.sh`: o script busca `.claude/agents/<agente>.md` direto do repositório-fonte (lista `BRAIN_AGENTS`) e copia para `.claude/agents/` local, sem passar por `plugins/brain-flows/`. `.claude/agents/` local É a fonte de verdade — editar ali direto, sem passo de empacotamento equivalente ao `package-brain.sh`.
+- Só é sincronizado para `.claude/agents/` — não é espelhado em `.agents/skills/`, `.github/skills/` nem `plugins/brain-flows/skills/`, porque `permissionMode` é um conceito exclusivo do Claude Code.
+- Novos agentes locais com `permissionMode: bypassPermissions` seguem o mesmo padrão: adicionar a `BRAIN_AGENTS` em `sync-brain.sh`, viver só em `.claude/agents/`, nunca dentro de `plugins/brain-flows/`.
+
 ## Comandos
 
-- `./sync-brain.sh` — baixa as skills do repositório-fonte e distribui para os três diretórios locais
+- `./sync-brain.sh` — baixa as skills do repositório-fonte e distribui para os três diretórios locais; também baixa os agentes locais (`BRAIN_AGENTS`) direto de `.claude/agents/` do repositório-fonte para `.claude/agents/`
 - `./package-brain.sh` — reconstrói `plugins/brain-flows/skills/` a partir de `.claude/skills/`
 - `claude plugin validate .` e `claude plugin validate ./plugins/brain-flows` — validam no Claude Code
 - `codex plugin marketplace add "$PWD"` — valida no Codex
