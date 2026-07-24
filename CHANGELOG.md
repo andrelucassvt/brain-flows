@@ -2,6 +2,14 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.5.0 — 2026-07-24
+
+- `writing-plan` deixa de tratar mudança **UI-only** como sempre "sem testes". Quando a stack tem framework de **teste de componente headless** (widget/component test que roda no test harness, sem device), o plano passa a incluir uma fase de teste de componente **depois** de a UI existir — validando render e interação sem executar o app.
+- Nova subseção em `1.5. Classificar o tipo de mudança` distingue explicitamente "rodar o app" (emulador/simulador/device/browser/E2E/instrumentado — proibido) de "teste de componente headless" (permitido e preferido), com tabela por stack (Flutter `flutter test`, React/RN Testing Library, Vue Test Utils, Angular TestBed, Compose+Robolectric, SwiftUI ViewInspector) e o par instrumentado equivalente que NÃO deve ser usado.
+- Detecção da capacidade é por **inspeção das dependências do projeto** (`pubspec.yaml`, `package.json`, `build.gradle`, `Package.swift`). Sem framework headless confirmado, mantém o comportamento antigo (UI-only sem testes) — nunca rodar o app para compensar.
+- Template A ganha uma fase opcional de teste de componente; a regra de qualidade "Verificação nunca executa o app" foi reescrita para deixar claro que testar componente no harness não é rodar o app; Critérios de Sucesso ganham a linha condicional de testes de componente/widget.
+- Apenas a skill `writing-plan` mudou; `executing-plan` já permitia rodar testes no harness. Espelhada nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.4.0 — 2026-07-24
 
 - `agent-loop` deixa de ser skill distribuída pelo plugin e passa a ser um agente local em `.claude/agents/agent-loop.md`, com `permissionMode: bypassPermissions` — pula os prompts de confirmação de ferramentas (Bash, Edit, Write etc.) para quem invocá-lo, sem depender de configuração externa de sessão.

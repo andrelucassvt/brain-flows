@@ -40,10 +40,27 @@ Se o prompt for vago e não houver handoff, faça **uma única pergunta de clari
 Sem handoff, classifique agora:
 
 **UI-only** — apenas estrutura visual de Views (layout, componentes, estilos, animações), extração de componentes de UI, ajustes de rota sem lógica nova, textos/traduções/assets.
-→ **Não inclua fases de teste no plano.**
+→ Se a stack tiver **teste de componente headless** (ver abaixo), inclua uma fase de teste de componente **depois** de construir a UI. Se não tiver, não inclua fases de teste.
 
 **Logic** — envolve camada de estado/domínio (ViewModels, Cubits, Controllers, Stores…), serviços de negócio ou sistema, interfaces/implementações de Repository, DataSources, clientes HTTP ou acesso a banco.
 → **Aplique TDD: a fase de testes vem ANTES da implementação da lógica.** Os testes definem o contrato; a implementação os faz passar.
+
+#### Teste de componente headless ≠ rodar o app
+
+"Rodar o app" (proibido) é subir emulador, simulador, dispositivo, browser real ou suíte E2E/instrumentada e interagir manualmente. **Teste de componente headless** monta a árvore de UI no test harness da própria stack, sem device — é permitido e desejado, porque valida render e interação sem executar o app.
+
+Antes de escrever o plano, **inspecione as dependências do projeto** (`pubspec.yaml`, `package.json`, `build.gradle`, `Package.swift`…) e só adicione a fase de teste de componente se houver um framework de teste headless de UI:
+
+| Stack | Teste de componente headless (usar) | Exige device (NÃO usar aqui) |
+|-------|-------------------------------------|------------------------------|
+| Flutter | `flutter test` — widget tests (`testWidgets`, `WidgetTester`) | `integration_test` |
+| React / React Native | Testing Library + Jest/Vitest (jsdom) | Detox, Cypress/Playwright |
+| Vue | Vue Test Utils + Vitest/Jest | Cypress/Playwright |
+| Angular | TestBed + Jest/Karma | Protractor, Cypress |
+| Android nativo | Compose + Robolectric (`createComposeRule`) | `androidTest` / Espresso |
+| SwiftUI | ViewInspector / snapshot tests | XCUITest |
+
+Se a stack não tiver framework de teste headless de UI, ou você não conseguir confirmá-lo pelas dependências, trate como UI-only sem testes — nunca rode o app para compensar a ausência de testes.
 
 ### 2. Verificar flows existentes
 
@@ -118,19 +135,31 @@ Derive um nome `kebab-case` conciso do objetivo (ex: "plano para tela de login" 
 ## Fases
 
 <!--
-  Mudança UI-only → template A (sem testes)
+  Mudança UI-only → template A (fase de teste de componente ao final SE a stack tiver teste headless de UI; senão, sem testes)
   Mudança Logic (estado/serviço/repositório/datasource) → template B (TDD: testes antes)
   Remova este comentário e o template que não se aplica antes de salvar.
 -->
 
-<!-- TEMPLATE A — UI-only (sem testes) -->
-### Fase 1 — [Nome da Fase]
+<!-- TEMPLATE A — UI-only -->
+### Fase 1 — [Nome da Fase de UI]
 
 - [ ] Passo 1: [ação concreta com arquivo e componente]
 - [ ] Passo 2: ...
 - [ ] Verificação: [checagem sem executar o app — ex: análise estática limpa, componente presente no arquivo]
 
-_(repita para cada fase)_
+_(repita para cada fase de UI)_
+
+<!--
+  Inclua a fase abaixo SOMENTE se a stack tiver teste de componente headless (ver 1.5).
+  Ela vem DEPOIS de o componente existir. Se a stack não tiver, remova esta fase.
+-->
+### Fase N — Teste de componente (após a UI existir)
+
+- [ ] Criar `<caminho>/test/<componente>_test.<ext>` (widget/component test da stack)
+- [ ] Testar que o componente renderiza os elementos-chave (texto, ícone, campo)
+- [ ] Testar interação no harness: tap / entrada de texto → callback disparado ou estado visual muda
+- [ ] Testar variação de estado visual relevante (vazio, erro, selecionado) quando aplicável
+- [ ] Verificação: `<comando de teste da stack>` passa sem subir app/emulador/device
 
 ---
 
@@ -164,6 +193,7 @@ _(repita fases de implementação/UI conforme necessário)_
 - [ ] [resultado observável 2]
 - [ ] Build sem erros
 - [ ] _(somente para mudanças Logic)_ Todos os testes unitários passando
+- [ ] _(quando houver fase de teste de componente)_ Testes de componente/widget passando no harness
 - [ ] _(manual — feito pelo usuário)_ Validação funcional no app
 
 ## Riscos e Mitigações
@@ -191,7 +221,7 @@ _(repita fases de implementação/UI conforme necessário)_
 
 **Riscos obrigatórios para planos com 3+ fases** — liste pelo menos um risco real.
 
-**Verificação nunca executa o app** — nenhum passo ou verificação do plano pode envolver rodar o app (emulador, simulador, dispositivo, `flutter run` ou equivalente da stack), tirar screenshots ou simular interação. Verificações se limitam a análise estática, build e testes unitários. O teste funcional/visual é responsabilidade do usuário, feito manualmente após a entrega.
+**Verificação nunca executa o app, mas testa componentes no harness** — nenhum passo pode subir o app (emulador, simulador, dispositivo, browser real, `flutter run` ou suíte E2E/instrumentada da stack), tirar screenshots ou simular interação manual. Verificações se limitam a análise estática, build e **testes que rodam no test harness** — unitários e de componente/widget headless (ex: `flutter test`, Testing Library). Montar e testar um componente no harness NÃO é rodar o app, e é a forma preferida de validar UI quando a stack suporta. O teste funcional/visual de ponta a ponta continua sendo do usuário, feito manualmente após a entrega.
 
 ---
 
