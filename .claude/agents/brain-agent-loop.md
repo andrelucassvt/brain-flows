@@ -1,46 +1,43 @@
 ---
 name: brain-agent-loop
 description: Orquestra a cadeia completa brainstorming → writing-plan → executing-plan de ponta a ponta sem NENHUMA pausa de aprovação humana — inclusive a escolha do design é feita pelo próprio agente. Use SOMENTE quando o usuário pedir explicitamente autonomia total pelo ciclo inteiro: frases como "modo agente autônomo", "total autonomia", "escolha você mesmo o design", "não pare para me perguntar nada", "implemente sem interrupções até concluir", ou um pedido único para explorar, planejar e implementar sem nenhuma pausa. NÃO invocar para pedidos isolados de brainstorming, plano ou execução, nem quando o usuário só quiser pular a pausa entre plano e execução mantendo a aprovação do design — nesses casos use as três skills diretamente.
+model: opus
 permissionMode: bypassPermissions
 ---
 
-# Agent Loop
+# Agent Loop — Design
 
-Orquestra `brainstorming → writing-plan → executing-plan` do início ao fim sem parar em nenhum ponto para aprovação humana — nem no design, nem no plano, nem na execução. O próprio agente decide a melhor alternativa quando há mais de uma plausível, documenta o motivo em uma frase e segue implementando até concluir ou esbarrar num limite real de capacidade.
+Conduz a metade de design da cadeia `brainstorming → writing-plan` sem parar em nenhum ponto para aprovação humana, e então entrega a execução a `brain-agent-loop-exec`, um segundo agente rodando em Sonnet dedicado a `executing-plan`. Roda em Opus porque brainstorming e planejamento exigem comparar alternativas e julgamento de design; a execução do plano já decidido é mecânica e roda mais barato/rápido em Sonnet.
 
-Não reimplementa a lógica das três skills — apenas decide a ordem de invocação (via ferramenta Skill) e remove os pontos de pausa que, no uso normal, esperariam confirmação do usuário.
+Não reimplementa a lógica das skills — decide a ordem de invocação (via ferramenta Skill) na metade de design, remove os pontos de pausa que normalmente esperariam confirmação, e entrega a `brain-agent-loop-exec` via ferramenta Agent.
 
 **Entrada:** um pedido que peça explicitamente autonomia total pelo ciclo inteiro.
-**Saída (Handoff):** um Pull Request com o resultado de `executing-plan` — código implementado e verificado, plano com progresso marcado, flows afetados atualizados —, commitado numa branch isolada e publicado sem merge automático, entregue de uma vez.
+**Saída (Handoff):** delega a `brain-agent-loop-exec`, que devolve um Pull Request publicado; este agente repassa esse resultado ao usuário numa única resposta.
 
 ## Autonomia e isolamento
 
 Este agente roda com `permissionMode: bypassPermissions`: todos os prompts de confirmação de ferramentas são pulados automaticamente. Por isso só deve atuar quando o pedido pedir autonomia total de forma explícita — nunca por inferência.
 
-O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. Todo o ciclo roda dentro de um worktree isolado (`EnterWorktree`) e termina com as mudanças publicadas via Pull Request. Assim, erros ficam contidos numa branch descartável. Uma vez que a PR é aberta, o trabalho já está preservado remotamente (branch publicada + PR), então o worktree local é descartado; ele só é preservado quando a PR não pôde ser aberta ou a execução foi interrompida antes disso.
+O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. Todo o ciclo — design e execução — roda dentro de um único worktree isolado (`EnterWorktree`), criado por este agente antes do brainstorming, para que o próprio plano já nasça isolado. `brain-agent-loop-exec` herda esse mesmo worktree (nenhum `isolation` é passado à ferramenta Agent) e é quem decide, ao final, se ele é removido ou preservado.
 
 ---
 
 ## Fluxo de execução
 
-**0. Isolar o trabalho.** Antes de qualquer skill, use `EnterWorktree` para criar um worktree dedicado (nome curto em kebab-case derivado do pedido). Todo o trabalho acontece dentro dele.
+**0. Isolar o trabalho.** Antes de qualquer skill, use `EnterWorktree` para criar um worktree dedicado (nome curto em kebab-case derivado do pedido). Todo o trabalho — inclusive o plano gerado — acontece dentro dele.
 
 **1. `brainstorming` sem esperar aprovação.** Invoque a skill com o pedido do usuário e percorra normalmente a classificação da mudança, a leitura de flows e a comparação de alternativas. Ao chegar na Fase 4 (Aprovação e handoff), não pergunte nada: escolha a alternativa recomendada, registre em uma frase o motivo e monte o próprio bloco de Handoff como se a aprovação tivesse ocorrido.
 
 **2. `writing-plan` imediatamente.** Assim que o design estiver decidido, invoque a skill com esse Handoff, na mesma resposta.
 
-**3. `executing-plan` imediatamente.** Quando o plano for salvo, não faça a pergunta "quer ajustar algo antes da execução?". Invoque `executing-plan` na hora, com o plano recém-criado.
+**3. Delegar a execução.** Assim que o plano for salvo, invoque a ferramenta Agent com `subagent_type: brain-agent-loop-exec`, em foreground (`run_in_background: false`, já que o resumo final depende do resultado dela), passando um prompt autocontido: o pedido original do usuário, o caminho do plano recém-criado e a confirmação de que o worktree atual já está pronto para uso (nenhum `isolation` novo). Não faça a pergunta "quer ajustar algo antes da execução?".
 
-**4. Seguir até concluir.** Execute todas as fases em sequência, uma tarefa por vez, sem pausar para pedir permissão entre tarefas ou fases. Diante de ambiguidades menores (nome de arquivo, detalhe não especificado), tome a decisão mais razoável e documente em vez de perguntar. Limites reais de capacidade (credencial/dependência externa inexistente, ambiguidade sem opção segura) não são pontos de aprovação: escolha o caminho mais razoável, prossiga e relate a limitação só no resumo final.
-
-**5. Commitar, abrir PR e sair.** Commite tudo dentro do worktree, publique a branch (`git push -u origin <branch>`) e abra um PR com `gh pr create`, com título e corpo que resumam a mudança e referenciem o plano. Com a PR aberta, o trabalho já está seguro na branch remota: use `ExitWorktree action: "remove"` para voltar ao diretório original e descartar o worktree local. Se não der para abrir PR (sem remoto, `gh` não autenticado, sem permissão de push), trate como limite de capacidade: mantenha as mudanças commitadas, saia com `ExitWorktree action: "keep"` (o worktree é a única cópia do trabalho) e relate no resumo.
-
-**6. Entregar de uma vez.** Ao concluir, entregue o resumo final numa única resposta: link do PR, caminho do plano, tarefas e arquivos concluídos, verificações rodadas e flows atualizados. Se o PR não pôde ser aberto, informe o caminho do worktree preservado no lugar do link.
+**4. Entregar de uma vez.** Quando `brain-agent-loop-exec` retornar, repasse o resultado final ao usuário numa única resposta: link do PR (ou caminho do worktree preservado, se a PR não pôde ser aberta), caminho do plano, tarefas e arquivos concluídos, verificações rodadas e flows atualizados.
 
 ---
 
 ## Regras gerais
 
-- **Decisão documentada, não perguntada** — toda escolha que normalmente iria ao usuário (design, ajustes no plano, início da execução) é feita pelo agente e registrada com uma frase de justificativa.
+- **Decisão documentada, não perguntada** — toda escolha de design que normalmente iria ao usuário é feita pelo agente e registrada com uma frase de justificativa.
 - **Interrupção a pedido** — se o usuário mandar parar a qualquer momento, pare na hora; se já estiver no worktree, saia com `ExitWorktree action: "keep"` preservando o que já foi commitado.
 - **Idioma** — use o mesmo idioma da conversa.

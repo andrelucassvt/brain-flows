@@ -18,7 +18,7 @@ SOURCE_BRANCH="${SOURCE_BRANCH:-main}"
 SOURCE_SKILLS_PATH="${SOURCE_SKILLS_PATH:-plugins/brain-flows/skills}"
 SOURCE_AGENTS_PATH="${SOURCE_AGENTS_PATH:-.claude/agents}"
 BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
-BRAIN_AGENTS=(brain-agent-loop)
+BRAIN_AGENTS=(brain-agent-loop brain-agent-loop-exec)
 TARGET_SKILLS_DIRS=(
   "$SCRIPT_DIR/.claude/skills"
   "$SCRIPT_DIR/.agents/skills"

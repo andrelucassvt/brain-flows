@@ -21,9 +21,13 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 ## Agentes locais
 
 - `.claude/agents/` guarda subagentes locais do Claude Code que não pertencem ao plugin distribuído — não são empacotados em `plugins/brain-flows/` nem instalados via marketplace.
-- `brain-agent-loop` é um agente local (não skill): orquestra `brainstorming → writing-plan → executing-plan` sem nenhuma pausa de aprovação humana e roda com `permissionMode: bypassPermissions`. Fica fora do plugin porque subagents de plugin ignoram o campo `permissionMode`, e o Codex não tem equivalente a subagent com modo de permissão próprio.
-- Mesmo fora do plugin, `brain-agent-loop` é sincronizado por `sync-brain.sh`: o script busca `.claude/agents/<agente>.md` direto do repositório-fonte (lista `BRAIN_AGENTS`) e copia para `.claude/agents/` local, sem passar por `plugins/brain-flows/`. `.claude/agents/` local É a fonte de verdade — editar ali direto, sem passo de empacotamento equivalente ao `package-brain.sh`.
-- Só é sincronizado para `.claude/agents/` — não é espelhado em `.agents/skills/`, `.github/skills/` nem `plugins/brain-flows/skills/`, porque `permissionMode` é um conceito exclusivo do Claude Code.
+- O ciclo autônomo `brainstorming → writing-plan → executing-plan` sem nenhuma pausa de aprovação humana é dividido em dois agentes locais que rodam com `permissionMode: bypassPermissions`:
+  - `brain-agent-loop` (`model: opus`) cobre a metade de design — `brainstorming` + `writing-plan` — e entrega a execução ao segundo agente via ferramenta Agent, dentro do mesmo worktree.
+  - `brain-agent-loop-exec` (`model: sonnet`) cobre a metade de execução — `executing-plan` — e fecha o ciclo com commit, push e Pull Request.
+  - A divisão existe porque brainstorming/planejamento exigem comparar alternativas e julgamento (Opus), enquanto seguir um plano já decidido é execução mecânica (Sonnet, mais barato/rápido). Um único agente não pode trocar de modelo no meio da própria execução — a troca só é possível entre agentes distintos.
+- Ambos ficam fora do plugin porque subagents de plugin ignoram os campos `permissionMode` e `model`, e o Codex não tem equivalente a subagent com modo de permissão ou modelo próprios.
+- Mesmo fora do plugin, os dois são sincronizados por `sync-brain.sh`: o script busca `.claude/agents/<agente>.md` direto do repositório-fonte (lista `BRAIN_AGENTS`) e copia para `.claude/agents/` local, sem passar por `plugins/brain-flows/`. `.claude/agents/` local É a fonte de verdade — editar ali direto, sem passo de empacotamento equivalente ao `package-brain.sh`.
+- Só são sincronizados para `.claude/agents/` — não são espelhados em `.agents/skills/`, `.github/skills/` nem `plugins/brain-flows/skills/`, porque `permissionMode`/`model` por agente são conceitos exclusivos do Claude Code.
 - Novos agentes locais com `permissionMode: bypassPermissions` seguem o mesmo padrão: adicionar a `BRAIN_AGENTS` em `sync-brain.sh`, viver só em `.claude/agents/`, nunca dentro de `plugins/brain-flows/`.
 
 ## Comandos
