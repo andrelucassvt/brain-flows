@@ -2,15 +2,23 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
-## 1.3.0 — 2026-07-24
+## 1.3.1 — 2026-07-24
 
 - `agent-loop` deixa de exigir aprovação humana em qualquer ponto do ciclo: a própria skill escolhe a alternativa de design recomendada na Fase 5 do `brainstorming` (registrando o motivo da escolha) e segue direto por `writing-plan` e `executing-plan` sem nenhuma pausa de confirmação. Continua sendo acionada somente por pedido explícito de autonomia total; pedidos que só querem pular a pausa entre plano e execução, mantendo a aprovação do design, não acionam mais este modo.
 - Limites reais de capacidade (credencial ausente, dependência externa impossível) deixam de interromper o fluxo pedindo permissão — a skill escolhe o caminho mais razoável e relata a limitação no resumo final.
 
+## 1.3.0 — 2026-07-23
+
+- `brainstorming` Fase 1: a seleção de flows deixa de partir do nome do arquivo e passa a ler o resumo de **todos** os flows de uma vez (`grep '**Resumo:**' docs/flow/*.md`), escolhendo por relevância semântica quais abrir por completo. Corrige o falso negativo silencioso em que um flow relevante nunca era aberto porque o nome do arquivo não batia com as palavras-chave do pedido — problema que se agrava em projetos com muitos flows (15+).
+- Mantido o fallback para `ls ./docs/flow/` quando não há linha de resumo, e a postura de não bloquear na ausência de flows.
+- Sem novos artefatos, scripts ou índices: a fonte de verdade continua sendo apenas os arquivos de flow, sem duplicação a manter sincronizada.
+
 ## 1.2.0 — 2026-07-22
 
-- Nova skill `agent-loop`: orquestrador opcional que encadeia `brainstorming → writing-plan → executing-plan` sem pausar entre `writing-plan` e `executing-plan`, mantendo a aprovação do design (Fase 5 do `brainstorming`) como único checkpoint humano. Acionada somente por pedido explícito de modo autônomo pelo ciclo inteiro; as três skills existentes não foram alteradas.
-- `BRAIN_SKILLS` em `sync-brain.sh` e `package-brain.sh` passa a incluir `agent-loop`, totalizando seis skills sincronizadas/empacotadas.
+- Simplificação da skill `brainstorming`: reescrita de 223 para 120 linhas, mantendo comportamento e contrato de handoff.
+- Redução de 7 para 5 fases: as antigas Fases 1, 2 e 2.5 (intenção, flows e detecção de `*-expert`) fundem-se em **Fase 1 — Intenção e contexto**; o plumbing de detecção de expert por plataforma foi condensado.
+- Eliminação de redundância entre briefing, design e handoff: `Arquivos-chave`, `Skill expert` e `Flows a revisitar` passam a viver apenas no bloco **Handoff**; as seções "Contexto Carregado" e "Responsabilidade após a implementação" saíram do briefing.
+- Preservados intactos: o gate da Fase 0 (dispensar mudança mecânica), a comparação de alternativas com recomendação, o bloco **Handoff para o Plano** e o campo **Tipo de mudança**.
 
 ## 1.1.0 — 2026-07-14
 
