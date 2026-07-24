@@ -3,7 +3,7 @@
 #   .claude/skills/
 #   .agents/skills/
 #   .github/skills/
-# Também busca os agentes locais (ex.: agent-loop) direto de .claude/agents/
+# Também busca os agentes locais (ex.: brain-agent-loop) direto de .claude/agents/
 # no repositório-fonte e os instala em .claude/agents/ — não passam pelo
 # plugin, porque subagents de plugin ignoram o campo permissionMode.
 #   chmod +x sync-brain.sh
@@ -18,7 +18,7 @@ SOURCE_BRANCH="${SOURCE_BRANCH:-main}"
 SOURCE_SKILLS_PATH="${SOURCE_SKILLS_PATH:-plugins/brain-flows/skills}"
 SOURCE_AGENTS_PATH="${SOURCE_AGENTS_PATH:-.claude/agents}"
 BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
-BRAIN_AGENTS=(agent-loop)
+BRAIN_AGENTS=(brain-agent-loop)
 TARGET_SKILLS_DIRS=(
   "$SCRIPT_DIR/.claude/skills"
   "$SCRIPT_DIR/.agents/skills"

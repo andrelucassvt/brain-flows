@@ -87,13 +87,13 @@ It uses the plan's **design of origin** as the boundary for handling code drift:
 Execute the social login plan.
 ```
 
-### Optional: run the whole cycle unattended with the `agent-loop` agent
+### Optional: run the whole cycle unattended with the `brain-agent-loop` agent
 
-`agent-loop` orchestrates the same chain without editing any of the three skills above. It only activates when you explicitly ask for full autonomy through the whole cycle, with no approval at any point — otherwise the normal pauses apply.
+`brain-agent-loop` orchestrates the same chain without editing any of the three skills above. It only activates when you explicitly ask for full autonomy through the whole cycle, with no approval at any point — otherwise the normal pauses apply.
 
 It skips every confirmation, including design approval: when there's more than one plausible option, the agent picks the recommended one itself, records why, and moves straight through `writing-plan` and `executing-plan` to a finished result. Real capability limits (a missing credential, an external dependency that can't be created) still exist, but instead of stopping to ask permission, the agent picks the most reasonable path and reports the limitation in the final summary.
 
-`agent-loop` is not a skill and is not installed by the plugin. It's a local Claude Code subagent (`.claude/agents/agent-loop.md`) that runs with `permissionMode: bypassPermissions`, so it also skips tool-confirmation prompts; `sync-brain.sh` fetches it into your project's `.claude/agents/` alongside the skills. It isn't available in Codex: plugin subagents ignore `permissionMode`, and Codex has no equivalent to a subagent with its own permission mode.
+`brain-agent-loop` is not a skill and is not installed by the plugin. It's a local Claude Code subagent (`.claude/agents/brain-agent-loop.md`) that runs with `permissionMode: bypassPermissions`, so it also skips tool-confirmation prompts; `sync-brain.sh` fetches it into your project's `.claude/agents/` alongside the skills. It isn't available in Codex: plugin subagents ignore `permissionMode`, and Codex has no equivalent to a subagent with its own permission mode.
 
 Because it skips tool-confirmation prompts, it never works directly on the branch you had checked out: it opens an isolated worktree before starting, and finishes by committing, pushing, and opening a Pull Request — never an automatic merge. If it can't open a PR (no remote, `gh` not authenticated), it reports that as a capability limit and leaves the work committed in the worktree instead.
 
@@ -135,7 +135,7 @@ docs/
 | Explore a change and decide how to implement it | `brainstorming` |
 | Turn an approved design into actionable steps | `writing-plan` |
 | Implement or resume an existing plan | `executing-plan` |
-| Run the whole cycle unattended, no approval at all | `agent-loop` agent (local, not a skill) |
+| Run the whole cycle unattended, no approval at all | `brain-agent-loop` agent (local, not a skill) |
 
 You do not need to run every skill for every task. A small mechanical fix can be made directly, while a larger feature benefits from the full cycle.
 

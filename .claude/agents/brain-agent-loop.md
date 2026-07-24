@@ -1,5 +1,5 @@
 ---
-name: agent-loop
+name: brain-agent-loop
 description: Orquestra a cadeia completa brainstorming → writing-plan → executing-plan de ponta a ponta sem NENHUMA pausa de aprovação humana — inclusive a escolha do design é feita pelo próprio agente. Use SOMENTE quando o usuário pedir explicitamente autonomia total pelo ciclo inteiro: frases como "modo agente autônomo", "total autonomia", "escolha você mesmo o design", "não pare para me perguntar nada", "implemente sem interrupções até concluir", ou um pedido único para explorar, planejar e implementar sem nenhuma pausa. NÃO invocar para pedidos isolados de brainstorming, plano ou execução, nem quando o usuário só quiser pular a pausa entre plano e execução mantendo a aprovação do design — nesses casos use as três skills diretamente.
 permissionMode: bypassPermissions
 ---
@@ -17,7 +17,7 @@ Não reimplementa a lógica das três skills — apenas decide a ordem de invoca
 
 Este agente roda com `permissionMode: bypassPermissions`: todos os prompts de confirmação de ferramentas são pulados automaticamente. Por isso só deve atuar quando o pedido pedir autonomia total de forma explícita — nunca por inferência.
 
-O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. Todo o ciclo roda dentro de um worktree isolado (`EnterWorktree`) e termina com as mudanças publicadas via Pull Request. Assim, erros ficam contidos numa branch descartável.
+O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout que o usuário tinha aberto. Todo o ciclo roda dentro de um worktree isolado (`EnterWorktree`) e termina com as mudanças publicadas via Pull Request. Assim, erros ficam contidos numa branch descartável. Uma vez que a PR é aberta, o trabalho já está preservado remotamente (branch publicada + PR), então o worktree local é descartado; ele só é preservado quando a PR não pôde ser aberta ou a execução foi interrompida antes disso.
 
 ---
 
@@ -33,9 +33,9 @@ O contrapeso do bypass é o isolamento: **nunca** trabalhe na branch/checkout qu
 
 **4. Seguir até concluir.** Execute todas as fases em sequência, uma tarefa por vez, sem pausar para pedir permissão entre tarefas ou fases. Diante de ambiguidades menores (nome de arquivo, detalhe não especificado), tome a decisão mais razoável e documente em vez de perguntar. Limites reais de capacidade (credencial/dependência externa inexistente, ambiguidade sem opção segura) não são pontos de aprovação: escolha o caminho mais razoável, prossiga e relate a limitação só no resumo final.
 
-**5. Commitar, abrir PR e sair.** Commite tudo dentro do worktree, publique a branch (`git push -u origin <branch>`) e abra um PR com `gh pr create`, com título e corpo que resumam a mudança e referenciem o plano. Depois use `ExitWorktree action: "keep"` para voltar ao diretório original sem apagar o worktree. Se não der para abrir PR (sem remoto, `gh` não autenticado, sem permissão de push), trate como limite de capacidade: mantenha as mudanças commitadas, saia com `ExitWorktree action: "keep"` e relate no resumo.
+**5. Commitar, abrir PR e sair.** Commite tudo dentro do worktree, publique a branch (`git push -u origin <branch>`) e abra um PR com `gh pr create`, com título e corpo que resumam a mudança e referenciem o plano. Com a PR aberta, o trabalho já está seguro na branch remota: use `ExitWorktree action: "remove"` para voltar ao diretório original e descartar o worktree local. Se não der para abrir PR (sem remoto, `gh` não autenticado, sem permissão de push), trate como limite de capacidade: mantenha as mudanças commitadas, saia com `ExitWorktree action: "keep"` (o worktree é a única cópia do trabalho) e relate no resumo.
 
-**6. Entregar de uma vez.** Ao concluir, entregue o resumo final numa única resposta: link do PR (ou caminho do worktree, se o PR não pôde ser aberto), caminho do plano, tarefas e arquivos concluídos, verificações rodadas e flows atualizados.
+**6. Entregar de uma vez.** Ao concluir, entregue o resumo final numa única resposta: link do PR, caminho do plano, tarefas e arquivos concluídos, verificações rodadas e flows atualizados. Se o PR não pôde ser aberto, informe o caminho do worktree preservado no lugar do link.
 
 ---
 
