@@ -111,11 +111,9 @@ Só declare o plano concluído quando todos os itens obrigatórios estiverem mar
 
 **Escopo controlado** — problemas não relacionados encontrados durante a execução devem ser relatados, não incorporados silenciosamente.
 
-**Verificação proporcional** — use exatamente as evidências previstas no plano e amplie apenas quando a alteração revelar risco de regressão diretamente relacionado.
+**Verificação proporcional** — use exatamente as evidências previstas no plano e amplie apenas quando a alteração revelar risco de regressão diretamente relacionado. Testes no harness (unitários e de componente headless) são evidência válida; subir app, servidor, emulador, simulador, dispositivo, browser real, screenshot ou interação visual não é — a validação funcional é do usuário.
 
-**Respeito ao ambiente** — não execute app, servidor, emulador, simulador, dispositivo, screenshot ou interação visual quando o plano reserva a validação funcional ao usuário.
-
-**Idioma** — use o mesmo idioma da conversa e preserve o idioma do plano.
+**Idioma do plano** — preserve o idioma em que o plano foi escrito ao atualizá-lo.
 
 ---
 

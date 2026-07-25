@@ -12,6 +12,7 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 ## Estrutura
 
 - `plugins/brain-flows/skills/` — fonte canônica das skills empacotadas no plugin
+- `<skill>/references/` — templates longos e guias carregados sob demanda; `writing-plan`, `flow` e `flow-init` usam
 - `.claude/skills/`, `.agents/skills/`, `.github/skills/` — espelhos por plataforma, idênticos entre si
 - `plugins/brain-flows/.claude-plugin/plugin.json` e `.codex-plugin/plugin.json` — manifestos do plugin
 - `.claude-plugin/marketplace.json` e `.agents/plugins/marketplace.json` — manifestos do marketplace
@@ -41,6 +42,7 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 
 - As cinco skills são fixas: `brainstorming`, `flow`, `flow-init`, `writing-plan`, `executing-plan`. Adicionar/remover exige atualizar a lista `BRAIN_SKILLS` em ambos os scripts.
 - Edite as skills em `.claude/skills/<skill>/` e depois rode `./package-brain.sh` para propagar à fonte canônica; nunca edite só um dos espelhos.
+- `SKILL.md` guarda o fluxo de decisão e uma tabela de "quando ler cada referência"; template obrigatório, tabela por stack ou guia longo vai para `references/` e é lido só no passo que precisa dele. Uma regra tem um único lugar canônico — não repita a mesma instrução no `SKILL.md` e na referência.
 - Mantenha a mesma `version` nos dois `plugin.json` (Claude e Codex).
 - Registre mudanças relevantes em `CHANGELOG.md`.
 - Idioma da documentação e das skills: Português (Brasil).
@@ -61,6 +63,8 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 ## 📖 Documentação de Flows
 
 Para qualquer feature ou fluxo, verifique a pasta `./docs/flow/`: leia os títulos dos arquivos `.md` disponíveis e, se algum for relevante para a tarefa atual, leia-o antes de implementar ou debugar. Invoque a skill `flow` para criar ou atualizar flows individuais.
+
+`docs/flow/` documenta conhecimento estrutural durável do repositório — não é substituto da memória automática do agente, que guarda contexto de sessão e preferências do usuário. Não duplique um no outro.
 
 ## 🧪 Teste funcional
 

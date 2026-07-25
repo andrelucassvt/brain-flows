@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.
+description: Explora intenção, requisitos e design antes da implementação. Use antes de qualquer trabalho criativo — criar features, construir componentes, adicionar funcionalidade ou modificar comportamento existente.
 ---
 
 # Brainstorming
@@ -15,7 +15,7 @@ Explora intenção e design antes de qualquer implementação e encerra com um d
 
 Siga o fluxo completo quando houver criação ou decisão de comportamento, experiência, arquitetura, regra de negócio ou interação entre componentes.
 
-Dispense quando a mudança for puramente mecânica, sem decisão de design: typo ou texto sem mudança de significado, rename direto sem alteração de contrato, formatação/lint/organização de imports, ajuste de constante ou config com valor já definido pelo usuário, correção isolada cuja solução já está determinada. Nesse caso, registre em uma frase por que não há design a decidir e libere a execução direta. Se surgir qualquer escolha com impacto observável, volte ao fluxo completo.
+Dispense quando a mudança for puramente mecânica — nenhuma decisão a tomar porque a solução já está determinada pelo pedido, pelo padrão existente ou pela natureza da correção. Nesse caso, registre em uma frase por que não há design a decidir e libere a execução direta. Se surgir qualquer escolha com impacto observável, volte ao fluxo completo.
 
 ---
 
@@ -116,5 +116,4 @@ Interface com o `writing-plan`: ele copia este bloco para a seção **Design de 
 
 - **Seja preciso** — cite apenas arquivos que você encontrou nos flows ou no código; não invente caminhos.
 - **Não bloqueie** — sem flows, o briefing ainda vale (intenção + próximo passo). Nunca impeça o trabalho por falta de documentação.
-- **Idioma** — use o mesmo idioma da conversa.
 - **Nada deprecated** — nunca indique API/widget/pacote/padrão deprecated na versão atual da stack (ex: `withOpacity`, `WillPopScope` em Flutter); aponte o substituto nos Pontos de Atenção.

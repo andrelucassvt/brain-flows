@@ -16,6 +16,15 @@ Se o usuário optar por não gerar os flows completos agora, cria **`docs/flow/f
 
 Por fim, atualiza `AGENTS.md` como arquivo canônico de instruções compartilhadas e garante que o Claude Code o carregue por meio de um `CLAUDE.md` com o import `@AGENTS.md`.
 
+### Referências
+
+Resolvidas a partir do diretório desta skill. Leia cada uma no momento indicado, não antes:
+
+| Arquivo | Quando ler |
+|---------|-----------|
+| `references/document-templates.md` | Nos passos 2 e 4b, antes de escrever `project-structure.md` ou `flow-suggestions.md` |
+| `references/guide-project-instructions.md` | No passo 5, antes de gerar `AGENTS.md` — princípios, template enxuto, blocos finais obrigatórios e checklist |
+
 ---
 
 ## Fluxo de Execução
@@ -30,7 +39,7 @@ Não invente arquivos nem suponha estruturas — mapeie o código real.
 
 O objetivo é uma lista real de features, serviços e camadas antes de escrever uma linha de documentação.
 
-**1c — Registrar a origem da análise:** execute `git rev-parse --short HEAD` e `git status --porcelain` quando Git estiver disponível. Use o hash curto como `source_commit` e registre `source_state` como `clean` ou `dirty`. Fora de um repositório Git, use `not-available` nos dois campos.
+**1c — Registrar a origem da análise:** execute `git rev-parse --short HEAD` e `git status --porcelain` quando Git estiver disponível, para preencher `source_commit` e `source_state`.
 
 ---
 
@@ -38,74 +47,7 @@ O objetivo é uma lista real de features, serviços e camadas antes de escrever 
 
 Crie sempre, independente da resposta do usuário (`mkdir -p ./docs/flow`). Se o arquivo já existir, pergunte se deve atualizar ou regenerar antes de continuar.
 
-#### Template obrigatório para `project-structure.md`
-
-```markdown
----
-generated_at: YYYY-MM-DD
-source_commit: abc1234
-source_state: clean
-verified_at: YYYY-MM-DD
-status: current
-related_plans: []
----
-
-# Estrutura do Projeto: [Nome do Projeto]
-
-> **Resumo:** Uma frase descrevendo o que o projeto faz, qual stack utiliza e qual arquitetura adota.
-
-## Stack e Tecnologias
-
-| Elemento | Valor |
-|----------|-------|
-| Linguagem | [ex: Dart, TypeScript] |
-| Framework | [ex: Flutter, Next.js] |
-| Gerenciador de pacotes | [ex: pub, npm] |
-| Principais dependências | [libs mais relevantes] |
-
-## Arquitetura
-
-[2–4 frases sobre a arquitetura adotada e como as camadas se comunicam. Use o vocabulário real do código — se usa "Cubit", escreva "Cubit".]
-
-```
-[Diagrama em texto, ex:]
-Presentation → Domain ← Data
-```
-
-### Regras de dependência
-
-- [Regra real encontrada, ex: "domain não importa data". Se não houver, omita esta subseção]
-
-## Features
-
-| Feature | Caminho principal | Descrição resumida |
-|---------|------------------|-------------------|
-| [feature] | `caminho/feature/` | O que essa feature faz |
-
-## Camadas / Módulos Compartilhados
-
-| Tipo | Caminho | Responsabilidade |
-|------|---------|-----------------|
-| [ex: Widgets, Serviços, Utils, Theme] | `caminho/` | ... |
-
-## Configuração
-
-| Componente | Arquivo | Responsabilidade |
-|-----------|---------|-----------------|
-| [ex: DI, Rotas, Bootstrap, Error handling] | `caminho/arquivo.ext` | ... |
-
-_(Inclua apenas o que existe no projeto, com o vocabulário real.)_
-
-## Dependências Externas Principais
-
-| Pacote | Versão | Uso no projeto |
-|--------|--------|---------------|
-| [pacote] | x.y.z | Para que é usado |
-
-## Observações
-
-[Padrões não óbvios, TODOs, inconsistências, pontos de atenção. Se não houver, omita.]
-```
+Siga o template de `references/document-templates.md`, preenchido com o que você descobriu no Passo 1.
 
 ---
 
@@ -131,40 +73,9 @@ Aguarde a resposta antes de continuar.
 
 Para cada feature, crie `./docs/flow/<feature>.md` seguindo **exatamente** o template e o processo da skill `flow`: varra o código real da feature e referencie apenas arquivos que existem. Ao final, informe quantos flows foram criados e liste os caminhos.
 
----
-
 ### Passo 4b — Se NÃO: criar `docs/flow/flow-suggestions.md`
 
-```markdown
----
-generated_at: YYYY-MM-DD
-source_commit: abc1234
-source_state: clean
-verified_at: YYYY-MM-DD
-status: current
-related_plans: []
----
-
-# Sugestões de Flows a Documentar
-
-> Gerado em [data]. Invoque a skill `flow` para criar qualquer um destes flows.
-
-## Flows Sugeridos
-
-### [Nome da Feature]
-**Arquivo a criar:** `docs/flow/<nome-kebab-case>.md`
-**Resumo:** O que este flow documentaria — gatilho, camadas percorridas e resultado final.
-
----
-
-[repita para cada feature detectada]
-
-## Já documentados
-
-- `docs/flow/project-structure.md` — Estrutura geral do projeto
-```
-
-Resumos concisos (1–2 frases) — é uma lista rápida de consulta, não documentação completa.
+Siga o template de `references/document-templates.md`, listando as features detectadas no Passo 1.
 
 ---
 
@@ -175,29 +86,13 @@ Após criar os arquivos de flow, use esta estrutura independentemente da platafo
 - **`AGENTS.md` é o arquivo canônico:** concentra as instruções completas e compartilhadas do projeto.
 - **`CLAUDE.md` é a ponte para o Claude Code:** importa o arquivo canônico com `@AGENTS.md`.
 
-Antes de substituir qualquer arquivo, leia `AGENTS.md` e `CLAUDE.md` quando existirem e preserve instruções válidas e específicas. Como o Claude Code também receberá o conteúdo de `AGENTS.md`, escreva nele apenas convenções compatíveis com ambas as plataformas. Prefira formulações neutras como “invoque a skill `flow`”; não use sintaxes exclusivas como `/brain-flows:flow` ou `$flow` nas instruções compartilhadas.
+Antes de substituir qualquer arquivo, leia `AGENTS.md` e `CLAUDE.md` quando existirem e preserve instruções válidas e específicas. Como o Claude Code também receberá o conteúdo de `AGENTS.md`, escreva nele apenas convenções compatíveis com ambas as plataformas. Prefira formulações neutras como "invoque a skill `flow`"; não use sintaxes exclusivas como `/brain-flows:flow` ou `$flow` nas instruções compartilhadas.
 
-**5a — Ler o guia de boas práticas** em `references/guide-project-instructions.md`, resolvido a partir do diretório desta skill. Internalize: menos é mais, instruções específicas e acionáveis, sem redundância com o que o código já comunica.
+**5a — Ler o guia de boas práticas** em `references/guide-project-instructions.md`. Internalize: menos é mais, instruções específicas e acionáveis, sem redundância com o que o código já comunica.
 
-**5b — Gerar `AGENTS.md` do zero** usando o template enxuto do guia (seção 4), preenchido com o que você descobriu no Passo 1. Aplique o checklist (seção 7) antes de salvar: cabeçalho de 1 frase, stack com decisões não inferíveis do código, estrutura de diretórios, comandos reais, convenções específicas, gotchas com workarounds e "não fazer" concretos.
+**5b — Gerar `AGENTS.md` do zero** usando o template enxuto do guia (seção 4), preenchido com o que você descobriu no Passo 1, e anexe os blocos finais obrigatórios (seção 4.1). Aplique o checklist (seção 7) antes de salvar.
 
 Não invente seções — inclua apenas o que sabe de fato. Migre instruções anteriores válidas e específicas; descarte as genéricas.
-
-Adicione ao final:
-
-```markdown
-## 📖 Documentação de Flows
-
-Para qualquer feature ou fluxo, verifique a pasta `./docs/flow/`: leia os títulos dos arquivos `.md` disponíveis e, se algum for relevante para a tarefa atual, leia-o antes de implementar ou debugar. Invoque a skill `flow` para criar ou atualizar flows individuais.
-
-## 🧪 Teste funcional
-
-Após implementar, não execute o projeto para validar o resultado (rodar o app, emulador/simulador, dispositivo físico, servidor local, screenshots ou interação simulada). Teste funcional/visual é responsabilidade do usuário.
-
-- Limite a verificação a análise estática, build/compile e testes automatizados
-- Ao concluir, liste objetivamente o que o usuário deve testar manualmente
-- Não pergunte se deve executar o projeto — só faça isso se o usuário pedir explicitamente
-```
 
 **5c — Criar ou validar a ponte `CLAUDE.md`:**
 
@@ -240,15 +135,13 @@ Os flows individuais criados no Passo 4a também devem passar pela autorrevisão
 
 **Apenas o que existe** — não documente arquivos, classes ou rotas que você não encontrou. Se algo parece faltar, registre em Observações.
 
-**Vocabulário do projeto** — use os nomes que o código usa; não imponha terminologia externa.
+**Vocabulário do projeto** — use os nomes que o código usa; não imponha terminologia externa. Os documentos são escritos no idioma da conversa com o usuário.
 
 **Conservador nas sugestões** — liste como feature apenas o que existe como pasta ou módulo distinto; não fragmente nem agrupe à força.
 
 **Rastreabilidade honesta** — preserve a data original de criação em atualizações e sinalize alterações locais com `source_state: dirty`; não apresente um documento parcialmente verificado como atual.
 
 **Não modifique código** — skill puramente documental; não altere nada além dos arquivos de flow, de `AGENTS.md` e da ponte `CLAUDE.md` descrita no Passo 5.
-
-**Idioma** — o mesmo da conversa com o usuário.
 
 ---
 

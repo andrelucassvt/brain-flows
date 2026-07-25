@@ -172,6 +172,26 @@ Inclua proibições concretas que previnam erros recorrentes:
 
 Comece pelo template e adicione somente seções sustentadas por evidência no projeto.
 
+### 4.1 Blocos finais obrigatórios
+
+Anexe ao final do `AGENTS.md` gerado, exatamente como abaixo. São as duas convenções que o Brain Flows depende e que o agente não infere do código:
+
+```markdown
+## 📖 Documentação de Flows
+
+Para qualquer feature ou fluxo, verifique a pasta `./docs/flow/`: leia os títulos dos arquivos `.md` disponíveis e, se algum for relevante para a tarefa atual, leia-o antes de implementar ou debugar. Invoque a skill `flow` para criar ou atualizar flows individuais.
+
+## 🧪 Teste funcional
+
+Após implementar, não execute o projeto para validar o resultado (rodar o app, emulador/simulador, dispositivo físico, servidor local, screenshots ou interação simulada). Teste funcional/visual é responsabilidade do usuário.
+
+- Limite a verificação a análise estática, build/compile e testes automatizados
+- Ao concluir, liste objetivamente o que o usuário deve testar manualmente
+- Não pergunte se deve executar o projeto — só faça isso se o usuário pedir explicitamente
+```
+
+Esta é a definição canônica da regra de teste funcional no projeto de destino: as skills contam com ela estar no `AGENTS.md` em vez de repeti-la a cada invocação.
+
 ## 5. Hierarquia e disclosure progressivo
 
 O arquivo na raiz contém stack, comandos, convenções universais e riscos críticos. Instruções específicas de um módulo podem ficar em arquivos equivalentes dentro do subdiretório quando a plataforma oferecer herança de contexto.

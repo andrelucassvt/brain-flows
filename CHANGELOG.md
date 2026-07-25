@@ -2,6 +2,21 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.7.0 — 2026-07-25
+
+Aplicação das recomendações de context engineering para modelos da geração Claude 5 ([artigo](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models)): disclosure progressivo, uma regra num único lugar canônico e julgamento em vez de listas exaustivas.
+
+- **Templates movidos para `references/`.** `writing-plan` ganha `references/plan-template.md` (estrutura obrigatória + templates A/B de fases) e `references/headless-testing.md`; `flow` ganha `references/flow-template.md` (template + checklist de autorrevisão); `flow-init` ganha `references/document-templates.md` (`project-structure.md` e `flow-suggestions.md`). Os `SKILL.md` mantêm o fluxo de decisão e uma tabela de "quando ler cada referência", carregada sob demanda em vez de sempre.
+- **Redução de contexto por invocação:** `writing-plan` 232 → 115 linhas, `flow` 162 → 83, `flow-init` 257 → 150. O conteúdo não foi perdido, apenas deixou de entrar no contexto antes do passo que o usa.
+- **A regra de "não rodar o app" passa a ter um lugar canônico.** Estava repetida em cinco pontos com formulações divergentes — inclusive uma, em `executing-plan`, que a condicionava a "quando o plano reserva a validação ao usuário", abrindo brecha que as outras fechavam. Agora a definição completa vive em `writing-plan/references/headless-testing.md`, `executing-plan` traz uma única linha sem condicional, e o bloco destinado ao `AGENTS.md` do projeto de destino saiu do `SKILL.md` de `flow-init` para a seção 4.1 do guia.
+- **Tabela de stacks deixa de ser regra e passa a ser apoio.** A detecção de teste de componente headless continua sendo por inspeção das dependências do projeto; a tabela por stack virou referência explicitamente não exaustiva, para não travar o julgamento em seis stacks conhecidas.
+- **Fase 0 do `brainstorming` troca a lista de casos** (typo, rename, formatação, constante…) pelo critério que a origina: mudança puramente mecânica, sem decisão a tomar.
+- **`description` das skills padronizada em português** e sem `MUST` coercitivo — `brainstorming` e `flow` estavam em inglês, com o resto em português, o que piorava o matching de acionamento.
+- **Regra "Idioma" removida das cinco skills** (comportamento padrão do modelo), preservando só o que não é óbvio: `executing-plan` mantém "preserve o idioma do plano" e `flow`/`flow-init` registram que o documento herda o idioma da conversa.
+- **Agentes locais enxugados.** `brain-agent-loop` (45 → 38 linhas) e `brain-agent-loop-exec` (39 → 34) perdem a duplicação quase literal das seções de autonomia/isolamento; o passo 0 "verificar o isolamento" saiu, porque `isolation: worktree` já é garantia do harness — a orientação de não chamar `EnterWorktree`/`ExitWorktree` permanece como uma linha.
+- `AGENTS.md` ganha a convenção de `SKILL.md` + `references/` e delimita `docs/flow/` (conhecimento estrutural do repositório) frente à memória automática do agente (contexto de sessão), para os dois não competirem.
+- Sem mudança de comportamento nas skills: mesma cadeia, mesmos artefatos, mesmos templates. Espelhado nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.6.0 — 2026-07-24
 
 - `brain-agent-loop` é dividido em dois agentes locais para permitir modelos diferentes por metade do ciclo: `brain-agent-loop` (`model: opus`) passa a cobrir só `brainstorming` + `writing-plan`, e um novo `brain-agent-loop-exec` (`model: sonnet`) cobre `executing-plan` + commit/push/PR. Um único agente não pode trocar de modelo no meio da própria execução — a troca só é possível delegando a um segundo agente via ferramenta Agent.
