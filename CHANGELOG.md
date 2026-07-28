@@ -2,6 +2,16 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.8.0 — 2026-07-27
+
+Plano multi-parte: escopo grande deixa de virar um monólito de 10+ fases executado numa maratona única.
+
+- **`writing-plan` ganha teto de fases e modo multi-parte.** Novo passo 2.7 ("Estimar o tamanho e decidir o formato"): estimativa acima de ~6 fases gera uma pasta `docs/plan/<nome>/` com `00-indice.md` (objetivo, Design de Origem, tabela de partes com ordem/dependências/status e riscos globais) + partes numeradas (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato atual (templates A/B). O plano completo continua pronto de uma vez — a divisão existe para a execução acontecer em sessões curtas com checkpoint natural (commit + validação) entre partes. Planos de até 6 fases seguem arquivo único, sem mudança.
+- **Nova referência `writing-plan/references/multi-part-plan.md`** com o layout da pasta, a regra de fatiamento (cada parte é uma entrega fechada, fatiada por valor e não por camada), o template do índice e os dois ajustes das partes (cabeçalho enxuto apontando para o índice — o Design de Origem vive só lá — e checkbox de checkpoint no encerramento).
+- **`executing-plan` executa parte a parte.** No plano multi-parte, lê o índice + apenas a parte em execução (a primeira pendente com dependências satisfeitas), sem carregar partes futuras no contexto; ao concluir uma parte, marca o status no índice, executa o checkpoint e **para**, deixando a decisão de continuar com o usuário. Atualização de flows e declaração de conclusão só na última parte.
+- **Novo eval em `writing-plan/evals/evals.json`** cobrindo o acionamento do modo multi-parte: escopo grande (módulo de assinaturas completo) deve gerar pasta com índice + partes completas, teto de fases por parte, checkpoints e cobertura integral do escopo.
+- Espelhado nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.7.0 — 2026-07-25
 
 Aplicação das recomendações de context engineering para modelos da geração Claude 5 ([artigo](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models)): disclosure progressivo, uma regra num único lugar canônico e julgamento em vez de listas exaustivas.

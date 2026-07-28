@@ -108,6 +108,42 @@
           "description": "Seção de Riscos presente, idealmente mencionando APNs ou permissões iOS"
         }
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Cria um plano para o módulo completo de assinaturas do app: paywall com dois planos (mensal/anual), compra via RevenueCat, restauração de compras, tela de gerenciamento da assinatura, bloqueio de features premium por entitlements e analytics de conversão. O projeto é Flutter e ainda não tem nada de monetização.",
+      "expected_output": "Escopo grande (mais de 6 fases) vira plano multi-parte: pasta ./docs/plan/subscriptions/ (ou nome similar) com 00-indice.md (objetivo, Design de Origem, tabela de partes com ordem e dependências) e partes numeradas 01-....md, 02-....md etc., cada uma com até ~6 fases no formato padrão e checkpoint de encerramento.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "creates_plan_folder",
+          "description": "Uma pasta foi criada em docs/plan/ contendo múltiplos arquivos .md em vez de um único arquivo monolítico"
+        },
+        {
+          "id": "has_index_file",
+          "description": "Existe um arquivo de índice (00-indice.md ou equivalente) com objetivo, Design de Origem e tabela/lista das partes com ordem e dependências"
+        },
+        {
+          "id": "parts_are_complete_plans",
+          "description": "Cada parte numerada tem estrutura de plano completo: fases com checkboxes, critérios de sucesso e verificações — não é só um esboço"
+        },
+        {
+          "id": "parts_respect_phase_ceiling",
+          "description": "Nenhuma parte individual passa de ~6 fases"
+        },
+        {
+          "id": "has_checkpoints",
+          "description": "As partes terminam com um checkpoint explícito (commit + aviso ao usuário) marcando a pausa entre partes"
+        },
+        {
+          "id": "covers_full_scope",
+          "description": "O conjunto índice + partes cobre todo o escopo pedido: paywall, compra, restauração, gerenciamento, entitlements e analytics"
+        },
+        {
+          "id": "no_vague_placeholders",
+          "description": "Não contém termos vagos como 'TBD', 'ver depois', 'adicionar lógica aqui'"
+        }
+      ]
     }
   ]
 }

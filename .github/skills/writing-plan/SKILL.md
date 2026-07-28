@@ -24,6 +24,7 @@ Resolvidas a partir do diretório desta skill. Leia cada uma no momento indicado
 | Arquivo | Quando ler |
 |---------|-----------|
 | `references/plan-template.md` | No passo 4, antes de escrever o arquivo — estrutura obrigatória e os dois templates de fases |
+| `references/multi-part-plan.md` | No passo 2.7, quando a estimativa passar do teto de fases — estrutura da pasta, do índice e das partes |
 | `references/headless-testing.md` | No passo 1.5, ao classificar uma mudança UI-only e decidir se a stack suporta teste de componente headless |
 
 ---
@@ -82,13 +83,19 @@ Antes de escrever as fases, revise o rascunho da tabela de Arquitetura/Escopo co
 - Prefira a menor mudança que resolve o problema real; não crie abstrações "para o futuro" — isso é over-engineering, não planejamento
 - Se o escopo encolher nessa revisão, é o resultado esperado. Se genuinamente precisa de vários arquivos/fases, mantenha — a revisão é contra inchaço injustificado, não contra complexidade real.
 
+### 2.7. Estimar o tamanho e decidir o formato
+
+Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O plano completo fica pronto de uma vez — a divisão existe para a execução acontecer em sessões curtas com checkpoint natural entre partes (commit + validação), não para adiar detalhamento.
+
+**Até 6 fases, siga com arquivo único** — não divida plano pequeno.
+
 ### 3. Criar o arquivo
 
-Derive um nome `kebab-case` conciso do objetivo (ex: "plano para tela de login" → `login-screen.md`; "refatorar repositório de usuário" → `refactor-user-repository.md`) e salve em `./docs/plan/` (`mkdir -p ./docs/plan`).
+Derive um nome `kebab-case` conciso do objetivo (ex: "plano para tela de login" → `login-screen.md`; "refatorar repositório de usuário" → `refactor-user-repository.md`) e salve em `./docs/plan/` (`mkdir -p ./docs/plan`). No modo multi-parte, o nome vira a pasta e cada parte recebe prefixo numérico (`mkdir -p ./docs/plan/<nome>`).
 
 ### 4. Escrever o plano
 
-Leia `references/plan-template.md` e siga a estrutura obrigatória, escolhendo o template de fases correspondente ao tipo de mudança classificado no passo 1.5.
+Leia `references/plan-template.md` e siga a estrutura obrigatória, escolhendo o template de fases correspondente ao tipo de mudança classificado no passo 1.5. No modo multi-parte, escreva o índice e cada parte conforme `references/multi-part-plan.md` — todas as partes são escritas agora, com detalhe completo.
 
 ---
 
@@ -102,6 +109,8 @@ Leia `references/plan-template.md` e siga a estrutura obrigatória, escolhendo o
 
 **Tamanho das fases** — 3–7 passos por fase; se ficar grande, divida.
 
+**Teto de fases por plano** — um plano executável tem no máximo ~6 fases. Escopo maior não vira um monólito de 10+ fases: vira plano multi-parte (passo 2.7), com o detalhe completo distribuído em partes numeradas.
+
 **Riscos obrigatórios para planos com 3+ fases** — liste pelo menos um risco real.
 
 **Verificação nunca executa o app** — nenhum passo pode subir app, emulador, simulador, device, browser real ou suíte E2E/instrumentada. Testar componente no harness não é rodar o app; os limites estão em `references/headless-testing.md`.
@@ -110,6 +119,6 @@ Leia `references/plan-template.md` e siga a estrutura obrigatória, escolhendo o
 
 ## Após salvar o arquivo
 
-Informe o usuário: o caminho do arquivo gerado, um resumo de 2–3 linhas (quantas fases, escopo geral) e pergunte se quer ajustar algo antes da execução. Não execute o plano automaticamente — a decisão de começar é do usuário.
+Informe o usuário: o caminho do arquivo gerado (ou da pasta, no modo multi-parte, listando as partes), um resumo de 2–3 linhas (quantas fases/partes, escopo geral) e pergunte se quer ajustar algo antes da execução. Não execute o plano automaticamente — a decisão de começar é do usuário.
 
 Quando o usuário aprovar a execução, use `executing-plan`. Essa skill é responsável por revisar o plano contra o repositório atual, retomar pelo primeiro checkbox pendente, executar e verificar cada tarefa, registrar o progresso e atualizar os flows afetados.
