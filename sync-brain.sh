@@ -2,7 +2,6 @@
 # Busca as cinco skills do Brain Flows no repositório-fonte e as instala em:
 #   .claude/skills/
 #   .agents/skills/
-#   .github/skills/
 # Também busca os agentes locais (ex.: brain-agent-loop) direto de .claude/agents/
 # no repositório-fonte e os instala em .claude/agents/ — não passam pelo
 # plugin, porque subagents de plugin ignoram o campo permissionMode.
@@ -22,7 +21,6 @@ BRAIN_AGENTS=(brain-agent-loop brain-agent-loop-exec)
 TARGET_SKILLS_DIRS=(
   "$SCRIPT_DIR/.claude/skills"
   "$SCRIPT_DIR/.agents/skills"
-  "$SCRIPT_DIR/.github/skills"
 )
 TARGET_AGENTS_DIR="$SCRIPT_DIR/.claude/agents"
 
@@ -79,7 +77,7 @@ for target_skills_dir in "${TARGET_SKILLS_DIRS[@]}"; do
   echo "  ✅ ${target_skills_dir#"$SCRIPT_DIR/"}"
 done
 
-echo "✅ Brain Flows sincronizado em .claude/skills/, .agents/skills/ e .github/skills/."
+echo "✅ Brain Flows sincronizado em .claude/skills/ e .agents/skills/."
 
 echo "🤖 Preparando os agentes locais do Brain Flows..."
 mkdir -p "$STAGING_AGENTS_DIR"
