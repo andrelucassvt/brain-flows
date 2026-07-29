@@ -2,6 +2,16 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.9.0 — 2026-07-29
+
+Delegação de partes de plano multi-parte para subagentes: partes mecânicas e verificáveis param de consumir o contexto da thread principal.
+
+- **`writing-plan/references/multi-part-plan.md` ganha critérios de delegabilidade.** Nova subseção "Avaliar delegação para subagentes" na seção "Como fatiar", com 5 critérios (todos verdadeiros para `sim`): contexto auto-contido, arquivos disjuntos das demais partes pendentes, verificação 100% automatizada com critério binário, sem decisão de design em aberto, e blast radius contido. Duas regras derivadas: parte UI-only sem teste headless é sempre `não`; a delegação é sempre por parte inteira.
+- **Nova coluna `Delegável` no template do `00-indice.md`**, entre "Entrega" e "Depende de", no formato `sim/não — motivo curto` — o motivo curto força a avaliação explícita em vez de um `sim`/`não` mecânico.
+- **`executing-plan` despacha partes delegáveis a subagentes, com fallback.** No passo 1, o índice passa a informar também a coluna `Delegável` da parte selecionada. No passo 7, se a parte estiver marcada `sim` e o ambiente oferecer um mecanismo de subagente, a parte inteira é delegada — o subagente recebe o arquivo da parte e do índice, executa todos os passos, marca os checkboxes e roda as verificações; o retorno exigido são as evidências das verificações, e o orquestrador confere essas evidências antes de marcar o status da parte no índice. Sem suporte a subagentes no ambiente, ou parte marcada `não`, a execução segue normal, passo a passo — a delegação é sempre otimização, nunca requisito. Redação neutra entre plataformas, sem citar ferramenta, modelo ou modo de permissão específico.
+- Critérios de delegação vivem só no reference; os dois `SKILL.md` apenas apontam para eles, sem repetir.
+- Espelhado nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.8.0 — 2026-07-27
 
 Plano multi-parte: escopo grande deixa de virar um monólito de 10+ fases executado numa maratona única.

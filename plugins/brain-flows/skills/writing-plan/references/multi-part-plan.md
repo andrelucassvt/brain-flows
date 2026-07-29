@@ -18,6 +18,21 @@ docs/plan/<nome-do-plano>/
 - Respeite dependências: a numeração é a ordem de execução; uma parte só depende de partes anteriores.
 - Cada parte respeita o teto de ~6 fases. Se uma parte estourar o teto, o fatiamento está errado — refatere.
 
+### Avaliar delegação para subagentes
+
+Ao fatiar, avalie cada parte contra os 5 critérios abaixo. Só marque delegável (`sim`) quando **todos** forem verdadeiros:
+
+1. **Contexto auto-contido** — a parte se executa lendo só o próprio arquivo + código referenciado, sem depender de discussão fora dele.
+2. **Arquivos disjuntos** das demais partes ainda pendentes — nenhuma sobreposição de arquivo editado.
+3. **Verificação 100% automatizada** com critério binário (passa/falha), sem julgamento humano na checagem.
+4. **Sem decisão de design em aberto** — a Decisão aprovada no Design de Origem já cobre a parte inteira; nada fica para decidir durante a execução.
+5. **Blast radius contido** — a parte não abre um contrato (interface, schema, rota) que outra parte pendente vai consumir.
+
+Duas regras derivadas:
+
+- Parte **UI-only sem teste de componente headless** é sempre `não` — a evidência de conclusão é a validação funcional do usuário, que não pode ser delegada.
+- A delegação é **por parte inteira**: o subagente executa do primeiro ao último checkbox da parte, marca os checkboxes no próprio arquivo e roda as verificações definidas — nunca uma fração da parte.
+
 ## 00-indice.md
 
 ```markdown
@@ -39,10 +54,12 @@ docs/plan/<nome-do-plano>/
 
 ## Partes
 
-| # | Arquivo | Entrega | Depende de | Status |
-|---|---------|---------|-----------|--------|
-| 1 | `01-<parte-um>.md` | [o que funciona ao concluir] | — | pendente |
-| 2 | `02-<parte-dois>.md` | [o que funciona ao concluir] | 1 | pendente |
+| # | Arquivo | Entrega | Delegável | Depende de | Status |
+|---|---------|---------|-----------|-----------|--------|
+| 1 | `01-<parte-um>.md` | [o que funciona ao concluir] | sim/não — [motivo curto] | — | pendente |
+| 2 | `02-<parte-dois>.md` | [o que funciona ao concluir] | sim/não — [motivo curto] | 1 | pendente |
+
+O motivo curto é obrigatório em ambos os casos — força a avaliação explícita dos critérios acima em vez de um `sim`/`não` mecânico.
 
 ## Riscos e Mitigações (globais)
 

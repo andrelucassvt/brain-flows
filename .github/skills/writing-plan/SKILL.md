@@ -24,7 +24,7 @@ Resolvidas a partir do diretório desta skill. Leia cada uma no momento indicado
 | Arquivo | Quando ler |
 |---------|-----------|
 | `references/plan-template.md` | No passo 4, antes de escrever o arquivo — estrutura obrigatória e os dois templates de fases |
-| `references/multi-part-plan.md` | No passo 2.7, quando a estimativa passar do teto de fases — estrutura da pasta, do índice e das partes |
+| `references/multi-part-plan.md` | No passo 2.7, quando a estimativa passar do teto de fases — estrutura da pasta, do índice, das partes e a avaliação de delegação para subagentes |
 | `references/headless-testing.md` | No passo 1.5, ao classificar uma mudança UI-only e decidir se a stack suporta teste de componente headless |
 
 ---
@@ -85,7 +85,7 @@ Antes de escrever as fases, revise o rascunho da tabela de Arquitetura/Escopo co
 
 ### 2.7. Estimar o tamanho e decidir o formato
 
-Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O plano completo fica pronto de uma vez — a divisão existe para a execução acontecer em sessões curtas com checkpoint natural entre partes (commit + validação), não para adiar detalhamento.
+Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O fatiamento também inclui avaliar a delegabilidade de cada parte para subagentes, conforme os critérios do reference, e registrar o resultado na coluna `Delegável` do índice. O plano completo fica pronto de uma vez — a divisão existe para a execução acontecer em sessões curtas com checkpoint natural entre partes (commit + validação), não para adiar detalhamento.
 
 **Até 6 fases, siga com arquivo único** — não divida plano pequeno.
 

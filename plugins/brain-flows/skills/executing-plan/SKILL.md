@@ -27,7 +27,7 @@ Código implementado e verificado, plano com progresso marcado, e os flows estru
 
 Use o caminho informado pelo usuário. Se ele disser apenas "o plano", liste `./docs/plan/` (arquivos e pastas), selecione o único candidato compatível com a conversa ou faça uma pergunta curta quando houver ambiguidade real.
 
-**Plano multi-parte** (pasta com `00-indice.md` + partes numeradas): leia o índice para absorver objetivo, Design de Origem e ordem das partes, e depois leia por completo **apenas a parte em execução** — a primeira com status pendente na tabela do índice cujas dependências estejam concluídas. As partes futuras não entram no contexto agora; elas serão lidas quando chegar a vez.
+**Plano multi-parte** (pasta com `00-indice.md` + partes numeradas): leia o índice para absorver objetivo, Design de Origem, ordem das partes e a coluna `Delegável` da parte selecionada, e depois leia por completo **apenas a parte em execução** — a primeira com status pendente na tabela do índice cujas dependências estejam concluídas. As partes futuras não entram no contexto agora; elas serão lidas quando chegar a vez.
 
 **Plano de arquivo único:** leia o arquivo inteiro antes de alterar código. Identifique:
 
@@ -103,7 +103,9 @@ Ao chegar ao fim:
 4. Confirme que os flows estruturalmente afetados foram atualizados.
 5. Mantenha desmarcado qualquer critério que não tenha sido comprovado.
 
-**Em plano multi-parte:** ao concluir uma parte, marque o status dela como concluída na tabela do `00-indice.md`, execute o checkpoint final da parte (commit + aviso) e **pare** — informe que a parte N está concluída e que a parte N+1 está pronta para execução, deixando a decisão de continuar com o usuário. A atualização de flows (passo 6) e a declaração de conclusão do plano inteiro só acontecem na última parte.
+**Em plano multi-parte:** antes de iniciar a parte selecionada, verifique a coluna `Delegável`. Se estiver marcada `sim` **e** o ambiente atual oferecer um mecanismo de subagente, delegue a parte inteira: o subagente recebe o caminho do arquivo da parte (e do índice), executa todos os passos do primeiro ao último checkbox, marca os checkboxes no próprio arquivo e roda as verificações definidas ali — o retorno exigido são as evidências dessas verificações, não apenas a afirmação de que foi concluído. Se a parte estiver marcada `não`, ou o ambiente não oferecer subagentes, execute a parte normalmente, passo a passo, como descrito nas seções 3–6; a delegação é uma otimização, nunca um requisito.
+
+Antes de marcar o status da parte no índice, confira as evidências retornadas (pelo subagente ou pela própria execução direta) contra as verificações definidas na parte — checkbox marcado sem evidência confirmada não vale. Só então marque o status dela como concluída na tabela do `00-indice.md`, execute o checkpoint final da parte (commit + aviso) e **pare** — informe que a parte N está concluída e que a parte N+1 está pronta para execução, deixando a decisão de continuar com o usuário. A atualização de flows (passo 6) e a declaração de conclusão do plano inteiro só acontecem na última parte.
 
 Só declare o plano concluído quando todos os itens obrigatórios estiverem marcados e as verificações atuais sustentarem essa afirmação.
 

@@ -2,9 +2,9 @@
 generated_at: 2026-07-22
 source_commit: 1fcb0f6
 source_state: dirty
-verified_at: 2026-07-24
+verified_at: 2026-07-29
 status: current
-related_plans: [docs/plan/agent-loop-skill.md]
+related_plans: [docs/plan/agent-loop-skill.md, docs/plan/subagent-delegation.md]
 ---
 
 # Estrutura do Projeto: Brain Flows
@@ -57,8 +57,8 @@ Neste projeto, cada "feature" é uma skill do workflow ou um script de distribui
 | Skill `flow-init` | `plugins/brain-flows/skills/flow-init/` | Varre o projeto inteiro e inicializa `docs/flow/` com a estrutura geral e flows opcionais; possui `references/guide-project-instructions.md` |
 | Skill `flow` | `plugins/brain-flows/skills/flow/` | Mapeia uma feature de ponta a ponta e gera `docs/flow/<nome>.md` |
 | Skill `brainstorming` | `plugins/brain-flows/skills/brainstorming/` | Explora o design antes de implementar e emite bloco de handoff após aprovação |
-| Skill `writing-plan` | `plugins/brain-flows/skills/writing-plan/` | Converte o design aprovado em plano acionável em `docs/plan/` |
-| Skill `executing-plan` | `plugins/brain-flows/skills/executing-plan/` | Executa o plano uma tarefa por vez e atualiza os flows afetados |
+| Skill `writing-plan` | `plugins/brain-flows/skills/writing-plan/` | Converte o design aprovado em plano acionável em `docs/plan/`; em plano multi-parte, também avalia a delegabilidade de cada parte para subagentes |
+| Skill `executing-plan` | `plugins/brain-flows/skills/executing-plan/` | Executa o plano uma tarefa por vez e atualiza os flows afetados; em plano multi-parte, despacha partes marcadas delegáveis a subagentes (com fallback para execução normal) |
 | Agente local `brain-agent-loop` | `.claude/agents/brain-agent-loop.md` | Executa `brainstorming → writing-plan` em Opus, escolhe o design sem pausa e recebe do Claude Code um worktree por `isolation: worktree`; delega a execução no mesmo worktree |
 | Agente local `brain-agent-loop-exec` | `.claude/agents/brain-agent-loop-exec.md` | Executa `executing-plan` em Sonnet, commita, publica a branch e abre a PR; não cria nem encerra o worktree herdado |
 | Sincronização | `sync-brain.sh` | Baixa as skills do repositório-fonte e distribui para os três destinos locais (ver `docs/flow/sync-brain.md`) |
