@@ -2,6 +2,15 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.9.1 — 2026-08-02
+
+Plano multi-parte passa a ser executado até o fim: o checkpoint entre partes deixa de ser pausa para aprovação.
+
+- **`executing-plan` não pergunta mais se deve continuar.** Após concluir uma parte (status marcado no índice + commit + resumo curto), segue direto para a próxima parte pendente com dependências satisfeitas, repetindo os passos 1–5 até a última. A pausa passa a existir só por bloqueio real (verificação que falha fora do escopo do passo, dependência externa ausente, correção que mudaria o design aprovado) ou quando o usuário recorta explicitamente o pedido ("execute só a parte 2").
+- **Checkpoint redefinido em `writing-plan/references/multi-part-plan.md`**: continua sendo commit por entrega fechada e ponto de retomada caso a sessão caia, mas não é ponto de aprovação. O checkbox de encerramento das partes agora diz "commit + resumo curto do que ficou pronto, seguindo direto para a parte N+1".
+- Redação do passo 2.7 do `writing-plan/SKILL.md` alinhada: a divisão em partes existe para o contexto, não para pausar a execução.
+- Espelhado nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.9.0 — 2026-07-29
 
 Delegação de partes de plano multi-parte para subagentes: partes mecânicas e verificáveis param de consumir o contexto da thread principal.

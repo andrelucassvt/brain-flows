@@ -1,6 +1,6 @@
 # Plano multi-parte
 
-Estrutura obrigatória quando a estimativa do passo 2.7 passa do teto de ~6 fases. O plano completo — com todas as partes detalhadas — é escrito de uma vez; a divisão em arquivos existe para a execução acontecer em sessões curtas, com checkpoint natural (commit + validação) entre partes, e para o `executing-plan` retomar parte a parte sem carregar um monólito.
+Estrutura obrigatória quando a estimativa do passo 2.7 passa do teto de ~6 fases. O plano completo — com todas as partes detalhadas — é escrito de uma vez; a divisão em arquivos existe para o `executing-plan` avançar parte a parte sem carregar um monólito no contexto, com checkpoint natural (commit + repositório íntegro) ao fim de cada entrega. O checkpoint não interrompe a execução: quem executa o plano executa todas as partes até a última.
 
 ## Layout
 
@@ -89,10 +89,10 @@ Cada parte usa a **estrutura obrigatória de `plan-template.md`** (Contexto, Arq
 2. **Encerramento com checkpoint**, como último passo da última fase:
 
 ```markdown
-- [ ] Checkpoint: commit das mudanças da parte + informar o usuário que a parte N está concluída e a parte N+1 está pronta para execução
+- [ ] Checkpoint: commit das mudanças da parte + resumo curto do que ficou pronto, seguindo direto para a parte N+1
 ```
 
-O checkpoint é o que transforma a divisão em arquivos em pausa real: sem ele, a execução vira a mesma maratona de antes, só que em vários arquivos.
+O checkpoint é o que mantém o repositório íntegro entre partes — um commit por entrega fechada e um ponto de retomada claro caso a sessão caia. Ele **não** é uma pausa para aprovação: a execução continua na parte seguinte até a última, e só para por bloqueio real ou recorte explícito do usuário.
 
 ## O que não muda
 

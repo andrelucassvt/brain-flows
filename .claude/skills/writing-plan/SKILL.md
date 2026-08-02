@@ -85,7 +85,7 @@ Antes de escrever as fases, revise o rascunho da tabela de Arquitetura/Escopo co
 
 ### 2.7. Estimar o tamanho e decidir o formato
 
-Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O fatiamento também inclui avaliar a delegabilidade de cada parte para subagentes, conforme os critérios do reference, e registrar o resultado na coluna `Delegável` do índice. O plano completo fica pronto de uma vez — a divisão existe para a execução acontecer em sessões curtas com checkpoint natural entre partes (commit + validação), não para adiar detalhamento.
+Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O fatiamento também inclui avaliar a delegabilidade de cada parte para subagentes, conforme os critérios do reference, e registrar o resultado na coluna `Delegável` do índice. O plano completo fica pronto de uma vez — a divisão existe para a execução avançar parte a parte com checkpoint natural entre elas (commit + repositório íntegro), não para adiar detalhamento nem para pausar a execução em busca de aprovação.
 
 **Até 6 fases, siga com arquivo único** — não divida plano pequeno.
 
