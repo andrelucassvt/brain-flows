@@ -19,6 +19,14 @@ Um arquivo de plano em `./docs/plan/`, idealmente com a seção **Design de Orig
 
 Código implementado e verificado, plano com progresso marcado, e os flows estruturalmente afetados atualizados e relinkados ao plano. Fecha a cadeia `brainstorm → plan → execução → flow`.
 
+### Referências
+
+Resolvida a partir do diretório desta skill:
+
+| Arquivo | Quando ler |
+|---------|-----------|
+| `references/completion-review.md` | No passo 7, com as tarefas executadas e antes de declarar o plano concluído — rubrica de conclusão, catálogo de anti-padrões e falsos positivos |
+
 ---
 
 ## Fluxo de execução
@@ -95,13 +103,9 @@ Se não existir flow relacionado, não crie um automaticamente: registre a ausê
 
 ### 7. Revisar a conclusão
 
-Ao chegar ao fim:
+Ao chegar ao fim, rode as verificações finais definidas no plano para detectar regressões. Em seguida leia `references/completion-review.md` e aplique a rubrica de conclusão às cinco dimensões (cobertura, evidência, fidelidade, integridade, rastreabilidade), corrigindo o que ela reprovar.
 
-1. Releia os critérios de sucesso e confronte cada um com evidência atual.
-2. Rode as verificações finais definidas no plano para detectar regressões.
-3. Confirme que não restam checkboxes de implementação ou verificação pendentes.
-4. Confirme que os flows estruturalmente afetados foram atualizados.
-5. Mantenha desmarcado qualquer critério que não tenha sido comprovado.
+Um zero em qualquer dimensão impede declarar o plano concluído. Se ele não se resolver dentro do escopo — dependência externa, verificação indisponível, correção que mudaria o design aprovado — relate o bloqueio e o que ficou comprovado, em vez de fechar o plano.
 
 **Em plano multi-parte:** antes de iniciar a parte selecionada, verifique a coluna `Delegável`. Se estiver marcada `sim` **e** o ambiente atual oferecer um mecanismo de subagente, delegue a parte inteira: o subagente recebe o caminho do arquivo da parte (e do índice), executa todos os passos do primeiro ao último checkbox, marca os checkboxes no próprio arquivo e roda as verificações definidas ali — o retorno exigido são as evidências dessas verificações, não apenas a afirmação de que foi concluído. Se a parte estiver marcada `não`, ou o ambiente não oferecer subagentes, execute a parte normalmente, passo a passo, como descrito nas seções 3–6; a delegação é uma otimização, nunca um requisito.
 

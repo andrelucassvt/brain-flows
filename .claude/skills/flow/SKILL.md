@@ -15,7 +15,7 @@ Resolvida a partir do diretório desta skill:
 
 | Arquivo | Quando ler |
 |---------|-----------|
-| `references/flow-template.md` | No passo 4, antes de escrever o documento — estrutura obrigatória, regras de frontmatter e checklist de autorrevisão |
+| `references/flow-template.md` | No passo 4, antes de escrever o documento — estrutura obrigatória, regras de frontmatter, checklist de autorrevisão e critérios de utilidade |
 
 ---
 
@@ -54,7 +54,7 @@ Leia `references/flow-template.md` e siga a estrutura obrigatória, preenchendo 
 
 ### 5. Autorrevisar antes de salvar
 
-Aplique a checklist de autorrevisão de `references/flow-template.md` confrontando o documento com o código analisado. Ela é o que permite marcar o flow como `current`.
+Aplique as duas checagens de `references/flow-template.md`: a **checklist de autorrevisão**, confrontando o documento com o código analisado, e os **critérios de utilidade**, que julgam se o documento serve para depurar a feature e para o `brainstorming` selecionar flows por relevância. Passar nas duas é o que permite marcar o flow como `current`.
 
 ---
 

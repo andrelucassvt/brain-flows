@@ -89,3 +89,26 @@ Confronte o documento final com o código analisado antes de salvar:
 - `related_plans` lista somente planos realmente relacionados, ou permanece `[]`?
 
 Corrija divergências antes de salvar. Se algum item não puder ser confirmado, descreva a limitação em **Observações** e use `status: possibly-stale` em vez de apresentar o documento como atual.
+
+## Critérios de utilidade
+
+A checklist acima garante que o documento está **certo**. Estes critérios garantem que ele **serve** — um flow exato mas vago passa na checklist e não ajuda ninguém. O flow é insumo do `brainstorming`, que seleciona quais abrir lendo apenas a linha `**Resumo:**` de cada arquivo.
+
+- **O Resumo distingue este flow dos demais?** Ele é o que o `brainstorming` lê para escolher por relevância semântica. "Gerencia o login do usuário" não discrimina nada; diga o que este fluxo faz que os vizinhos não fazem.
+- **Dá para depurar um problema do fluxo com o documento aberto e o código fechado?** Se for preciso ler os arquivos para entender o caminho, o Passo a Passo está raso demais.
+- **As regras listadas são regras de negócio de fato?** Guard clause, null check e early return são controle de fluxo, não regra. Regra é a decisão que alguém tomou sobre o produto.
+- **As Observações dizem algo que o código não diz sozinho?** Ponto frágil, divergência entre nome e comportamento, TODO relevante. Elogio à estrutura não é observação.
+
+### Anti-padrões
+
+**F1 — Resumo genérico.** Uma frase que serviria para metade dos flows do projeto. Quebra a seleção por relevância no `brainstorming`.
+
+**F2 — Passo-eco.** O passo repete o nome do método sem acrescentar nada: "`LoginController.login()` → executa o login".
+
+**F3 — Tabela inflada.** Arquivos que o fluxo apenas atravessa, ou utilitários genéricos, listados como participantes. Se remover o arquivo não muda o entendimento do fluxo, ele não pertence à tabela.
+
+**F4 — Regra fantasma.** Verificação de linguagem promovida a regra de negócio em "Regras de Negócio Relevantes".
+
+**F5 — Caminho alternativo hipotético.** Ramificação de erro descrita porque seria razoável existir, sem estar no código. A seção aceita só o que existe.
+
+**Falsos positivos:** flow longo porque a feature atravessa muitas camadas de fato; passos parecidos entre si quando as camadas realmente fazem coisas parecidas; seção "Dependências Externas" ausente quando não há dependência; e "Nenhuma regra de negócio relevante além do controle de fluxo padrão." quando é a verdade — essa frase é o comportamento correto, não uma seção vazia.

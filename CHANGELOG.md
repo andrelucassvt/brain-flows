@@ -2,6 +2,25 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.11.0 — 2026-08-04
+
+Gate de qualidade propagado para `executing-plan` e `flow`, fechando as três pontas da cadeia. `package-brain.sh` passa a distribuir para os quatro diretórios.
+
+- **Nova referência `executing-plan/references/completion-review.md`** — primeira `references/` desta skill. Rubrica de conclusão com 5 dimensões (cobertura, evidência, fidelidade, integridade, rastreabilidade) pontuadas 0/1/2, catálogo E1–E10 (checkbox otimista, afirmação no lugar da verificação, evidência obsoleta, verificação afrouxada, drift silencioso, escopo infiltrado, ampliação por conveniência, flow órfão, plano reescrito, conclusão com ressalva) e 7 falsos positivos. Julga a execução, não o plano.
+- **Passo 7 do `executing-plan` reescrito.** A lista de cinco conferências manuais virou: rodar as verificações finais e aplicar a rubrica. Um zero em qualquer dimensão impede declarar o plano concluído; sem resolução dentro do escopo, o resultado é relato de bloqueio, não fechamento.
+- **`flow/references/flow-template.md` ganha "Critérios de utilidade"**, complementando a checklist de autorrevisão existente: ela garante que o documento está certo, os critérios garantem que ele serve. Quatro perguntas (Resumo discrimina no `grep` do `brainstorming`? dá para depurar sem abrir o código? as regras são de negócio ou controle de fluxo? as Observações dizem algo que o código não diz?), catálogo F1–F5 e falsos positivos. Passo 5 do `flow/SKILL.md` passa a exigir as duas checagens para marcar `status: current`.
+- **`package-brain.sh` distribui para os quatro diretórios** (`.agents/`, `.github/`, `plugins/brain-flows/`) a partir de `.claude/skills/`, em vez de só o plugin. `.github/skills/` saiu do `sync-brain.sh` no commit `cbe6fc7` e desde então nenhum script o atualizava — este passa a ser o único caminho que o mantém em dia. `AGENTS.md` atualizado com o papel real de cada script.
+
+## 1.10.0 — 2026-08-04
+
+Gate de qualidade no `writing-plan`: o plano passa a ser auditado contra uma rubrica antes de ser salvo, em vez de sair direto da geração.
+
+- **Nova referência `writing-plan/references/plan-antipatterns.md`**, com três partes: rubrica de aceite (5 dimensões — acionabilidade, verificabilidade, fidelidade ao design, proporcionalidade, retomabilidade — pontuadas 0/1/2, corte em 8/10 e zero em qualquer dimensão bloqueando), catálogo de 13 anti-padrões nomeados (P1–P13, cada um com sintoma e correção) e uma lista de falsos positivos que impede a auditoria de podar complexidade legítima.
+- **Novo passo 4.5 no `writing-plan/SKILL.md`** ("Auditar antes de salvar"): com o plano escrito e ainda não salvo, aplica a rubrica, corrige o que ela reprovar e só então grava o arquivo. No modo multi-parte, audita cada parte e o índice; se a correção encolher o escopo abaixo do teto de fases, o formato é reavaliado no passo 2.7.
+- **Passo 2.5 ("Revisão de simplicidade") removido.** A checagem de over-engineering acontecia antes de as fases existirem e passava a duplicar o catálogo; virou a dimensão de proporcionalidade da rubrica (anti-padrões P10–P12), num único ponto de auditoria.
+- **Regras de Qualidade enxugadas**: "Passos acionáveis" e "Sem placeholders vagos" saíram do `SKILL.md` e viraram P1–P3 no catálogo, mantendo o lugar canônico único. As demais regras (fases sequenciais, tamanho de fase, teto de fases, riscos obrigatórios, verificação não executa o app) continuam no `SKILL.md` por serem regras de geração, não critérios de auditoria.
+- Espelhado nos quatro diretórios (`.claude/`, `.agents/`, `.github/`, `plugins/brain-flows/`).
+
 ## 1.9.1 — 2026-08-02
 
 Plano multi-parte passa a ser executado até o fim: o checkpoint entre partes deixa de ser pausa para aprovação.

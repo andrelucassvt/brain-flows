@@ -24,6 +24,7 @@ Resolvidas a partir do diretório desta skill. Leia cada uma no momento indicado
 | Arquivo | Quando ler |
 |---------|-----------|
 | `references/plan-template.md` | No passo 4, antes de escrever o arquivo — estrutura obrigatória e os dois templates de fases |
+| `references/plan-antipatterns.md` | No passo 4.5, com o plano escrito e ainda não salvo — rubrica de aceite, catálogo de anti-padrões e falsos positivos |
 | `references/multi-part-plan.md` | No passo 2.7, quando a estimativa passar do teto de fases — estrutura da pasta, do índice, das partes e a avaliação de delegação para subagentes |
 | `references/headless-testing.md` | No passo 1.5, ao classificar uma mudança UI-only e decidir se a stack suporta teste de componente headless |
 
@@ -75,14 +76,6 @@ ls ./docs/flow/ 2>/dev/null
 
 Essa pergunta deve **sempre** ser feita quando não há flow — nunca assuma que o usuário não quer.
 
-### 2.5. Revisão de simplicidade
-
-Antes de escrever as fases, revise o rascunho da tabela de Arquitetura/Escopo com a pergunta: **essa complexidade é exigida pelo problema, ou é só a primeira solução que veio à mente?**
-
-- Cada arquivo novo ou camada extra precisa de razão concreta (regra de negócio, separação já usada no projeto, requisito explícito do usuário)
-- Prefira a menor mudança que resolve o problema real; não crie abstrações "para o futuro" — isso é over-engineering, não planejamento
-- Se o escopo encolher nessa revisão, é o resultado esperado. Se genuinamente precisa de vários arquivos/fases, mantenha — a revisão é contra inchaço injustificado, não contra complexidade real.
-
 ### 2.7. Estimar o tamanho e decidir o formato
 
 Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O fatiamento também inclui avaliar a delegabilidade de cada parte para subagentes, conforme os critérios do reference, e registrar o resultado na coluna `Delegável` do índice. O plano completo fica pronto de uma vez — a divisão existe para a execução avançar parte a parte com checkpoint natural entre elas (commit + repositório íntegro), não para adiar detalhamento nem para pausar a execução em busca de aprovação.
@@ -97,13 +90,15 @@ Derive um nome `kebab-case` conciso do objetivo (ex: "plano para tela de login" 
 
 Leia `references/plan-template.md` e siga a estrutura obrigatória, escolhendo o template de fases correspondente ao tipo de mudança classificado no passo 1.5. No modo multi-parte, escreva o índice e cada parte conforme `references/multi-part-plan.md` — todas as partes são escritas agora, com detalhe completo.
 
+### 4.5. Auditar antes de salvar
+
+Com o plano escrito e ainda não salvo, leia `references/plan-antipatterns.md` e aplique a rubrica de aceite às cinco dimensões (acionabilidade, verificabilidade, fidelidade ao design, proporcionalidade, retomabilidade). Corrija o que a rubrica reprovar e só então salve.
+
+Esta é a única passada de auto-crítica da skill: escopo inflado e complexidade injustificada são pegos aqui, pela dimensão de proporcionalidade, e não em uma revisão anterior. No modo multi-parte, audite cada parte e o índice.
+
 ---
 
 ## Regras de Qualidade
-
-**Passos acionáveis** — cada checkbox deve ser executável sem ambiguidade. Ruim: "adicionar validação". Bom: "adicionar validação de email em `src/features/login/components/EmailField.tsx`".
-
-**Sem placeholders vagos** — nunca "TBD" ou "ver depois". Se não souber, diga o que precisa ser investigado e por quê.
 
 **Fases sequenciais e seguras** — cada fase deve poder ser concluída e verificada antes da próxima. Mudanças de tipos/interfaces vêm antes de implementações.
 

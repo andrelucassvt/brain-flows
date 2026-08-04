@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
-# Empacota somente as cinco skills locais no diretório distribuível do plugin.
+# Distribui as cinco skills locais de .claude/skills/ para os espelhos por
+# plataforma e para o diretório distribuível do plugin.
+#
+# .claude/skills/ é a fonte de verdade da edição local; sync-brain.sh só
+# atualiza .claude/ e .agents/ a partir do repositório remoto, então .github/
+# depende deste script para não ficar defasado.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_SKILLS_DIR="$SCRIPT_DIR/.claude/skills"
-PLUGIN_SKILLS_DIR="$SCRIPT_DIR/plugins/brain-flows/skills"
 BRAIN_SKILLS=(brainstorming flow flow-init writing-plan executing-plan)
+TARGET_SKILLS_DIRS=(
+  "$SCRIPT_DIR/.agents/skills"
+  "$SCRIPT_DIR/.github/skills"
+  "$SCRIPT_DIR/plugins/brain-flows/skills"
+)
 STAGING_DIR="$(mktemp -d)"
 
 cleanup() {
@@ -28,7 +37,10 @@ for skill in "${BRAIN_SKILLS[@]}"; do
   rsync -a --delete "$source_skill_dir/" "$staging_skill_dir/"
 done
 
-mkdir -p "$PLUGIN_SKILLS_DIR"
-rsync -a --delete "$STAGING_DIR/" "$PLUGIN_SKILLS_DIR/"
+for target_skills_dir in "${TARGET_SKILLS_DIRS[@]}"; do
+  mkdir -p "$target_skills_dir"
+  rsync -a --delete "$STAGING_DIR/" "$target_skills_dir/"
+  echo "  ✅ ${target_skills_dir#"$SCRIPT_DIR/"}"
+done
 
-echo "📦 Plugin atualizado em plugins/brain-flows/skills/."
+echo "📦 Skills distribuídas a partir de .claude/skills/."

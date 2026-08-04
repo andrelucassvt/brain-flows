@@ -33,8 +33,8 @@ Marketplace/plugin de cinco skills em Markdown para desenvolvimento orientado po
 
 ## Comandos
 
-- `./sync-brain.sh` — baixa as skills do repositório-fonte e distribui para os três diretórios locais; também baixa os agentes locais (`BRAIN_AGENTS`) direto de `.claude/agents/` do repositório-fonte para `.claude/agents/`
-- `./package-brain.sh` — reconstrói `plugins/brain-flows/skills/` a partir de `.claude/skills/`
+- `./sync-brain.sh` — baixa as skills do repositório-fonte e as instala em `.claude/skills/` e `.agents/skills/` (não toca em `.github/skills/`); também baixa os agentes locais (`BRAIN_AGENTS`) direto de `.claude/agents/` do repositório-fonte para `.claude/agents/`
+- `./package-brain.sh` — distribui `.claude/skills/` para `.agents/skills/`, `.github/skills/` e `plugins/brain-flows/skills/`. É o único caminho que atualiza `.github/skills/`, que não faz parte do `sync-brain.sh`
 - `claude plugin validate .` e `claude plugin validate ./plugins/brain-flows` — validam no Claude Code
 - `codex plugin marketplace add "$PWD"` — valida no Codex
 
