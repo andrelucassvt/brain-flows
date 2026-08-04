@@ -127,7 +127,7 @@ Antes de finalizar, confronte cada documento criado ou atualizado com o reposit�
 
 Use `status: current` somente nos documentos que passaram por essa revisão. Se uma referência não puder ser confirmada, explique a limitação em **Observações** e marque o documento como `possibly-stale`. Use `draft` para documento incompleto e `archived` apenas por decisão explícita do usuário.
 
-Os flows individuais criados no Passo 4a também devem passar pela autorrevisão definida na skill `flow`.
+Os flows individuais criados no Passo 4a também devem passar pelas duas checagens definidas na skill `flow`: a checklist de autorrevisão e os critérios de utilidade. Só com as duas aprovadas o flow recebe `status: current`.
 
 ---
 

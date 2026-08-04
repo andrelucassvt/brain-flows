@@ -9,6 +9,14 @@ Explora intenção e design antes de qualquer implementação e encerra com um d
 
 **Entrada:** o pedido do usuário — primeiro elo da cadeia, não depende de artefato anterior. **Saída:** design aprovado + bloco **Handoff para o Plano** (Fase 4), que sobrevive à compactação de contexto entre as skills.
 
+### Referências
+
+Resolvida a partir do diretório desta skill:
+
+| Arquivo | Quando ler |
+|---------|-----------|
+| `references/design-review.md` | Na Fase 3.5, com o design escrito e ainda não apresentado — rubrica de aceite, catálogo de anti-padrões e falsos positivos |
+
 ---
 
 ## Fase 0 — Vale brainstorming?
@@ -82,6 +90,14 @@ O design é proporcional à mudança — cubra apenas o relevante: componentes/c
 
 ---
 
+## Fase 3.5 — Auditar antes de apresentar
+
+Com o design escrito e ainda não apresentado, leia `references/design-review.md` e aplique a rubrica de aceite às cinco dimensões (fidelidade à intenção, alternativas honestas, proporcionalidade, handoff derivável, precisão). Corrija o que a rubrica reprovar e só então leve o design ao usuário.
+
+Esta é a única passada de auto-crítica da skill, e é o gate de entrada da cadeia: um defeito que passa daqui chega ao plano como escopo aprovado e à execução como código. Em design apresentado em partes coesas, audite cada parte antes de apresentá-la.
+
+---
+
 ## Fase 4 — Aprovação e handoff
 
 Peça **aprovação explícita** do design antes de criar um plano ou implementar. Se o usuário pedir ajustes, revise só as partes afetadas e reconfirme. Aprovação de design **não** autoriza alterar código.
@@ -114,6 +130,6 @@ Interface com o `writing-plan`: ele copia este bloco para a seção **Design de 
 
 ## Regras Gerais
 
-- **Seja preciso** — cite apenas arquivos que você encontrou nos flows ou no código; não invente caminhos.
-- **Não bloqueie** — sem flows, o briefing ainda vale (intenção + próximo passo). Nunca impeça o trabalho por falta de documentação.
-- **Nada deprecated** — nunca indique API/widget/pacote/padrão deprecated na versão atual da stack (ex: `withOpacity`, `WillPopScope` em Flutter); aponte o substituto nos Pontos de Atenção.
+**Não bloqueie** — sem flows, o briefing ainda vale (intenção + próximo passo). Nunca impeça o trabalho por falta de documentação.
+
+Precisão das citações e uso de API deprecated são auditados na Fase 3.5 (B10 e B11 do catálogo), não repetidos aqui.

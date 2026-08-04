@@ -2,6 +2,15 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.12.0 — 2026-08-04
+
+Gate de qualidade chega ao `brainstorming`, o primeiro elo da cadeia e o último sem auditoria. As quatro skills do ciclo passam a auditar a própria saída antes de entregá-la à seguinte.
+
+- **Nova referência `brainstorming/references/design-review.md`** — primeira `references/` desta skill. Rubrica de aceite com 5 dimensões (fidelidade à intenção, alternativas honestas, proporcionalidade, handoff derivável, precisão) pontuadas 0/1/2, catálogo B1–B11 (pedido reinterpretado, suposição silenciosa, alternativa de palha, alternativa clonada, recomendação sem critério, design especulativo, briefing enciclopédico, handoff genérico, classificação por aparência, caminho inventado, deprecated silencioso) e 8 falsos positivos.
+- **Nova Fase 3.5 no `brainstorming/SKILL.md`** ("Auditar antes de apresentar"): a rubrica roda com o design escrito e ainda não apresentado, antes de gastar a aprovação do usuário. A dimensão **handoff derivável** é o elo com o `writing-plan` — ela reprova o design que não permite preencher **Decisão aprovada**, **Tipo de mudança** e **Arquivos-chave**, campos que a rubrica do `writing-plan` (dimensão 3, anti-padrões P8/P9) já pressupunha bem formados sem ninguém auditar sua origem. Em design apresentado em partes, cada parte é auditada antes de ir ao usuário.
+- **Regras Gerais do `brainstorming` enxugadas**: "Seja preciso" e "Nada deprecated" viraram B10 e B11 no catálogo, mantendo o lugar canônico único — mesmo movimento feito no `writing-plan` em 1.10.0. "Não bloqueie" permanece no `SKILL.md` por ser regra de geração, não critério de auditoria.
+- **`flow-init` alinhado ao `flow` 1.11.0**: o Passo de verificação exigia apenas "a autorrevisão definida na skill `flow`", mas o passo 5 do `flow` passou a exigir duas checagens. Agora nomeia as duas (checklist de autorrevisão + critérios de utilidade) como condição para `status: current`.
+
 ## 1.11.0 — 2026-08-04
 
 Gate de qualidade propagado para `executing-plan` e `flow`, fechando as três pontas da cadeia. `package-brain.sh` passa a distribuir para os quatro diretórios.
