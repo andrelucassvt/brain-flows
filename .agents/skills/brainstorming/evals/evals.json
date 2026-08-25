@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Quero implementar autenticação biométrica (Face ID / Touch ID) na tela de login do app. O usuário deve poder ativar nas configurações e, quando ativo, ver o botão biométrico na tela de login.",
-      "expected_output": "Briefing baseado no flow de login, duas ou três alternativas somente se houver decisão real, recomendação justificada, design proporcional cobrindo componentes, interação, erros e verificação, e pedido de aprovação antes do planejamento.",
+      "expected_output": "Entrega única com linha de decisão, tabela de opções somente se houver decisão real, design proporcional cobrindo arquivos, fluxo, erros e verificação, e pedido de aprovação antes do planejamento.",
       "files": [],
       "assertions": [
         {
@@ -20,6 +20,10 @@
           "description": "Recomenda uma abordagem e apresenta design proporcional à mudança"
         },
         {
+          "id": "single_dense_delivery",
+          "description": "Entrega contexto, alternativas e design em uma única resposta dentro do orçamento de linhas, sem parafrasear o pedido nem narrar o processo"
+        },
+        {
           "id": "waits_for_approval",
           "description": "Solicita aprovação explícita antes de gerar plano ou implementar"
         }
@@ -28,7 +32,7 @@
     {
       "id": 2,
       "prompt": "Quero criar uma tela de configurações no app onde o usuário pode alterar notificações, tema e idioma.",
-      "expected_output": "Briefing com contexto geral do projeto, alternativas de organização quando houver trade-offs reais, recomendação, design da tela e seu estado, pontos de erro/verificação e gate de aprovação antes do plano.",
+      "expected_output": "Entrega única com contexto só onde ele muda o design, alternativas de organização quando houver trade-offs reais, recomendação, design da tela e seu estado, pontos de erro/verificação e gate de aprovação antes do plano.",
       "files": [],
       "assertions": [
         {
@@ -52,7 +56,7 @@
     {
       "id": 3,
       "prompt": "Muda a cor do botão de login para azul (#2196F3).",
-      "expected_output": "Uma frase classificando a troca de cor determinada pelo usuário como mudança mecânica sem decisão de design, liberando execução direta sem briefing completo, alternativas artificiais ou gate de aprovação.",
+      "expected_output": "Uma frase classificando a troca de cor determinada pelo usuário como mudança mecânica sem decisão de design, liberando execução direta sem entrega completa, alternativas artificiais ou gate de aprovação.",
       "files": [],
       "assertions": [
         {
@@ -61,7 +65,7 @@
         },
         {
           "id": "skips_full_brainstorming",
-          "description": "Não produz briefing completo, alternativas ou cerimônia de aprovação para a mudança mecânica"
+          "description": "Não produz entrega completa, alternativas ou cerimônia de aprovação para a mudança mecânica"
         },
         {
           "id": "allows_direct_execution",

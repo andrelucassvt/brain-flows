@@ -2,6 +2,17 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 1.13.0 — 2026-08-25
+
+Saída do `brainstorming` reformatada para densidade. O conteúdo auditado em 1.12.0 estava correto, mas chegava ao usuário em duas entregas longas — briefing e design — com seções previsíveis que ninguém lia. Mesma informação, uma resposta, com orçamento de linhas.
+
+- **Fases 2 e 3 fundidas em "Fase 2 — Entrega única"**: contexto, alternativas e design saem juntos. O template de briefing com cinco seções fixas (`Entendimento do Pedido`, `O que já existe`, `Pontos de Atenção`, `Boas Práticas Disponíveis`, `Próximos Passos Sugeridos`) deu lugar a uma linha de decisão (`decisão · tipo · N arquivos`), uma linha `⚠️` opcional, uma tabela de opções e quatro bullets de design. `Entendimento do Pedido` e `Próximos Passos Sugeridos` foram cortados por serem previsíveis; a skill expert vive só no Handoff, onde já era campo.
+- **Orçamento explícito**: ≤ 15 linhas em mudança pequena, ≤ 40 em mudança ampla, sem contar o Handoff. Estourar se corrige cortando seção, não comprimindo prosa.
+- **Alternativas viraram tabela** (`Opção | O que muda | Trade-off`) em vez de listas aninhadas de vantagens/desvantagens — o mesmo trade-off em uma linha por opção, com o ✅ carregando a recomendação.
+- **Handoff marcado como interface de máquina**, sob `<!-- para o writing-plan -->`, entregue depois da aprovação. Os seis campos e o contrato com o `writing-plan` seguem inalterados.
+- **Rubrica ganha a dimensão 4, "Densidade"** (corte agora em 10/12), com os anti-padrões novos **B12** (pedido devolvido), **B13** (processo narrado) e **B14** (redundância entre seções); B7 foi realocado para ela. Novo falso positivo: nenhuma linha de contexto quando o pedido é claro. Fase 3.5 renumerada para Fase 3.
+- **Nova regra geral "Não narre o processo"** — o usuário recebe o resultado, não o percurso.
+
 ## 1.12.0 — 2026-08-04
 
 Gate de qualidade chega ao `brainstorming`, o primeiro elo da cadeia e o último sem auditoria. As quatro skills do ciclo passam a auditar a própria saída antes de entregá-la à seguinte.

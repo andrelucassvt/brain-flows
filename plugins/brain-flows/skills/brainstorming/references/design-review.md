@@ -1,6 +1,6 @@
 # Auditoria do design
 
-Lido no passo 3.5, com o design escrito e ainda não apresentado ao usuário. A **rubrica** decide se o design pode ir para aprovação; o **catálogo** nomeia o defeito quando ele não pode.
+Lido na Fase 3, com o design escrito e ainda não apresentado ao usuário. A **rubrica** decide se o design pode ir para aprovação; o **catálogo** nomeia o defeito quando ele não pode.
 
 Auditar aqui é barato: corrigir depois da aprovação custa uma segunda rodada de aprovação, e um defeito que passa daqui contamina o plano e a execução. A rubrica julga o design proposto, não o pedido do usuário.
 
@@ -8,19 +8,22 @@ Auditar aqui é barato: corrigir depois da aprovação custa uma segunda rodada 
 
 ## Rubrica de aceite
 
-Cinco dimensões, cada uma valendo 0, 1 ou 2. Pontue o que está escrito, não a intenção que você tinha ao escrever.
+Seis dimensões, cada uma valendo 0, 1 ou 2. Pontue o que está escrito, não a intenção que você tinha ao escrever.
 
 | # | Dimensão | 0 | 1 | 2 |
 |---|----------|---|---|---|
 | 1 | **Fidelidade à intenção** | O design resolve um problema diferente do pedido | Resolve o pedido, mais algo que o usuário não pediu | Resolve o que foi pedido; qualquer ampliação está declarada como sugestão separada |
 | 2 | **Alternativas honestas** | Há opção listada só para perder, ou o caminho direto foi declarado onde existe decisão real | Alternativas plausíveis, mas a recomendação não diz o que as separa | Cada opção é escolhível, e a recomendação aponta o critério do projeto que decidiu |
 | 3 | **Proporcionalidade** | Há componente, camada ou etapa sem razão no problema | Design defensável, com folga | Toda peça vem de requisito, regra de negócio ou padrão já usado no projeto |
-| 4 | **Handoff derivável** | Falta informação para preencher **Decisão aprovada**, **Tipo de mudança** ou **Arquivos-chave** | Todos os campos saem do design, mas algum fica genérico | Os seis campos do Handoff saem direto do design, com caminhos reais |
-| 5 | **Precisão** | Há arquivo, símbolo ou flow citado que você não viu | Tudo verificado, mas alguma citação está imprecisa | Cada referência foi vista no código ou nos flows; nada deprecated sem substituto |
+| 4 | **Densidade** | Estoura o orçamento de linhas, ou há seção existindo só para não ficar vazia | Cabe no orçamento, mas alguma linha repete o pedido, o óbvio ou outra seção | Cada linha carrega informação que o usuário ainda não tinha |
+| 5 | **Handoff derivável** | Falta informação para preencher **Decisão aprovada**, **Tipo de mudança** ou **Arquivos-chave** | Todos os campos saem do design, mas algum fica genérico | Os seis campos do Handoff saem direto do design, com caminhos reais |
+| 6 | **Precisão** | Há arquivo, símbolo ou flow citado que você não viu | Tudo verificado, mas alguma citação está imprecisa | Cada referência foi vista no código ou nos flows; nada deprecated sem substituto |
 
-**Corte:** qualquer dimensão com **0** bloqueia — corrija antes de apresentar. Total abaixo de **8/10** exige uma passada de revisão. De 8 a 10 sem nenhum zero, apresente o design.
+**Corte:** qualquer dimensão com **0** bloqueia — corrija antes de apresentar. Total abaixo de **10/12** exige uma passada de revisão. De 10 a 12 sem nenhum zero, apresente o design.
 
-Se a dimensão 2 for reprovada porque as alternativas colapsam em uma só, o resultado correto é assumir o **caminho direto** da Fase 3, não fabricar uma terceira opção.
+Se a dimensão 2 for reprovada porque as alternativas colapsam em uma só, o resultado correto é assumir o **caminho direto** da Fase 2, não fabricar uma terceira opção.
+
+A dimensão 4 se corrige **cortando**, nunca reescrevendo mais denso: se a entrega estourou, há uma seção que não precisava existir.
 
 A nota fica na sua análise. O usuário recebe o design, não a rubrica.
 
@@ -54,8 +57,19 @@ Agrupados pela dimensão que derrubam.
 **B6 — Design especulativo.** Abstração, ponto de extensão, camada ou config desenhada para um requisito que ninguém pediu.
 → Corte. Extensibilidade não pedida é escopo que o usuário vai pagar no plano e na execução.
 
-**B7 — Briefing enciclopédico.** Flows reproduzidos quase palavra por palavra, ou seções preenchidas com texto de encher para não ficarem vazias.
-→ O briefing sintetiza. Seção sem conteúdo real é omitida, não preenchida.
+### Densidade
+
+**B7 — Contexto enciclopédico.** Flows reproduzidos quase palavra por palavra, ou seções preenchidas com texto de encher para não ficarem vazias.
+→ Sintetize. Seção sem conteúdo real é omitida, não preenchida.
+
+**B12 — Pedido devolvido.** A entrega abre parafraseando o que o usuário acabou de escrever, ou descreve o estado atual do projeto em detalhe que não muda o design.
+→ Corte a linha. O usuário escreveu o pedido e conhece o próprio projeto; contexto entra só quando decide algo.
+
+**B13 — Processo narrado.** "Analisei os flows", "considerei três abordagens", "agora vou detalhar o design" — texto sobre o trabalho, não o trabalho.
+→ Entregue o resultado. O percurso fica na sua análise.
+
+**B14 — Redundância entre seções.** O mesmo fato aparece na linha de decisão, na tabela de opções e no Design; ou a skill expert é citada no contexto **e** no Handoff.
+→ Um fato, um lugar. Se já está no Handoff, não repita acima.
 
 ### Handoff derivável
 
@@ -79,11 +93,11 @@ Agrupados pela dimensão que derrubam.
 
 Nenhum destes, sozinho, derruba nota:
 
-- **Uma única abordagem apresentada**, quando o padrão do projeto ou o próprio pedido a determina. É o caminho direto da Fase 3, não falta de alternativas.
-- **Design curto** em mudança pequena. Proporcionalidade funcionando.
+- **Uma única abordagem apresentada**, quando o padrão do projeto ou o próprio pedido a determina. É o caminho direto da Fase 2, não falta de alternativas.
+- **Design curto** em mudança pequena. Proporcionalidade funcionando — entrega de 6 linhas para uma mudança de um arquivo é acerto, não preguiça.
 - **Handoff dispensado** em mudança pequena que vai direto à implementação.
-- **"O que já existe" raso** quando não há flows no projeto. A skill manda seguir sem documentação, não bloquear.
-- **Seções do briefing ausentes** por não terem conteúdo real.
+- **Nenhuma linha de contexto**, quando o pedido é claro e o estado atual não muda o design.
+- **Seções ausentes** por não terem conteúdo real.
 - **"Skill expert: nenhuma encontrada"**. É resultado válido da busca, não busca malfeita.
 - **Várias perguntas de clarificação em sequência**, uma por vez, quando o pedido é genuinamente ambíguo.
 - **Fase 0 dispensando o fluxo** em mudança mecânica, com a frase de justificativa registrada.
