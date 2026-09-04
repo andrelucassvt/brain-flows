@@ -1,6 +1,9 @@
 ---
 name: flow
 description: Mapeia uma feature ou processo de ponta a ponta varrendo o projeto atual e gera um documento Markdown em ./docs/flow/ com os arquivos envolvidos, a ordem de chamada, a responsabilidade de cada camada e as regras de negócio. Use quando o usuário pedir "criar um flow", "mapear/documentar o flow de X", "flow do login", "fluxo do checkout", "como funciona o fluxo de X", "map how X works", ou qualquer pedido para rastrear uma feature do ponto de entrada até a camada de dados.
+license: MIT
+metadata:
+  version: "2.0.0"
 ---
 
 # Flow
@@ -29,7 +32,9 @@ Se o nome do fluxo for ambíguo no contexto do projeto (ex: dois "checkout" dife
 
 ### 2. Varrer o projeto
 
-Mapeie o código de verdade — não invente arquivos. Comece pelo nome do fluxo como termo de busca (ex: `login`, `checkout`, `createUser`) e siga as referências: do ponto de entrada para baixo (UI → estado → repositório → datasource → API/DB) e dos serviços compartilhados de volta à UI quando relevante (ex: interceptor que injeta token).
+Mapeie o código de verdade — não invente arquivos. Se o ambiente oferecer subagente somente-leitura, delegue a varredura com o ponto de entrada, resultado esperado e escopo do passo 1; exija um mapa estruturado com arquivos reais por camada, ordem de chamada, ramificações, regras de negócio com arquivo e testes existentes. A thread escreve o documento a partir do mapa e só relê arquivos para confirmar citações duvidosas. Sem subagente, faça a varredura diretamente.
+
+Comece pelo nome do fluxo como termo de busca (ex: `login`, `checkout`, `createUser`) e siga as referências da UI aos dados e dos serviços compartilhados de volta à UI quando relevante.
 
 Cubra: pontos de entrada (Views, rotas, handlers, listeners), camada de apresentação/orquestração (Cubits, ViewModels, Controllers), domínio (Entities, Use Cases, regras puras), dados (Repositories, DataSources, clientes HTTP, queries), serviços auxiliares (Storage, Auth, Analytics, interceptors), configuração (DI, rotas declaradas) e testes existentes que cobrem o fluxo.
 

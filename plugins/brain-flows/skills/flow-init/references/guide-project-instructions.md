@@ -31,6 +31,13 @@
 - Use `AGENTS.md` como arquivo canônico das instruções completas e compartilhadas do projeto.
 - Crie `CLAUDE.md` com `@AGENTS.md` para que o Claude Code importe o arquivo canônico.
 - O prefixo `@` é obrigatório: `AGENTS.md` sozinho é apenas texto, não um import.
+
+Quando `CLAUDE.md` não existir, seu conteúdo deve ser exatamente:
+
+```markdown
+@AGENTS.md
+```
+
 - Se `CLAUDE.md` já começar com `@AGENTS.md`, preserve abaixo do import apenas instruções realmente exclusivas do Claude Code.
 - Um symlink existente de `CLAUDE.md` para `AGENTS.md` também é válido e não precisa ser substituído.
 - Se `CLAUDE.md` existir sem o import, não o sobrescreva silenciosamente. Migre regras compartilháveis para `AGENTS.md`, preserve regras exclusivas abaixo do import e peça confirmação antes da reescrita.

@@ -27,7 +27,7 @@ The process consists of an initial setup and a cycle used for each change.
 
 Use it once when you begin working on a project that does not yet have any flows.
 
-`flow-init` analyzes the repository's actual structure and creates `docs/flow/project-structure.md` with the stack, architecture, modules, features, and configurations it finds. It can also generate individual flows or a list of suggestions to document later.
+`flow-init` analyzes the repository's actual structure and creates `docs/flow/project-structure.md` with the stack, architecture, modules, features, and configurations it finds. It can also generate individual flows or a list of suggestions to document later. When subagents are available, it can generate one feature flow per subagent in parallel; without them, it falls back to sequential generation.
 
 ```text
 Use flow-init to map this project.
@@ -37,7 +37,7 @@ Use flow-init to map this project.
 
 A flow is a snapshot of how a feature works from end to end.
 
-The `flow` skill follows the actual path through the code—for example, from the UI to state, domain, repository, API, or database—and records it in `docs/flow/<name>.md`:
+The `flow` skill follows the actual path through the code—for example, from the UI to state, domain, repository, API, or database—and records it in `docs/flow/<name>.md`. When a read-only subagent is available, it delegates the repository scan and uses the returned map; otherwise it scans directly:
 
 - the execution order;
 - the files and responsibilities involved;
@@ -61,7 +61,7 @@ Use brainstorming to explore adding social login.
 
 ### 4. Create the plan with `writing-plan`
 
-After the design is approved, `writing-plan` turns the proposal into an actionable file inside `docs/plan/`.
+After the design is approved, `writing-plan` turns the proposal into an actionable file inside `docs/plan/`. Changes estimated at up to two phases use a short template; larger plans use the complete or multi-part format.
 
 The plan records:
 
@@ -81,7 +81,7 @@ Create a plan to implement the approved design.
 
 `executing-plan` reviews the plan against the current state of the repository and executes one task at a time.
 
-It uses the plan's **design of origin** as the boundary for handling code drift: a fix that reintroduces a discarded alternative is treated as a new decision that needs your approval, not a mechanical correction. Each checkbox is marked only after the corresponding verification. If the work is interrupted, execution can resume from the first pending item. At the end, affected flows are updated—and linked back to the plan—whenever the documented structure or behavior has changed.
+It uses the plan's **design of origin** as the boundary for handling code drift: a fix that reintroduces a discarded alternative is treated as a new decision that needs your approval, not a mechanical correction. Each checkbox is marked only after the corresponding verification. For Logic changes or plans with three or more phases, an independent reviewer is used when subagents are available; otherwise the thread applies the same review directly. If the work is interrupted, execution can resume from the first pending item. At the end, affected flows are updated—and linked back to the plan—whenever the documented structure or behavior has changed.
 
 ```text
 Execute the social login plan.
@@ -159,7 +159,7 @@ In the Codex CLI or IDE, type `$` to select a skill or explicitly mention its na
 
 ## Development and packaging
 
-The default source repository is `https://github.com/andrelucassvt/brain-flows`, on the `main` branch. Synchronization reads the skills from `plugins/brain-flows/skills/` and copies only the five Brain Flows skills to `.claude/skills/`, `.agents/skills/`, and `.github/skills/`.
+The default source repository is `https://github.com/andrelucassvt/brain-flows`, on the `main` branch. Synchronization reads the skills from `plugins/brain-flows/skills/` and copies only the five Brain Flows skills to `.claude/skills/` and `.agents/skills/`; `package-brain.sh` also updates `.github/skills/`.
 
 ```bash
 ./sync-brain.sh

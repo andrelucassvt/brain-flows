@@ -1,6 +1,9 @@
 ---
 name: writing-plan
 description: Gera um plano de implementação estruturado em Markdown e salva em ./docs/plan/. Use quando o usuário pedir para criar, escrever ou gerar um plano ("crie um plano", "escreva um plano", "planeje essa feature", "create a plan", "how should I approach X") ou descrever uma feature, refactor ou implementação de várias etapas que queira planejada antes de codar.
+license: MIT
+metadata:
+  version: "2.0.0"
 ---
 
 # Writing Plan
@@ -23,8 +26,8 @@ Resolvidas a partir do diretório desta skill. Leia cada uma no momento indicado
 
 | Arquivo | Quando ler |
 |---------|-----------|
-| `references/plan-template.md` | No passo 4, antes de escrever o arquivo — estrutura obrigatória e os dois templates de fases |
-| `references/plan-antipatterns.md` | No passo 4.5, com o plano escrito e ainda não salvo — rubrica de aceite, catálogo de anti-padrões e falsos positivos |
+| `references/plan-template.md` | No passo 4, antes de escrever o arquivo — estrutura obrigatória e formatos curto/completo de fases |
+| `references/plan-antipatterns.md` | No passo 4.5, com o plano escrito e ainda não salvo — rubrica de aceite com anti-padrões por dimensão |
 | `references/multi-part-plan.md` | No passo 2.7, quando a estimativa passar do teto de fases — estrutura da pasta, do índice, das partes e a avaliação de delegação para subagentes |
 | `references/headless-testing.md` | No passo 1.5, ao classificar uma mudança UI-only e decidir se a stack suporta teste de componente headless |
 
@@ -78,9 +81,7 @@ Essa pergunta deve **sempre** ser feita quando não há flow — nunca assuma qu
 
 ### 2.7. Estimar o tamanho e decidir o formato
 
-Com o rascunho das fases em mente, estime o total. **Se passar de 6 fases, o plano vira multi-parte:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com um `00-indice.md` (visão geral, Design de Origem, ordem e dependências) e uma parte numerada por entrega fechada (`01-...md`, `02-...md`), cada uma um plano completo de até ~6 fases no formato normal. O fatiamento também inclui avaliar a delegabilidade de cada parte para subagentes, conforme os critérios do reference, e registrar o resultado na coluna `Delegável` do índice. O plano completo fica pronto de uma vez — a divisão existe para a execução avançar parte a parte com checkpoint natural entre elas (commit + repositório íntegro), não para adiar detalhamento nem para pausar a execução em busca de aprovação.
-
-**Até 6 fases, siga com arquivo único** — não divida plano pequeno.
+Estime as fases antes de escrever. **Até 2:** use o template curto. **3–6:** use o arquivo único completo. **Mais de 6:** leia `references/multi-part-plan.md` e gere uma pasta `docs/plan/<nome>/` com índice e partes fechadas de até ~6 fases, avaliando a delegabilidade no índice. Todas as partes ficam detalhadas agora; a divisão só reduz o contexto por checkpoint, não adia decisões nem aprovação.
 
 ### 3. Criar o arquivo
 
@@ -105,8 +106,6 @@ Esta é a única passada de auto-crítica da skill: escopo inflado e complexidad
 **Tamanho das fases** — 3–7 passos por fase; se ficar grande, divida.
 
 **Teto de fases por plano** — um plano executável tem no máximo ~6 fases. Escopo maior não vira um monólito de 10+ fases: vira plano multi-parte (passo 2.7), com o detalhe completo distribuído em partes numeradas.
-
-**Riscos obrigatórios para planos com 3+ fases** — liste pelo menos um risco real.
 
 **Verificação nunca executa o app** — nenhum passo pode subir app, emulador, simulador, device, browser real ou suíte E2E/instrumentada. Testar componente no harness não é rodar o app; os limites estão em `references/headless-testing.md`.
 

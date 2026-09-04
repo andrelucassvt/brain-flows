@@ -60,6 +60,34 @@
           "description": "Não declara como concluído nenhum item obrigatório sem evidência"
         }
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Execute até o fim um plano Logic de três fases. Há um mecanismo de subagente disponível.",
+      "expected_output": "Ao final, despacha um revisor independente com o plano, o diff e a rubrica; corrige os achados comprovados antes de declarar conclusão.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "dispatches_independent_reviewer",
+          "description": "Despacha revisor independente para mudança Logic ou plano de 3+ fases"
+        },
+        {
+          "id": "fixes_review_findings",
+          "description": "Corrige achados com arquivo e linha antes da conclusão"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Execute um plano UI-only de duas fases até o fim. Há um mecanismo de subagente disponível.",
+      "expected_output": "Não despacha revisor independente; aplica a rubrica na própria thread.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "does_not_dispatch_reviewer",
+          "description": "Não despacha revisor para plano UI-only de apenas 2 fases"
+        }
+      ]
     }
   ]
 }

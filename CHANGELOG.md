@@ -2,6 +2,17 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 2.0.0 — 2026-09-03
+
+Dieta de contexto, delegação opcional com fallback direto e plano proporcional, mantendo a mesma cadeia de cinco skills para Claude Code e Codex.
+
+- **Rubricas fundidas:** `design-review.md` passou de 7.510 para 2.115 bytes, `plan-antipatterns.md` de 6.763 para 1.804 e `completion-review.md` de 5.312 para 1.748 (`wc -c`), preservando dimensões e IDs.
+- **Execução multi-parte:** o conteúdo saiu do `executing-plan/SKILL.md` para `multi-part-execution.md`; mudanças `Logic` ou planos com 3+ fases ganham revisor independente quando houver subagente, com fallback na própria thread.
+- **Delegação com fallback:** `flow` pode delegar a varredura a subagente somente-leitura; `flow-init` pode gerar flows de features em paralelo, mantendo geração direta/sequencial sem subagentes.
+- **Ponte e planos:** regras da ponte `CLAUDE.md` foram concentradas no guia; `writing-plan` ganhou Template curto para até 2 fases e decisão entre curto, completo e multi-parte.
+- **Distribuição:** frontmatter das cinco skills segue o spec Agent Skills com `license: MIT` e `metadata.version: "2.0.0"`; evals cobrem template curto, revisor independente e flows paralelos; manifestos estão em 2.0.0.
+- **Carga do caminho feliz:** 50.810 bytes antes e 34.015 depois (`wc -c`) para as skills e referências do ciclo, redução abaixo do limite de 40.000 bytes.
+
 ## 1.13.0 — 2026-08-25
 
 Saída do `brainstorming` reformatada para densidade. O conteúdo auditado em 1.12.0 estava correto, mas chegava ao usuário em duas entregas longas — briefing e design — com seções previsíveis que ninguém lia. Mesma informação, uma resposta, com orçamento de linhas.

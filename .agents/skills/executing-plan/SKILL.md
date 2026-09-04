@@ -1,23 +1,16 @@
 ---
 name: executing-plan
 description: Executa um plano de implementação Markdown já criado em ./docs/plan/, revisando-o antes de começar, retomando pelo primeiro checkbox pendente, implementando uma tarefa por vez, verificando cada etapa, marcando o progresso e atualizando flows afetados. Use quando o usuário pedir para executar, implementar, continuar ou retomar um plano existente, como "execute o plano", "implemente o plano", "continue o plano" ou "retome de onde parou".
+license: MIT
+metadata:
+  version: "2.0.0"
 ---
 
 # Executing Plan
 
-## O que esta skill faz
+Executa um plano existente sem misturar planejamento e implementação. O plano em `./docs/plan/` é a fonte de verdade do progresso: cada tarefa é verificada antes de ser marcada.
 
-Executa um plano existente sem misturar planejamento com implementação. O arquivo em `./docs/plan/` permanece como fonte de verdade do progresso: cada tarefa é revisada, executada, verificada e marcada assim que for realmente concluída.
-
-Esta skill não cria um plano novo. Se ainda não houver plano e a mudança exigir várias etapas, encaminhe para `writing-plan`.
-
-### Entrada esperada
-
-Um arquivo de plano em `./docs/plan/`, idealmente com a seção **Design de Origem** (produzida pelo `writing-plan`). Essa seção é a memória da decisão aprovada — é o que permite executar sem depender do histórico de conversa e defender a intenção original diante de drift.
-
-### Saída (Handoff)
-
-Código implementado e verificado, plano com progresso marcado, e os flows estruturalmente afetados atualizados e relinkados ao plano. Fecha a cadeia `brainstorm → plan → execução → flow`.
+Não cria planos novos; para isso, encaminhe a `writing-plan`. A entrada ideal tem **Design de Origem**, que preserva a decisão aprovada durante o tratamento de drift. A saída é código verificado, plano atualizado e flows afetados relinkados ao plano.
 
 ### Referências
 
@@ -25,7 +18,8 @@ Resolvida a partir do diretório desta skill:
 
 | Arquivo | Quando ler |
 |---------|-----------|
-| `references/completion-review.md` | No passo 7, com as tarefas executadas e antes de declarar o plano concluído — rubrica de conclusão, catálogo de anti-padrões e falsos positivos |
+| `references/multi-part-execution.md` | No passo 1, quando o plano for uma pasta com índice e partes |
+| `references/completion-review.md` | No passo 7 — lida pelo revisor independente ou pela própria thread |
 
 ---
 
@@ -33,69 +27,35 @@ Resolvida a partir do diretório desta skill:
 
 ### 1. Localizar e ler o plano completo
 
-Use o caminho informado pelo usuário. Se ele disser apenas "o plano", liste `./docs/plan/` (arquivos e pastas), selecione o único candidato compatível com a conversa ou faça uma pergunta curta quando houver ambiguidade real.
+Use o caminho informado. Se o usuário disser apenas "o plano", liste `./docs/plan/` e selecione o candidato compatível; pergunte somente se houver ambiguidade real.
 
-**Plano multi-parte** (pasta com `00-indice.md` + partes numeradas): leia o índice para absorver objetivo, Design de Origem, ordem das partes e a coluna `Delegável` da parte selecionada, e depois leia por completo **apenas a parte em execução** — a primeira com status pendente na tabela do índice cujas dependências estejam concluídas. As partes futuras não entram no contexto agora; elas serão lidas quando chegar a vez.
+**Plano multi-parte** (pasta com `00-indice.md` + partes numeradas): leia `references/multi-part-execution.md` antes de continuar.
 
-**Plano de arquivo único:** leia o arquivo inteiro antes de alterar código. Identifique:
-
-- Objetivo e critérios de sucesso
-- **Design de Origem** — a decisão aprovada e as alternativas descartadas; é o limite que separa uma correção de drift legítima de uma mudança de rumo que exige o usuário
-- Arquivos que serão criados ou modificados
-- Ordem e dependências entre tarefas/fases
-- Comandos e evidências de verificação
-- Riscos, rollback e flows afetados (cabeçalho **Flows relacionados**)
-- Checkboxes já concluídos e primeiro checkbox pendente
+**Plano de arquivo único:** leia-o inteiro antes de alterar código e identifique objetivo, critérios, **Design de Origem**, arquivos, ordem/dependências, verificações, riscos, rollback, flows relacionados e o primeiro checkbox pendente.
 
 ### 2. Revisar criticamente antes de executar
 
-Confronte o plano com o estado atual do repositório. Procure arquivos movidos, contratos incompatíveis, passos vagos, dependências ausentes, ordem inexequível ou verificações que não provam o resultado esperado.
+Confronte o plano com o repositório: procure arquivos movidos, contratos incompatíveis, passos vagos, dependências ausentes, ordem inexequível e verificações insuficientes.
 
-- Se o plano estiver executável, informe em uma frase por onde começará e prossiga.
-- Se houver ajuste pequeno e inequívoco causado por drift do código, atualize o passo no plano e registre o motivo.
-- Se a correção mudar escopo, arquitetura, comportamento ou critérios de sucesso — ou contrariar a **Decisão aprovada** no Design de Origem — pare e apresente o conflito ao usuário; não improvise uma solução diferente. O Design de Origem é o parâmetro: uma correção que reintroduz uma alternativa explicitamente descartada não é drift mecânico, é uma nova decisão.
+Se estiver executável, informe em uma frase por onde começa. Ajuste apenas drift pequeno e inequívoco, registrando o motivo no plano. Se mudar escopo, arquitetura, comportamento, critérios ou contrariar a **Decisão aprovada**, pare e apresente o conflito ao usuário.
 
 ### 3. Retomar pelo progresso real
 
-Comece no primeiro checkbox pendente cujas dependências estejam satisfeitas. Não repita tarefas marcadas, exceto quando uma mudança posterior invalidar sua evidência; nesse caso, execute novamente apenas a verificação necessária e registre o motivo.
-
-O checkbox representa trabalho comprovadamente concluído, não apenas código escrito.
+Comece no primeiro checkbox pendente com dependências satisfeitas. Não repita itens marcados, salvo evidência invalidada por mudança posterior; nesse caso, rerode apenas a verificação afetada e registre o motivo. Checkbox representa trabalho comprovado.
 
 ### 4. Executar uma tarefa por vez
 
-Para cada tarefa ou checkbox:
+Para cada checkbox, leia os arquivos relacionados, faça apenas a alteração necessária, rode a verificação definida, confira saída/status/falhas, marque `- [x]` só com evidência e avance.
 
-1. Leia o passo e os arquivos relacionados antes de editar.
-2. Faça somente as alterações necessárias para aquele resultado.
-3. Rode a verificação definida no plano.
-4. Confira output, código de saída e falhas relevantes.
-5. Marque `- [x]` imediatamente quando a evidência confirmar a conclusão.
-6. Avance para o próximo item pendente.
-
-Se uma verificação falhar, mantenha o checkbox desmarcado, investigue a causa dentro do escopo do passo e tente corrigir. Pare quando faltar informação, autoridade, dependência externa ou quando a correção exigir mudar o design aprovado.
-
-Não substitua uma verificação indisponível por uma afirmação de que "deve funcionar". Registre o que foi e o que não pôde ser comprovado.
+Se falhar, mantenha desmarcado e corrija dentro do escopo; pare por falta de informação, autoridade, dependência externa ou mudança do design aprovado. Nunca troque verificação indisponível por afirmação; registre o que foi comprovado.
 
 ### 5. Manter o arquivo do plano atualizado
 
-Além dos checkboxes, atualize o plano somente quando necessário para refletir a execução real:
-
-- Caminho ou nome que mudou por drift confirmado do repositório
-- Comando de verificação corrigido
-- Nota curta sobre bloqueio ou desvio aprovado
-- Critério que recebeu evidência concreta
-
-Não reescreva o plano durante a execução nem amplie o escopo sem autorização.
+Além dos checkboxes, atualize o plano somente para registrar caminho alterado por drift, comando corrigido, bloqueio/desvio aprovado ou evidência concreta. Não o reescreva nem amplie o escopo.
 
 ### 6. Atualizar flows afetados
 
-Depois de concluir as tarefas de implementação e antes da revisão final, atualize um flow existente quando a mudança tiver alterado:
-
-- Arquivos participantes do processo
-- Responsabilidade de uma camada ou componente
-- Ordem de execução
-- Regra de negócio, caminho de erro ou fallback
-- Rota, injeção de dependência, persistência ou integração externa
+Depois da implementação e antes da revisão final, atualize um flow existente se mudarem arquivos participantes, responsabilidade, ordem, regra de negócio, erro/fallback, rota, DI, persistência ou integração externa.
 
 Use a skill `flow` como fonte de verdade, preserve seções customizadas e renove seus metadados de verificação. Ao atualizar um flow, inclua o caminho deste plano no campo `related_plans` do frontmatter dele, fechando a rastreabilidade `plano → flow`. Mudanças internas que preservam a estrutura e o comportamento documentado não exigem atualização.
 
@@ -107,13 +67,7 @@ Ao chegar ao fim, rode as verificações finais definidas no plano para detectar
 
 Um zero em qualquer dimensão impede declarar o plano concluído. Se ele não se resolver dentro do escopo — dependência externa, verificação indisponível, correção que mudaria o design aprovado — relate o bloqueio e o que ficou comprovado, em vez de fechar o plano.
 
-**Em plano multi-parte:** antes de iniciar a parte selecionada, verifique a coluna `Delegável`. Se estiver marcada `sim` **e** o ambiente atual oferecer um mecanismo de subagente, delegue a parte inteira: o subagente recebe o caminho do arquivo da parte (e do índice), executa todos os passos do primeiro ao último checkbox, marca os checkboxes no próprio arquivo e roda as verificações definidas ali — o retorno exigido são as evidências dessas verificações, não apenas a afirmação de que foi concluído. Se a parte estiver marcada `não`, ou o ambiente não oferecer subagentes, execute a parte normalmente, passo a passo, como descrito nas seções 3–6; a delegação é uma otimização, nunca um requisito.
-
-Antes de marcar o status da parte no índice, confira as evidências retornadas (pelo subagente ou pela própria execução direta) contra as verificações definidas na parte — checkbox marcado sem evidência confirmada não vale. Só então marque o status dela como concluída na tabela do `00-indice.md` e execute o checkpoint final da parte (commit + resumo curto do que ficou pronto).
-
-**Não pergunte se deve continuar.** Executar um plano multi-parte significa executá-lo inteiro: logo após o checkpoint, siga direto para a próxima parte pendente cujas dependências estejam satisfeitas, repetindo os passos 1 (leitura da parte) a 5, até que todas as partes do índice estejam concluídas. A pausa entre partes só existe por bloqueio real — verificação que falha e não se resolve dentro do escopo do passo, dependência externa ausente, ou correção que exigiria mudar o design aprovado. A atualização de flows (passo 6) e a declaração de conclusão do plano inteiro só acontecem depois da última parte.
-
-Se o usuário pedir explicitamente apenas uma parte ("execute a parte 2", "só a primeira parte"), respeite o recorte: conclua essa parte e pare.
+**Revisão independente:** quando a mudança for `Logic` ou o plano tiver 3+ fases, e o ambiente oferecer subagente, despache um revisor em contexto limpo com o caminho do plano (incluindo Design de Origem e critérios), o `git diff` e os arquivos novos/não rastreados do escopo, e o caminho de `references/completion-review.md`. O revisor devolve nota por dimensão e achados com arquivo/linha; a thread corrige os achados e só então declara conclusão. Fora dessas condições, ou sem subagente, aplique a rubrica na própria thread. Achado sem evidência do revisor não reprova; "concluído" sem evidência do revisor não aprova.
 
 Só declare o plano concluído quando todos os itens obrigatórios estiverem marcados e as verificações atuais sustentarem essa afirmação.
 

@@ -92,6 +92,22 @@
           "description": "Solicita confirmação antes de reescrever o CLAUDE.md existente"
         }
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Gere todos os flows do projeto; há subagentes disponíveis.",
+      "expected_output": "Um docs/flow/<feature>.md por feature, produzido por subagentes em paralelo, com caminho e status listados após as duas checagens de flow.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "delegates_feature_flows_in_parallel",
+          "description": "Despacha um subagente por feature em paralelo, sem sobreposição de arquivos"
+        },
+        {
+          "id": "lists_path_and_status",
+          "description": "Lista o caminho e o status de cada flow produzido"
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,9 @@
 ---
 name: brainstorming
 description: Explora intenção, requisitos e design antes da implementação. Use antes de qualquer trabalho criativo — criar features, construir componentes, adicionar funcionalidade ou modificar comportamento existente.
+license: MIT
+metadata:
+  version: "2.0.0"
 ---
 
 # Brainstorming
@@ -15,7 +18,7 @@ Resolvida a partir do diretório desta skill:
 
 | Arquivo | Quando ler |
 |---------|-----------|
-| `references/design-review.md` | Na Fase 3, com o design escrito e ainda não apresentado — rubrica de aceite, catálogo de anti-padrões e falsos positivos |
+| `references/design-review.md` | Na Fase 3, com o design escrito e ainda não apresentado — rubrica de aceite com anti-padrões por dimensão |
 
 ---
 

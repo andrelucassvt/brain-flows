@@ -144,6 +144,22 @@
           "description": "Não contém termos vagos como 'TBD', 'ver depois', 'adicionar lógica aqui'"
         }
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Crie um plano para trocar o texto do botão e o ícone da tela X.",
+      "expected_output": "Plano no template curto, sem seções de Riscos ou Rollback, com objetivo, Design de Origem, uma fase e verificação final.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_short_template",
+          "description": "Gera um plano de até 2 fases no Template curto"
+        },
+        {
+          "id": "omits_full_plan_sections",
+          "description": "Não inclui Riscos e Rollback no plano curto"
+        }
+      ]
     }
   ]
 }

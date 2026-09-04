@@ -1,10 +1,10 @@
 ---
 generated_at: 2026-07-22
-source_commit: 3864c0e
-source_state: clean
-verified_at: 2026-07-22
+source_commit: 5c5a035
+source_state: dirty
+verified_at: 2026-09-03
 status: current
-related_plans: []
+related_plans: [docs/plan/brain-flows-2-0-0.md]
 ---
 
 # Sugestões de Flows a Documentar
@@ -16,31 +16,31 @@ related_plans: []
 
 ### Skill `flow-init`
 **Arquivo a criar:** `docs/flow/flow-init.md`
-**Resumo:** Documenta como a skill varre o repositório, gera `docs/flow/project-structure.md`, decide entre flows completos ou sugestões e reescreve `AGENTS.md`/`CLAUDE.md` a partir do guia em `references/guide-project-instructions.md`.
+**Resumo:** Documenta como a skill varre o repositório, gera `docs/flow/project-structure.md`, delega flows de features em paralelo quando possível (com fallback sequencial), decide entre flows completos ou sugestões e atualiza `AGENTS.md`/`CLAUDE.md` pelo guia.
 
 ---
 
 ### Skill `flow`
 **Arquivo a criar:** `docs/flow/flow.md`
-**Resumo:** Documenta como a skill rastreia uma feature do ponto de entrada à camada de dados e produz um `docs/flow/<nome>.md` com ordem de execução, arquivos e regras de negócio.
+**Resumo:** Documenta como a skill rastreia uma feature do ponto de entrada à camada de dados, podendo delegar a varredura a subagente somente-leitura com fallback direto, e produz `docs/flow/<nome>.md` com ordem, arquivos e regras de negócio.
 
 ---
 
 ### Skill `brainstorming`
 **Arquivo a criar:** `docs/flow/brainstorming.md`
-**Resumo:** Documenta o processo de esclarecer o objetivo, ler flows relacionados, comparar alternativas e emitir o bloco de handoff após aprovação do design.
+**Resumo:** Documenta o processo de esclarecer o objetivo, ler flows relacionados, comparar alternativas, auditar o design com rubrica compacta e emitir o bloco de handoff após aprovação.
 
 ---
 
 ### Skill `writing-plan`
 **Arquivo a criar:** `docs/flow/writing-plan.md`
-**Resumo:** Documenta como o handoff do brainstorming vira um plano acionável em `docs/plan/`, com Design de Origem, fases, checkboxes, verificações e rollback.
+**Resumo:** Documenta como o handoff do brainstorming vira um plano acionável em `docs/plan/`, escolhendo Template curto para até 2 fases ou formato completo/multi-parte, com Design de Origem, checkboxes e verificações.
 
 ---
 
 ### Skill `executing-plan`
 **Arquivo a criar:** `docs/flow/executing-plan.md`
-**Resumo:** Documenta como o plano é revisado contra o repositório, executado uma tarefa por vez, com o Design de Origem como limite para drift e atualização dos flows afetados.
+**Resumo:** Documenta como o plano é revisado contra o repositório, executado uma tarefa por vez, com revisor independente para Logic ou 3+ fases quando possível, fallback direto e atualização dos flows afetados.
 
 ---
 

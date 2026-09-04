@@ -2,6 +2,42 @@
 
 Estrutura obrigatória do arquivo salvo em `./docs/plan/<nome>.md`. Escolha **um** dos dois templates de fases conforme o tipo de mudança e remova o outro antes de salvar.
 
+## Template curto (até 2 fases)
+
+Use para mudanças estimadas em até duas fases. Inclua apenas o cabeçalho, **Design de Origem**, fases e **Verificação final**. `Contexto`, `Arquitetura / Escopo`, `Riscos e Mitigações` e `Rollback` entram somente a partir de 3 fases. **Critérios de Sucesso** existem apenas no formato completo.
+
+```markdown
+# [Título do Plano]
+
+> **Objetivo:** [entrega em uma frase]
+> **Design de origem:** [origem]
+> **Flows relacionados:** [caminhos ou "nenhum"]
+
+## Design de Origem
+
+- **Decisão aprovada:** [decisão]
+- **Alternativas descartadas:** [alternativas e motivos, ou "nenhuma — caminho direto"]
+- **Tipo de mudança:** UI-only | Logic
+
+## Fases
+
+### Fase 1 — [nome]
+
+- [ ] [ação concreta com arquivo]
+- [ ] Verificação: [comando ou critério binário]
+
+### Fase 2 — [nome, se necessário]
+
+- [ ] [ação concreta com arquivo]
+- [ ] Verificação: [comando ou critério binário]
+
+## Verificação final
+
+- [ ] [comando automatizado final]
+- [ ] [checagem de escopo ou artefato]
+- [ ] _(manual — feito pelo usuário)_ Validação funcional no app
+```
+
 ```markdown
 # [Título do Plano]
 
