@@ -4,7 +4,9 @@ A workflow for turning software changes into a clear, documented process that is
 
 Brain Flows helps the agent understand the project before changing code, document how each feature works, validate the solution with you, create a plan, and execute it one step at a time.
 
-![Brain Flows journey: map, understand, approve, plan, and execute](docs/assets/brain-flows-workflow-v2-loop-clear.png)
+<p align="center">
+  <img src="docs/assets/brain-flows-workflow-v2-loop-clear.png" alt="Brain Flows journey: map, understand, approve, plan, and execute" width="50%">
+</p>
 
 ## Why use it?
 
