@@ -3,7 +3,7 @@ name: flow-init
 description: Analisa o projeto inteiro e inicializa a pasta ./docs/flow/ com um documento de estrutura geral do projeto e, opcionalmente, flows individuais de cada feature. Use quando o usuário pedir "inicializar flows", "criar flows do projeto", "mapear o projeto inteiro", "documentar a estrutura do projeto", "gerar todos os flows", "flow-init", "criar mapa do projeto", ou qualquer pedido de visão documental completa de um projeto antes de começar a trabalhar nele.
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Flow Init

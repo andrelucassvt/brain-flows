@@ -3,7 +3,7 @@ name: brainstorming
 description: Explora intenção, requisitos e design antes da implementação. Use antes de qualquer trabalho criativo — criar features, construir componentes, adicionar funcionalidade ou modificar comportamento existente.
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Brainstorming

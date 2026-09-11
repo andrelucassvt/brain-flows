@@ -3,7 +3,7 @@ name: writing-plan
 description: Gera um plano de implementação estruturado em Markdown e salva em ./docs/plan/. Use quando o usuário pedir para criar, escrever ou gerar um plano ("crie um plano", "escreva um plano", "planeje essa feature", "create a plan", "how should I approach X") ou descrever uma feature, refactor ou implementação de várias etapas que queira planejada antes de codar.
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Writing Plan

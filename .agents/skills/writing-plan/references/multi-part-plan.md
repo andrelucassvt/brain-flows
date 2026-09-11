@@ -26,7 +26,7 @@ Ao fatiar, avalie cada parte contra os 5 critérios abaixo. Só marque delegáve
 2. **Arquivos disjuntos** das demais partes ainda pendentes — nenhuma sobreposição de arquivo editado.
 3. **Verificação 100% automatizada** com critério binário (passa/falha), sem julgamento humano na checagem.
 4. **Sem decisão de design em aberto** — a Decisão aprovada no Design de Origem já cobre a parte inteira; nada fica para decidir durante a execução.
-5. **Blast radius contido** — a parte não abre um contrato (interface, schema, rota) que outra parte pendente vai consumir.
+5. **Contrato fechado no arquivo** — se a parte abre um contrato (interface, schema, rota) que uma parte posterior consome, esse contrato está especificado no próprio arquivo da parte, não fica para negociar durante a execução. Como a execução é sequencial, a parte seguinte só começa após o checkpoint.
 
 Duas regras derivadas:
 

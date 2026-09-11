@@ -3,7 +3,7 @@ name: executing-plan
 description: Executa um plano de implementação Markdown já criado em ./docs/plan/, revisando-o antes de começar, retomando pelo primeiro checkbox pendente, implementando uma tarefa por vez, verificando cada etapa, marcando o progresso e atualizando flows afetados. Use quando o usuário pedir para executar, implementar, continuar ou retomar um plano existente, como "execute o plano", "implemente o plano", "continue o plano" ou "retome de onde parou".
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Executing Plan

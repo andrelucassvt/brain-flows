@@ -4,6 +4,8 @@ Use esta referência quando o plano for uma pasta com `00-indice.md` e partes nu
 
 Antes de iniciar a parte selecionada, se ela estiver marcada `sim` na coluna `Delegável` e o ambiente oferecer subagente, delegue a parte inteira. O subagente recebe os caminhos do arquivo da parte e do índice, executa todos os passos, marca os checkboxes e roda as verificações; o retorno exigido são as evidências, não apenas a afirmação de conclusão. Se estiver marcada `não` ou não houver subagente, execute normalmente, passo a passo. Delegação é otimização, nunca requisito.
 
+Ao delegar, a thread principal fica magra: lê só o índice, o arquivo da parte e as evidências devolvidas. Não abre os arquivos de código da parte nem repete as verificações — confere a evidência contra o que a parte exige. Use um subagente novo, em contexto limpo, por parte; nunca um que herde o contexto da thread, pois isso anula o ganho de contexto que justifica a delegação.
+
 Confira as evidências retornadas contra as verificações da parte antes de marcar seu status no índice. Checkbox marcado sem evidência confirmada não vale. Só então marque a parte como concluída no `00-indice.md` e execute o checkpoint final: commit e resumo curto do que ficou pronto.
 
 Não pergunte se deve continuar. Após o checkpoint, siga para a próxima parte pendente com dependências satisfeitas, repetindo leitura, execução e verificação até a última. Só pare por bloqueio real: verificação sem solução no escopo, dependência externa ausente ou correção que mudaria o Design de Origem.

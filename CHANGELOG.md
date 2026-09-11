@@ -2,6 +2,14 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## 2.1.0 — 2026-09-10
+
+Orquestrador magro na execução multi-parte: a thread principal deixa de acumular o contexto das partes delegadas, e o critério de delegação para de reprovar partes que abrem contrato para a parte seguinte.
+
+- **Orquestrador magro:** `multi-part-execution.md` explicita que, ao delegar, a thread principal lê só o índice, o arquivo da parte e as evidências devolvidas — não abre os arquivos de código da parte nem repete as verificações. Um subagente novo em contexto limpo por parte; nunca um que herde o contexto da thread.
+- **Critério 5 de delegação reescrito:** "Blast radius contido" virou "Contrato fechado no arquivo" em `multi-part-plan.md`. Uma parte que abre um contrato consumido por parte posterior é delegável desde que o contrato esteja especificado no próprio arquivo — a execução é sequencial, então a parte seguinte só começa após o checkpoint.
+- **Versão:** skills e manifestos em 2.1.0.
+
 ## 2.0.0 — 2026-09-03
 
 Dieta de contexto, delegação opcional com fallback direto e plano proporcional, mantendo a mesma cadeia de cinco skills para Claude Code e Codex.

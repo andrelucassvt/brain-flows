@@ -3,7 +3,7 @@ name: flow
 description: Mapeia uma feature ou processo de ponta a ponta varrendo o projeto atual e gera um documento Markdown em ./docs/flow/ com os arquivos envolvidos, a ordem de chamada, a responsabilidade de cada camada e as regras de negócio. Use quando o usuário pedir "criar um flow", "mapear/documentar o flow de X", "flow do login", "fluxo do checkout", "como funciona o fluxo de X", "map how X works", ou qualquer pedido para rastrear uma feature do ponto de entrada até a camada de dados.
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Flow
